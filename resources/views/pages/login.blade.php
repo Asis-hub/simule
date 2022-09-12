@@ -11,14 +11,15 @@
     <div class="split left">
       <div class="centered">
         <div class="title"> 
-          <img src="/images/d79a16b61de6b8760e0f8ed6c43ec2c0.png" alt="Centro de Estudios de Opinión y Análisis - SIMULE"> 
+          <img src="/images/d79a16b61de6b8760e0f8ed6c43ec2c0.png" 
+          alt="Centro de Estudios de Opinión y Análisis - SIMULE"> 
         </div>
       </div>
     </div>
 
     <div class="split right">
       <div class="centered">
-        <form action="action_page.php" method="post">
+        <form action="admin" method="get">
           <div class="imgcontainer">
             <h1>SIMULE</h1>
 
