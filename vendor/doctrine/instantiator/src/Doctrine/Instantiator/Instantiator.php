@@ -37,14 +37,14 @@ final class Instantiator implements InstantiatorInterface
      *
      * @var callable[]
      */
-    private static $cachedInstantiators = [];
+    private static array $cachedInstantiators = [];
 
     /**
      * Array of objects that can directly be cloned, indexed by class name.
      *
      * @var object[]
      */
-    private static $cachedCloneables = [];
+    private static array $cachedCloneables = [];
 
     /**
      * @param string $className
@@ -118,7 +118,7 @@ final class Instantiator implements InstantiatorInterface
         $reflectionClass = $this->getReflectionClass($className);
 
         if ($this->isInstantiableViaReflection($reflectionClass)) {
-            return [$reflectionClass, 'newInstanceWithoutConstructor'];
+            return $reflectionClass->newInstanceWithoutConstructor(...);
         }
 
         $serializedString = sprintf(
@@ -130,9 +130,7 @@ final class Instantiator implements InstantiatorInterface
 
         $this->checkIfUnSerializationIsSupported($reflectionClass, $serializedString);
 
-        return static function () use ($serializedString) {
-            return unserialize($serializedString);
-        };
+        return static fn() => unserialize($serializedString);
     }
 
     /**

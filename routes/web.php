@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Calculos\ControllerCalculo;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,16 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.login');
-});
+Route::get('/', fn() => view('pages.login'));
 
-Route::get('/admin', function () {
-    return view('pages.admin');
-});
+Route::get('/admin', fn() => view('pages.admin'));
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/lucky/number', fn() => controller('App\Http\Controllers\Calculos\LuckyController::number'));
+
+Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth'])->name('dashboard');
+
+Route::get('/admin', [ControllerCalculo::class, 'calcularMuestraDos']);
 
 require __DIR__.'/auth.php';

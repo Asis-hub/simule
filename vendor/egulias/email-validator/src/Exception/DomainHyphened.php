@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class DomainHyphened extends InvalidEmail
 {
-    const CODE = 144;
-    const REASON = "Hyphen found in domain";
+    final public const CODE = 144;
+    final public const REASON = "Hyphen found in domain";
 }

@@ -8,12 +8,7 @@ class DateTime extends Base
 
     protected static $defaultTimezone = null;
 
-    /**
-     * @param \DateTime|float|int|string $max
-     *
-     * @return false|int
-     */
-    protected static function getMaxTimestamp($max = 'now')
+    protected static function getMaxTimestamp(\Faker\Provider\DateTime|float|int|string $max = 'now'): false|int
     {
         if (is_numeric($max)) {
             return (int) $max;
@@ -35,7 +30,7 @@ class DateTime extends Base
      *
      * @example 1061306726
      */
-    public static function unixTime($max = 'now')
+    public static function unixTime(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return self::numberBetween(0, static::getMaxTimestamp($max));
     }
@@ -53,7 +48,7 @@ class DateTime extends Base
      *
      * @example DateTime('2005-08-16 20:39:21')
      */
-    public static function dateTime($max = 'now', $timezone = null)
+    public static function dateTime(\Faker\Provider\DateTime|int|string $max = 'now', $timezone = null)
     {
         return static::setTimezone(
             new \DateTime('@' . static::unixTime($max)),
@@ -74,9 +69,9 @@ class DateTime extends Base
      *
      * @example DateTime('1265-03-22 21:15:52')
      */
-    public static function dateTimeAD($max = 'now', $timezone = null)
+    public static function dateTimeAD(\Faker\Provider\DateTime|int|string $max = 'now', $timezone = null)
     {
-        $min = (PHP_INT_SIZE > 4 ? -62135597361 : -PHP_INT_MAX);
+        $min = (PHP_INT_SIZE > 4 ? -62_135_597_361 : -PHP_INT_MAX);
 
         return static::setTimezone(
             new \DateTime('@' . self::numberBetween($min, static::getMaxTimestamp($max))),
@@ -93,7 +88,7 @@ class DateTime extends Base
      *
      * @example '2003-10-21T16:05:52+0000'
      */
-    public static function iso8601($max = 'now')
+    public static function iso8601(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::date(\DateTime::ISO8601, $max);
     }
@@ -108,7 +103,7 @@ class DateTime extends Base
      *
      * @example '2008-11-27'
      */
-    public static function date($format = 'Y-m-d', $max = 'now')
+    public static function date($format = 'Y-m-d', \Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format($format);
     }
@@ -123,7 +118,7 @@ class DateTime extends Base
      *
      * @example '15:02:34'
      */
-    public static function time($format = 'H:i:s', $max = 'now')
+    public static function time($format = 'H:i:s', \Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format($format);
     }
@@ -143,7 +138,7 @@ class DateTime extends Base
      *
      * @example DateTime('1999-02-02 11:42:52')
      */
-    public static function dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = null)
+    public static function dateTimeBetween(\Faker\Provider\DateTime|string $startDate = '-30 years', \Faker\Provider\DateTime|string $endDate = 'now', $timezone = null)
     {
         $startTimestamp = $startDate instanceof \DateTime ? $startDate->getTimestamp() : strtotime($startDate);
         $endTimestamp = static::getMaxTimestamp($endDate);
@@ -176,7 +171,7 @@ class DateTime extends Base
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public static function dateTimeInInterval($date = '-30 years', $interval = '+5 days', $timezone = null)
+    public static function dateTimeInInterval(\Faker\Provider\DateTime|string $date = '-30 years', $interval = '+5 days', $timezone = null)
     {
         $intervalObject = \DateInterval::createFromDateString($interval);
         $datetime = $date instanceof \DateTime ? $date : new \DateTime($date);
@@ -201,7 +196,7 @@ class DateTime extends Base
      *
      * @return \DateTime
      */
-    public static function dateTimeThisCentury($max = 'now', $timezone = null)
+    public static function dateTimeThisCentury(\Faker\Provider\DateTime|int|string $max = 'now', $timezone = null)
     {
         return static::dateTimeBetween('-100 year', $max, $timezone);
     }
@@ -214,7 +209,7 @@ class DateTime extends Base
      *
      * @return \DateTime
      */
-    public static function dateTimeThisDecade($max = 'now', $timezone = null)
+    public static function dateTimeThisDecade(\Faker\Provider\DateTime|int|string $max = 'now', $timezone = null)
     {
         return static::dateTimeBetween('-10 year', $max, $timezone);
     }
@@ -227,7 +222,7 @@ class DateTime extends Base
      *
      * @return \DateTime
      */
-    public static function dateTimeThisYear($max = 'now', $timezone = null)
+    public static function dateTimeThisYear(\Faker\Provider\DateTime|int|string $max = 'now', $timezone = null)
     {
         return static::dateTimeBetween('first day of january this year', $max, $timezone);
     }
@@ -240,7 +235,7 @@ class DateTime extends Base
      *
      * @return \DateTime
      */
-    public static function dateTimeThisMonth($max = 'now', $timezone = null)
+    public static function dateTimeThisMonth(\Faker\Provider\DateTime|int|string $max = 'now', $timezone = null)
     {
         return static::dateTimeBetween('-1 month', $max, $timezone);
     }
@@ -254,7 +249,7 @@ class DateTime extends Base
      *
      * @example 'am'
      */
-    public static function amPm($max = 'now')
+    public static function amPm(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format('a');
     }
@@ -266,7 +261,7 @@ class DateTime extends Base
      *
      * @example '22'
      */
-    public static function dayOfMonth($max = 'now')
+    public static function dayOfMonth(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format('d');
     }
@@ -278,7 +273,7 @@ class DateTime extends Base
      *
      * @example 'Tuesday'
      */
-    public static function dayOfWeek($max = 'now')
+    public static function dayOfWeek(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format('l');
     }
@@ -290,7 +285,7 @@ class DateTime extends Base
      *
      * @example '7'
      */
-    public static function month($max = 'now')
+    public static function month(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format('m');
     }
@@ -302,7 +297,7 @@ class DateTime extends Base
      *
      * @example 'September'
      */
-    public static function monthName($max = 'now')
+    public static function monthName(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format('F');
     }
@@ -314,7 +309,7 @@ class DateTime extends Base
      *
      * @example '1987'
      */
-    public static function year($max = 'now')
+    public static function year(\Faker\Provider\DateTime|int|string $max = 'now')
     {
         return static::dateTime($max)->format('Y');
     }
@@ -378,6 +373,6 @@ class DateTime extends Base
      */
     private static function resolveTimezone($timezone)
     {
-        return (null === $timezone) ? ((null === static::$defaultTimezone) ? date_default_timezone_get() : static::$defaultTimezone) : $timezone;
+        return $timezone ?? static::$defaultTimezone ?? date_default_timezone_get();
     }
 }

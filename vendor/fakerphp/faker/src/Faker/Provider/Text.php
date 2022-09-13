@@ -142,7 +142,7 @@ abstract class Text extends Base
                 $index[] = array_shift($parts);
             }
 
-            for ($i = 0, $count = count($parts); $i < $count; ++$i) {
+            for ($i = 0, $count = is_countable($parts) ? count($parts) : 0; $i < $count; ++$i) {
                 $stringIndex = static::implode($index);
 
                 if (!isset($words[$stringIndex])) {
@@ -171,7 +171,7 @@ abstract class Text extends Base
 
     protected static function explode($text)
     {
-        return explode(static::$separator, $text);
+        return explode(static::$separator, (string) $text);
     }
 
     protected static function implode($words)
@@ -181,7 +181,7 @@ abstract class Text extends Base
 
     protected static function strlen($text)
     {
-        return function_exists('mb_strlen') ? mb_strlen($text, 'UTF-8') : strlen($text);
+        return function_exists('mb_strlen') ? mb_strlen((string) $text, 'UTF-8') : strlen((string) $text);
     }
 
     protected static function validStart($word)
@@ -189,7 +189,7 @@ abstract class Text extends Base
         $isValid = true;
 
         if (static::$textStartsWithUppercase) {
-            $isValid = preg_match('/^\p{Lu}/u', $word);
+            $isValid = preg_match('/^\p{Lu}/u', (string) $word);
         }
 
         return $isValid;

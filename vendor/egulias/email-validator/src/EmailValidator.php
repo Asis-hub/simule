@@ -7,10 +7,7 @@ use Egulias\EmailValidator\Validation\EmailValidation;
 
 class EmailValidator
 {
-    /**
-     * @var EmailLexer
-     */
-    private $lexer;
+    private readonly \Egulias\EmailValidator\EmailLexer $lexer;
 
     /**
      * @var Warning\Warning[]
@@ -29,7 +26,6 @@ class EmailValidator
 
     /**
      * @param string          $email
-     * @param EmailValidation $emailValidation
      * @return bool
      */
     public function isValid($email, EmailValidation $emailValidation)

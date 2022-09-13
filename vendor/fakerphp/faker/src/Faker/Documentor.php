@@ -4,11 +4,8 @@ namespace Faker;
 
 class Documentor
 {
-    protected $generator;
-
-    public function __construct(Generator $generator)
+    public function __construct(protected Generator $generator)
     {
-        $this->generator = $generator;
     }
 
     /**
@@ -21,12 +18,12 @@ class Documentor
         $providers[] = new Provider\Base($this->generator);
 
         foreach ($providers as $provider) {
-            $providerClass = get_class($provider);
+            $providerClass = $provider::class;
             $formatters[$providerClass] = [];
             $refl = new \ReflectionObject($provider);
 
             foreach ($refl->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflmethod) {
-                if ($reflmethod->getDeclaringClass()->getName() == 'Faker\Provider\Base' && $providerClass != 'Faker\Provider\Base') {
+                if ($reflmethod->getDeclaringClass()->getName() == \Faker\Provider\Base::class && $providerClass != \Faker\Provider\Base::class) {
                     continue;
                 }
                 $methodName = $reflmethod->name;
@@ -48,7 +45,7 @@ class Documentor
 
                 try {
                     $example = $this->generator->format($methodName);
-                } catch (\InvalidArgumentException $e) {
+                } catch (\InvalidArgumentException) {
                     $example = '';
                 }
 

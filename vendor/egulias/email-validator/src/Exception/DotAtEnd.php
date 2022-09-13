@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class DotAtEnd extends InvalidEmail
 {
-    const CODE = 142;
-    const REASON = "Dot at the end";
+    final public const CODE = 142;
+    final public const REASON = "Dot at the end";
 }

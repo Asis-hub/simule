@@ -68,8 +68,8 @@ class DayOfWeekField extends AbstractField
         $lastDayOfMonth = (int) $date->format('t');
 
         // Find out if this is the last specific weekday of the month
-        if (strpos($value, 'L')) {
-            $weekday = $this->convertLiterals(substr($value, 0, strpos($value, 'L')));
+        if ($lPosition = strpos($value, 'L')) {
+            $weekday = $this->convertLiterals(substr($value, 0, $lPosition));
             $weekday %= 7;
 
             $daysInMonth = (int) $date->format('t');
@@ -125,7 +125,7 @@ class DayOfWeekField extends AbstractField
         }
 
         // Handle day of the week values
-        if (false !== strpos($value, '-')) {
+        if (str_contains($value, '-')) {
             $parts = explode('-', $value);
             if ('7' === $parts[0]) {
                 $parts[0] = 0;
@@ -136,9 +136,7 @@ class DayOfWeekField extends AbstractField
         }
 
         // Test to see which Sunday to use -- 0 == 7 == Sunday
-        $format = \in_array(7, array_map(function ($value) {
-            return (int) $value;
-        }, str_split($value)), true) ? 'N' : 'w';
+        $format = \in_array(7, array_map(fn($value) => (int) $value, str_split($value)), true) ? 'N' : 'w';
         $fieldValue = (int) $date->format($format);
 
         return $this->isSatisfied($fieldValue, $value);
@@ -173,7 +171,7 @@ class DayOfWeekField extends AbstractField
             }
 
             // Handle the # value
-            if (false !== strpos($value, '#')) {
+            if (str_contains($value, '#')) {
                 $chunks = explode('#', $value);
                 $chunks[0] = $this->convertLiterals($chunks[0]);
 

@@ -70,6 +70,7 @@ class Company extends \Faker\Provider\Company
      */
     public function company()
     {
+        $companyName = null;
         $determinator = self::numberBetween(0, 2);
 
         switch ($determinator) {
@@ -79,7 +80,7 @@ class Company extends \Faker\Provider\Company
                 break;
 
             case 1:
-                $companyName = static::randomElement(static::$product) . strtolower(static::randomElement(static::$type));
+                $companyName = static::randomElement(static::$product) . strtolower((string) static::randomElement(static::$type));
 
                 break;
 

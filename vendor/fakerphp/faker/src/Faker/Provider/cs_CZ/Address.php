@@ -72,7 +72,7 @@ class Address extends \Faker\Provider\Address
     /**
      * Source: https://cs.wikipedia.org/wiki/Kraje_v_%C4%8Cesku#Ekonomika
      */
-    private static $regions = [
+    private static array $regions = [
         'Hlavní město Praha', 'Jihomoravský kraj', 'Jihočeský kraj', 'Karlovarský kraj', 'Královéhradecký kraj',
         'Liberecký kraj', 'Moravskoslezský kraj', 'Olomoucký kraj', 'Pardubický kraj', 'Plzeňský kraj',
         'Středočeský kraj', 'Vysočina', 'Zlínský kraj', 'Ústecký kraj',

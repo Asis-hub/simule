@@ -96,7 +96,7 @@ class Company extends \Faker\Provider\Company
             $format = static::randomElement(static::$catchPhraseFormats);
             $catchPhrase = ucfirst($this->generator->parse($format));
 
-            if ($this->isCatchPhraseValid($catchPhrase)) {
+            if (static::isCatchPhraseValid($catchPhrase)) {
                 break;
             }
         } while (true);
@@ -115,7 +115,7 @@ class Company extends \Faker\Provider\Company
     {
         $siret = self::siren(false);
         $nicFormat = static::randomElement(static::$siretNicFormats);
-        $siret .= $this->numerify($nicFormat);
+        $siret .= static::numerify($nicFormat);
         $siret .= Luhn::computeCheckDigit($siret);
 
         if ($formatted) {
@@ -160,8 +160,8 @@ class Company extends \Faker\Provider\Company
     {
         foreach (static::$wordsWhichShouldNotAppearTwice as $word) {
             // Fastest way to check if a piece of word does not appear twice.
-            $beginPos = strpos($catchPhrase, $word);
-            $endPos = strrpos($catchPhrase, $word);
+            $beginPos = strpos($catchPhrase, (string) $word);
+            $endPos = strrpos($catchPhrase, (string) $word);
 
             if ($beginPos !== false && $beginPos != $endPos) {
                 return false;

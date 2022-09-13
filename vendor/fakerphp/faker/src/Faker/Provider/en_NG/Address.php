@@ -6,7 +6,7 @@ class Address extends \Faker\Provider\Address
 {
     protected static $postcode = ['#####', '## ###'];
 
-    private static $county = [
+    private static array $county = [
         'Abuja', 'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra',
         'Bauchi', 'Bayelsa', 'Benue', 'Borno',
         'Cross River',
@@ -53,7 +53,7 @@ class Address extends \Faker\Provider\Address
         'Zambia', 'Zimbabwe',
     ];
 
-    private static $regions = [
+    private static array $regions = [
         'Abakaliki', 'Abeokuta', 'Akure', 'Asaba', 'Awka',
         'Bauchi',
         'Calabar', 'City',

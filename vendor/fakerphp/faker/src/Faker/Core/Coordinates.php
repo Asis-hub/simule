@@ -63,6 +63,6 @@ class Coordinates implements Extension
             throw new \LogicException('Invalid coordinates boundaries');
         }
 
-        return round($min + mt_rand() / mt_getrandmax() * ($max - $min), $nbMaxDecimals);
+        return round($min + random_int(0, mt_getrandmax()) / mt_getrandmax() * ($max - $min), $nbMaxDecimals);
     }
 }

@@ -4,11 +4,11 @@
         Application frames (<?php echo $frames->countIsApplication() ?>)
     </a>
     <a href="#" id="all-frames-tab" class="frames-tab <?php echo $active_frames_tab == 'all' ? 'frames-tab-active' : '' ?>">
-      All frames (<?php echo count($frames) ?>)
+      All frames (<?php echo is_countable($frames) ? count($frames) : 0 ?>)
     </a>
   <?php else: ?>
     <span>
-        Stack frames (<?php echo count($frames) ?>)
+        Stack frames (<?php echo is_countable($frames) ? count($frames) : 0 ?>)
     </span>
   <?php endif; ?>
 </div>

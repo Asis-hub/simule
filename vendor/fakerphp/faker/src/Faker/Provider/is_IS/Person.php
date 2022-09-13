@@ -62,11 +62,11 @@ class Person extends \Faker\Provider\Person
     {
         $name = static::firstNameMale();
 
-        if (substr($name, -2) === 'ur') {
+        if (str_ends_with($name, 'ur')) {
             $name = substr($name, 0, strlen($name) - 2);
         }
 
-        if (substr($name, -1) !== 's') {
+        if (!str_ends_with($name, 's')) {
             $name .= 's';
         }
 

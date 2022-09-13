@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class CRNoLF extends InvalidEmail
 {
-    const CODE = 150;
-    const REASON = "Missing LF after CR";
+    final public const CODE = 150;
+    final public const REASON = "Missing LF after CR";
 }

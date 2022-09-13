@@ -16,10 +16,7 @@ use Psr\Http\Message\RequestInterface;
  */
 class CurlHandler
 {
-    /**
-     * @var CurlFactoryInterface
-     */
-    private $factory;
+    private readonly \GuzzleHttp\Handler\CurlFactoryInterface $factory;
 
     /**
      * Accepts an associative array of options:

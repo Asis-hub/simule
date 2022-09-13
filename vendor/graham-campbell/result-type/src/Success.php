@@ -24,20 +24,14 @@ use PhpOption\Some;
 final class Success extends Result
 {
     /**
-     * @var T
-     */
-    private $value;
-
-    /**
      * Internal constructor for a success value.
      *
      * @param T $value
      *
      * @return void
      */
-    private function __construct($value)
+    private function __construct(private $value)
     {
-        $this->value = $value;
     }
 
     /**

@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class DomainAcceptsNoMail extends InvalidEmail
 {
-    const CODE = 154;
-    const REASON = 'Domain accepts no mail (Null MX, RFC7505)';
+    final public const CODE = 154;
+    final public const REASON = 'Domain accepts no mail (Null MX, RFC7505)';
 }

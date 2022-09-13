@@ -76,6 +76,8 @@ class Person extends \Faker\Provider\Person
      */
     public static function dvCalcMod11($number)
     {
+        $numbers = [];
+        $partial = [];
         $base = 9;
         $sum = 0;
         $factor = 2;

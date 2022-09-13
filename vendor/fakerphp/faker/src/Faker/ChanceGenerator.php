@@ -12,18 +12,11 @@ use Faker\Extension\Extension;
  */
 class ChanceGenerator
 {
-    private $generator;
-    private $weight;
-    protected $default;
-
     /**
      * @param Extension|Generator $generator
      */
-    public function __construct($generator, float $weight, $default = null)
+    public function __construct(private $generator, private readonly float $weight, protected $default = null)
     {
-        $this->default = $default;
-        $this->generator = $generator;
-        $this->weight = $weight;
     }
 
     public function ext(string $id)
@@ -51,7 +44,7 @@ class ChanceGenerator
      */
     public function __call($name, $arguments)
     {
-        if (mt_rand(1, 100) <= (100 * $this->weight)) {
+        if (random_int(1, 100) <= (100 * $this->weight)) {
             return call_user_func_array([$this->generator, $name], $arguments);
         }
 

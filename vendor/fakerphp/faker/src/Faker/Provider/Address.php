@@ -126,12 +126,10 @@ class Address extends Base
      *
      * @example '77.147489'
      *
-     * @param float|int $min
-     * @param float|int $max
      *
      * @return float
      */
-    public static function latitude($min = -90, $max = 90)
+    public static function latitude(float|int $min = -90, float|int $max = 90)
     {
         return static::randomFloat(6, $min, $max);
     }
@@ -141,12 +139,10 @@ class Address extends Base
      *
      * @example '86.211205'
      *
-     * @param float|int $min
-     * @param float|int $max
      *
      * @return float
      */
-    public static function longitude($min = -180, $max = 180)
+    public static function longitude(float|int $min = -180, float|int $max = 180)
     {
         return static::randomFloat(6, $min, $max);
     }

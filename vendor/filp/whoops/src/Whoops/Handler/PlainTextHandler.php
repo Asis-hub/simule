@@ -19,7 +19,7 @@ use Whoops\Exception\Frame;
 */
 class PlainTextHandler extends Handler
 {
-    const VAR_DUMP_PREFIX = '   | ';
+    final const VAR_DUMP_PREFIX = '   | ';
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -31,30 +31,15 @@ class PlainTextHandler extends Handler
      */
     protected $dumper;
 
-    /**
-     * @var bool
-     */
-    private $addTraceToOutput = true;
+    private bool $addTraceToOutput = true;
 
-    /**
-     * @var bool|integer
-     */
-    private $addTraceFunctionArgsToOutput = false;
+    private bool|int $addTraceFunctionArgsToOutput = false;
 
-    /**
-     * @var integer
-     */
-    private $traceFunctionArgsOutputLimit = 1024;
+    private int $traceFunctionArgsOutputLimit = 1024;
 
-    /**
-     * @var bool
-     */
-    private $addPreviousToOutput = true;
+    private bool $addPreviousToOutput = true;
 
-    /**
-     * @var bool
-     */
-    private $loggerOnly = false;
+    private bool $loggerOnly = false;
 
     /**
      * Constructor.
@@ -78,7 +63,7 @@ class PlainTextHandler extends Handler
             throw new InvalidArgumentException(
                 'Argument to ' . __METHOD__ .
                 " must be a valid Logger Interface (aka. Monolog), " .
-                get_class($logger) . ' given.'
+                $logger::class . ' given.'
             );
         }
 
@@ -96,7 +81,6 @@ class PlainTextHandler extends Handler
     /**
      * Set var dumper callback function.
      *
-     * @param  callable $dumper
      * @return static
      */
     public function setDumper(callable $dumper)
@@ -110,7 +94,7 @@ class PlainTextHandler extends Handler
      * @param  bool|null  $addTraceToOutput
      * @return bool|static
      */
-    public function addTraceToOutput($addTraceToOutput = null)
+    public function addTraceToOutput($addTraceToOutput = null): bool|static
     {
         if (func_num_args() == 0) {
             return $this->addTraceToOutput;
@@ -125,7 +109,7 @@ class PlainTextHandler extends Handler
      * @param  bool|null $addPreviousToOutput
      * @return bool|static
      */
-    public function addPreviousToOutput($addPreviousToOutput = null)
+    public function addPreviousToOutput($addPreviousToOutput = null): bool|static
     {
         if (func_num_args() == 0) {
             return $this->addPreviousToOutput;
@@ -141,7 +125,7 @@ class PlainTextHandler extends Handler
      * @param  bool|integer|null $addTraceFunctionArgsToOutput
      * @return static|bool|integer
      */
-    public function addTraceFunctionArgsToOutput($addTraceFunctionArgsToOutput = null)
+    public function addTraceFunctionArgsToOutput($addTraceFunctionArgsToOutput = null): static|bool|int
     {
         if (func_num_args() == 0) {
             return $this->addTraceFunctionArgsToOutput;
@@ -205,7 +189,7 @@ class PlainTextHandler extends Handler
      * @param  bool|null $loggerOnly
      * @return static|bool
      */
-    public function loggerOnly($loggerOnly = null)
+    public function loggerOnly($loggerOnly = null): static|bool
     {
         if (func_num_args() == 0) {
             return $this->loggerOnly;
@@ -260,10 +244,9 @@ class PlainTextHandler extends Handler
     /**
      * Dump variable.
      *
-     * @param mixed $var
      * @return void
      */
-    protected function dump($var)
+    protected function dump(mixed $var)
     {
         if ($this->dumper) {
             call_user_func($this->dumper, $var);
@@ -322,7 +305,7 @@ class PlainTextHandler extends Handler
     {
         return sprintf(
             "%s: %s in file %s on line %d",
-            get_class($exception),
+            $exception::class,
             $exception->getMessage(),
             $exception->getFile(),
             $exception->getLine()

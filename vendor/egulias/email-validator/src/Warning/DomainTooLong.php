@@ -4,7 +4,7 @@ namespace Egulias\EmailValidator\Warning;
 
 class DomainTooLong extends Warning
 {
-    const CODE = 255;
+    final public const CODE = 255;
 
     public function __construct()
     {

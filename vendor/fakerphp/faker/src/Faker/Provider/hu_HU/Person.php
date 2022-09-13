@@ -74,7 +74,7 @@ class Person extends \Faker\Provider\Person
 
     protected static $titleMale = ['Dr.', 'Prof.', 'Id.', 'Ifj.', 'Báró', 'Gróf'];
 
-    private static $suffix = ['PhD'];
+    private static array $suffix = ['PhD'];
 
     /**
      * Specific Hungarian name format for females after marriage

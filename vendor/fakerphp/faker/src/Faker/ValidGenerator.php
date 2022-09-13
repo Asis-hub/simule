@@ -12,27 +12,21 @@ use Faker\Extension\Extension;
  */
 class ValidGenerator
 {
-    protected $generator;
     protected $validator;
-    protected $maxRetries;
 
     /**
      * @param Extension|Generator $generator
      * @param callable|null       $validator
      * @param int                 $maxRetries
      */
-    public function __construct($generator, $validator = null, $maxRetries = 10000)
+    public function __construct(protected $generator, $validator = null, protected $maxRetries = 10000)
     {
         if (null === $validator) {
-            $validator = static function () {
-                return true;
-            };
+            $validator = static fn() => true;
         } elseif (!is_callable($validator)) {
             throw new \InvalidArgumentException('valid() only accepts callables as first argument');
         }
-        $this->generator = $generator;
         $this->validator = $validator;
-        $this->maxRetries = $maxRetries;
     }
 
     public function ext(string $id)

@@ -25,10 +25,8 @@ abstract class AbstractLexer
 {
     /**
      * Lexer original input string.
-     *
-     * @var string
      */
-    private $input;
+    private ?string $input = null;
 
     /**
      * Array of scanned tokens.
@@ -42,21 +40,17 @@ abstract class AbstractLexer
      * @var mixed[][]
      * @psalm-var list<Token>
      */
-    private $tokens = [];
+    private array $tokens = [];
 
     /**
      * Current lexer position in input string.
-     *
-     * @var int
      */
-    private $position = 0;
+    private int $position = 0;
 
     /**
      * Current peek of current lexer position.
-     *
-     * @var int
      */
-    private $peek = 0;
+    private int $peek = 0;
 
     /**
      * The next token in the input.
@@ -76,10 +70,8 @@ abstract class AbstractLexer
 
     /**
      * Composed regex for input parsing.
-     *
-     * @var string|null
      */
-    private $regex;
+    private ?string $regex = null;
 
     /**
      * Sets the input data to be tokenized.
@@ -150,11 +142,10 @@ abstract class AbstractLexer
     /**
      * Checks whether a given token matches the current lookahead.
      *
-     * @param int|string $type
      *
      * @return bool
      */
-    public function isNextToken($type)
+    public function isNextToken(int|string $type)
     {
         return $this->lookahead !== null && $this->lookahead['type'] === $type;
     }
@@ -203,12 +194,10 @@ abstract class AbstractLexer
     /**
      * Checks if given value is identical to the given token.
      *
-     * @param mixed      $value
-     * @param int|string $token
      *
      * @return bool
      */
-    public function isA($value, $token)
+    public function isA(mixed $value, int|string $token)
     {
         return $this->getType($value) === $token;
     }
@@ -283,11 +272,9 @@ abstract class AbstractLexer
     /**
      * Gets the literal for a given token.
      *
-     * @param int|string $token
      *
-     * @return int|string
      */
-    public function getLiteral($token)
+    public function getLiteral(int|string $token): int|string
     {
         $className = static::class;
         $reflClass = new ReflectionClass($className);

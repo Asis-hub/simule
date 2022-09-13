@@ -17,72 +17,58 @@ use Whoops\Util\TemplateHelper;
 
 class PrettyPageHandler extends Handler
 {
-    const EDITOR_SUBLIME = "sublime";
-    const EDITOR_TEXTMATE = "textmate";
-    const EDITOR_EMACS = "emacs";
-    const EDITOR_MACVIM = "macvim";
-    const EDITOR_PHPSTORM = "phpstorm";
-    const EDITOR_IDEA = "idea";
-    const EDITOR_VSCODE = "vscode";
-    const EDITOR_ATOM = "atom";
-    const EDITOR_ESPRESSO = "espresso";
-    const EDITOR_XDEBUG = "xdebug";
-    const EDITOR_NETBEANS = "netbeans";
+    final const EDITOR_SUBLIME = "sublime";
+    final const EDITOR_TEXTMATE = "textmate";
+    final const EDITOR_EMACS = "emacs";
+    final const EDITOR_MACVIM = "macvim";
+    final const EDITOR_PHPSTORM = "phpstorm";
+    final const EDITOR_IDEA = "idea";
+    final const EDITOR_VSCODE = "vscode";
+    final const EDITOR_ATOM = "atom";
+    final const EDITOR_ESPRESSO = "espresso";
+    final const EDITOR_XDEBUG = "xdebug";
+    final const EDITOR_NETBEANS = "netbeans";
 
     /**
      * Search paths to be scanned for resources.
      *
      * Stored in the reverse order they're declared.
-     *
-     * @var array
      */
-    private $searchPaths = [];
+    private array $searchPaths = [];
 
     /**
      * Fast lookup cache for known resource locations.
-     *
-     * @var array
      */
-    private $resourceCache = [];
+    private array $resourceCache = [];
 
     /**
      * The name of the custom css file.
-     *
-     * @var string|null
      */
-    private $customCss = null;
+    private ?string $customCss = null;
 
     /**
      * The name of the custom js file.
-     *
-     * @var string|null
      */
-    private $customJs = null;
+    private ?string $customJs = null;
 
     /**
      * @var array[]
      */
-    private $extraTables = [];
+    private array $extraTables = [];
 
-    /**
-     * @var bool
-     */
-    private $handleUnconditionally = false;
+    private bool $handleUnconditionally = false;
 
-    /**
-     * @var string
-     */
-    private $pageTitle = "Whoops! There was an error.";
+    private string $pageTitle = "Whoops! There was an error.";
 
     /**
      * @var array[]
      */
-    private $applicationPaths;
+    private ?array $applicationPaths = null;
 
     /**
      * @var array[]
      */
-    private $blacklist = [
+    private array $blacklist = [
         '_GET' => [],
         '_POST' => [],
         '_FILES' => [],
@@ -138,9 +124,7 @@ class PrettyPageHandler extends Handler
     {
         if (ini_get('xdebug.file_link_format') || get_cfg_var('xdebug.file_link_format')) {
             // Register editor using xdebug's file_link_format option.
-            $this->editors['xdebug'] = function ($file, $line) {
-                return str_replace(['%f', '%l'], [$file, $line], ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format'));
-            };
+            $this->editors['xdebug'] = fn($file, $line) => str_replace(['%f', '%l'], [$file, $line], ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format'));
 
             // If xdebug is available, use it as default editor.
             $this->setEditor('xdebug');
@@ -154,7 +138,7 @@ class PrettyPageHandler extends Handler
 
         $this->templateHelper = new TemplateHelper();
 
-        if (class_exists('Symfony\Component\VarDumper\Cloner\VarCloner')) {
+        if (class_exists(\Symfony\Component\VarDumper\Cloner\VarCloner::class)) {
             $cloner = new VarCloner();
             // Only dump object internals if a custom caster exists for performance reasons
             // https://github.com/filp/whoops/pull/404
@@ -281,9 +265,7 @@ class PrettyPageHandler extends Handler
 
         // Add extra entries list of data tables:
         // @todo: Consolidate addDataTable and addDataTableCallback
-        $extraTables = array_map(function ($table) use ($inspector) {
-            return $table instanceof \Closure ? $table($inspector) : $table;
-        }, $this->getDataTables());
+        $extraTables = array_map(fn($table) => $table instanceof \Closure ? $table($inspector) : $table, $this->getDataTables());
         $vars["tables"] = array_merge($extraTables, $vars["tables"]);
 
         $plainTextHandler = new PlainTextHandler();
@@ -309,7 +291,7 @@ class PrettyPageHandler extends Handler
         if ($this->getApplicationPaths()) {
             foreach ($frames as $frame) {
                 foreach ($this->getApplicationPaths() as $path) {
-                    if (strpos($frame->getFile(), $path) === 0) {
+                    if (str_starts_with((string) $frame->getFile(), (string) $path)) {
                         $frame->setApplication(true);
                         break;
                     }
@@ -388,8 +370,8 @@ class PrettyPageHandler extends Handler
                 $result = call_user_func($callback, $inspector);
 
                 // Only return the result if it can be iterated over by foreach().
-                return is_array($result) || $result instanceof \Traversable ? $result : [];
-            } catch (\Exception $e) {
+                return is_iterable($result) ? $result : [];
+            } catch (\Exception) {
                 // Don't allow failure to break the rendering of the original exception.
                 return [];
             }
@@ -408,11 +390,10 @@ class PrettyPageHandler extends Handler
      *
      * @return array[]|callable
      */
-    public function getDataTables($label = null)
+    public function getDataTables($label = null): array|callable
     {
         if ($label !== null) {
-            return isset($this->extraTables[$label]) ?
-                   $this->extraTables[$label] : [];
+            return $this->extraTables[$label] ?? [];
         }
 
         return $this->extraTables;
@@ -429,7 +410,7 @@ class PrettyPageHandler extends Handler
      *
      * @return bool|static
      */
-    public function handleUnconditionally($value = null)
+    public function handleUnconditionally($value = null): bool|static
     {
         if (func_num_args() == 0) {
             return $this->handleUnconditionally;
@@ -459,7 +440,7 @@ class PrettyPageHandler extends Handler
      *
      * @return static
      */
-    public function addEditor($identifier, $resolver)
+    public function addEditor($identifier, string|callable $resolver)
     {
         $this->editors[$identifier] = $resolver;
         return $this;
@@ -482,7 +463,7 @@ class PrettyPageHandler extends Handler
      *
      * @return static
      */
-    public function setEditor($editor)
+    public function setEditor(string|callable $editor)
     {
         if (!is_callable($editor) && !isset($this->editors[$editor])) {
             throw new InvalidArgumentException(
@@ -502,10 +483,8 @@ class PrettyPageHandler extends Handler
      * @param int    $line
      *
      * @throws InvalidArgumentException If editor resolver does not return a string
-     *
-     * @return string|bool
      */
-    public function getEditorHref($filePath, $line)
+    public function getEditorHref($filePath, $line): string|bool
     {
         $editor = $this->getEditor($filePath, $line);
 
@@ -590,8 +569,8 @@ class PrettyPageHandler extends Handler
             }
 
             return [
-                'ajax' => isset($callback['ajax']) ? $callback['ajax'] : false,
-                'url' => isset($callback['url']) ? $callback['url'] : $callback,
+                'ajax' => $callback['ajax'] ?? false,
+                'url' => $callback['url'] ?? $callback,
             ];
         }
 
@@ -817,7 +796,7 @@ class PrettyPageHandler extends Handler
      *
      * @return array $values without sensitive data
      */
-    private function masked($superGlobal, $superGlobalName)
+    private function masked(array|\ArrayAccess $superGlobal, $superGlobalName)
     {
         $blacklisted = $this->blacklist[$superGlobalName];
 

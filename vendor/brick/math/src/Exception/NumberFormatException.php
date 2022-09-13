@@ -12,7 +12,6 @@ class NumberFormatException extends MathException
     /**
      * @param string $char The failing character.
      *
-     * @return NumberFormatException
      *
      * @psalm-pure
      */

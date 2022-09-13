@@ -11,26 +11,20 @@ use Egulias\EmailValidator\Exception\NoDNSRecord;
 
 class DNSCheckValidation implements EmailValidation
 {
-    /**
-     * @var array
-     */
-    private $warnings = [];
+    private array $warnings = [];
 
     /**
      * @var InvalidEmail|null
      */
     private $error;
 
-    /**
-     * @var array
-     */
-    private $mxRecords = [];
+    private array $mxRecords = [];
 
 
     public function __construct()
     {
         if (!function_exists('idn_to_ascii')) {
-            throw new \LogicException(sprintf('The %s class requires the Intl extension.', __CLASS__));
+            throw new \LogicException(sprintf('The %s class requires the Intl extension.', self::class));
         }
     }
 

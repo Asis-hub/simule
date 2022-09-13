@@ -11,7 +11,6 @@ interface SolutionProviderRepository
     public function registerSolutionProviders(array $solutionProviderClasses): self;
 
     /**
-     * @param Throwable $throwable
      * @return \Facade\IgnitionContracts\Solution[]
      */
     public function getSolutionsForThrowable(Throwable $throwable): array;

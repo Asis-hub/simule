@@ -74,7 +74,7 @@ class Address extends \Faker\Provider\Address
      *
      * @return array | latitude, longitude
      */
-    public static function localCoordinates()
+    public static function localCoordinates(): array|\latitude
     {
         return [
             'latitude' => static::latitude(46.262740, 47.564721),

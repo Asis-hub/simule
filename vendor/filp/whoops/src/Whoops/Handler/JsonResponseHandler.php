@@ -15,15 +15,9 @@ use Whoops\Exception\Formatter;
  */
 class JsonResponseHandler extends Handler
 {
-    /**
-     * @var bool
-     */
-    private $returnFrames = false;
+    private bool $returnFrames = false;
 
-    /**
-     * @var bool
-     */
-    private $jsonApi = false;
+    private bool $jsonApi = false;
 
     /**
      * Returns errors[[]] instead of error[] to be in compliance with the json:api spec
@@ -40,7 +34,7 @@ class JsonResponseHandler extends Handler
      * @param  bool|null  $returnFrames
      * @return bool|static
      */
-    public function addTraceToOutput($returnFrames = null)
+    public function addTraceToOutput($returnFrames = null): bool|static
     {
         if (func_num_args() == 0) {
             return $this->returnFrames;

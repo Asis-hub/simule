@@ -12,11 +12,6 @@ use Serializable;
 class Frame implements Serializable
 {
     /**
-     * @var array
-     */
-    protected $frame;
-
-    /**
      * @var string
      */
     protected $fileContentsCache;
@@ -34,9 +29,8 @@ class Frame implements Serializable
     /**
      * @param array[]
      */
-    public function __construct(array $frame)
+    public function __construct(protected array $frame)
     {
-        $this->frame = $frame;
     }
 
     /**
@@ -55,14 +49,14 @@ class Frame implements Serializable
         // @todo: This can be made more reliable by checking if we've entered
         // eval() in a previous trace, but will need some more work on the upper
         // trace collector(s).
-        if (preg_match('/^(.*)\((\d+)\) : (?:eval\(\)\'d|assert) code$/', $file, $matches)) {
+        if (preg_match('/^(.*)\((\d+)\) : (?:eval\(\)\'d|assert) code$/', (string) $file, $matches)) {
             $file = $this->frame['file'] = $matches[1];
             $this->frame['line'] = (int) $matches[2];
         }
 
         if ($shortened && is_string($file)) {
             // Replace the part of the path that all frames have in common, and add 'soft hyphens' for smoother line-breaks.
-            $dirname = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
+            $dirname = dirname(__DIR__, 6);
             if ($dirname !== '/') {
                 $file = str_replace($dirname, "&hellip;", $file);
             }
@@ -77,7 +71,7 @@ class Frame implements Serializable
      */
     public function getLine()
     {
-        return isset($this->frame['line']) ? $this->frame['line'] : null;
+        return $this->frame['line'] ?? null;
     }
 
     /**
@@ -85,7 +79,7 @@ class Frame implements Serializable
      */
     public function getClass()
     {
-        return isset($this->frame['class']) ? $this->frame['class'] : null;
+        return $this->frame['class'] ?? null;
     }
 
     /**
@@ -93,7 +87,7 @@ class Frame implements Serializable
      */
     public function getFunction()
     {
-        return isset($this->frame['function']) ? $this->frame['function'] : null;
+        return $this->frame['function'] ?? null;
     }
 
     /**
@@ -121,7 +115,7 @@ class Frame implements Serializable
 
             try {
                 $this->fileContentsCache = file_get_contents($filePath);
-            } catch (ErrorException $exception) {
+            } catch (ErrorException) {
                 // Internal file paths of PHP extensions cannot be opened
             }
         }
@@ -161,9 +155,7 @@ class Frame implements Serializable
         $comments = $this->comments;
 
         if ($filter !== null) {
-            $comments = array_filter($comments, function ($c) use ($filter) {
-                return $c['context'] == $filter;
-            });
+            $comments = array_filter($comments, fn($c) => $c['context'] == $filter);
         }
 
         return $comments;
@@ -281,7 +273,6 @@ class Frame implements Serializable
 
     /**
      * Compares Frame against one another
-     * @param  Frame $frame
      * @return bool
      */
     public function equals(Frame $frame)

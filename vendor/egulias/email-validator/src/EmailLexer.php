@@ -7,75 +7,46 @@ use Doctrine\Common\Lexer\AbstractLexer;
 class EmailLexer extends AbstractLexer
 {
     //ASCII values
-    const C_DEL              = 127;
-    const C_NUL              = 0;
-    const S_AT               = 64;
-    const S_BACKSLASH        = 92;
-    const S_DOT              = 46;
-    const S_DQUOTE           = 34;
-    const S_SQUOTE           = 39;
-    const S_BACKTICK         = 96;
-    const S_OPENPARENTHESIS  = 49;
-    const S_CLOSEPARENTHESIS = 261;
-    const S_OPENBRACKET      = 262;
-    const S_CLOSEBRACKET     = 263;
-    const S_HYPHEN           = 264;
-    const S_COLON            = 265;
-    const S_DOUBLECOLON      = 266;
-    const S_SP               = 267;
-    const S_HTAB             = 268;
-    const S_CR               = 269;
-    const S_LF               = 270;
-    const S_IPV6TAG          = 271;
-    const S_LOWERTHAN        = 272;
-    const S_GREATERTHAN      = 273;
-    const S_COMMA            = 274;
-    const S_SEMICOLON        = 275;
-    const S_OPENQBRACKET     = 276;
-    const S_CLOSEQBRACKET    = 277;
-    const S_SLASH            = 278;
-    const S_EMPTY            = null;
-    const GENERIC            = 300;
-    const CRLF               = 301;
-    const INVALID            = 302;
-    const ASCII_INVALID_FROM = 127;
-    const ASCII_INVALID_TO   = 199;
+    final public const C_DEL              = 127;
+    final public const C_NUL              = 0;
+    final public const S_AT               = 64;
+    final public const S_BACKSLASH        = 92;
+    final public const S_DOT              = 46;
+    final public const S_DQUOTE           = 34;
+    final public const S_SQUOTE           = 39;
+    final public const S_BACKTICK         = 96;
+    final public const S_OPENPARENTHESIS  = 49;
+    final public const S_CLOSEPARENTHESIS = 261;
+    final public const S_OPENBRACKET      = 262;
+    final public const S_CLOSEBRACKET     = 263;
+    final public const S_HYPHEN           = 264;
+    final public const S_COLON            = 265;
+    final public const S_DOUBLECOLON      = 266;
+    final public const S_SP               = 267;
+    final public const S_HTAB             = 268;
+    final public const S_CR               = 269;
+    final public const S_LF               = 270;
+    final public const S_IPV6TAG          = 271;
+    final public const S_LOWERTHAN        = 272;
+    final public const S_GREATERTHAN      = 273;
+    final public const S_COMMA            = 274;
+    final public const S_SEMICOLON        = 275;
+    final public const S_OPENQBRACKET     = 276;
+    final public const S_CLOSEQBRACKET    = 277;
+    final public const S_SLASH            = 278;
+    final public const S_EMPTY            = null;
+    final public const GENERIC            = 300;
+    final public const CRLF               = 301;
+    final public const INVALID            = 302;
+    final public const ASCII_INVALID_FROM = 127;
+    final public const ASCII_INVALID_TO   = 199;
 
     /**
      * US-ASCII visible characters not valid for atext (@link http://tools.ietf.org/html/rfc5322#section-3.2.3)
      *
      * @var array
      */
-    protected $charValue = array(
-        '('    => self::S_OPENPARENTHESIS,
-        ')'    => self::S_CLOSEPARENTHESIS,
-        '<'    => self::S_LOWERTHAN,
-        '>'    => self::S_GREATERTHAN,
-        '['    => self::S_OPENBRACKET,
-        ']'    => self::S_CLOSEBRACKET,
-        ':'    => self::S_COLON,
-        ';'    => self::S_SEMICOLON,
-        '@'    => self::S_AT,
-        '\\'   => self::S_BACKSLASH,
-        '/'    => self::S_SLASH,
-        ','    => self::S_COMMA,
-        '.'    => self::S_DOT,
-        "'"    => self::S_SQUOTE,
-        "`"    => self::S_BACKTICK,
-        '"'    => self::S_DQUOTE,
-        '-'    => self::S_HYPHEN,
-        '::'   => self::S_DOUBLECOLON,
-        ' '    => self::S_SP,
-        "\t"   => self::S_HTAB,
-        "\r"   => self::S_CR,
-        "\n"   => self::S_LF,
-        "\r\n" => self::CRLF,
-        'IPv6' => self::S_IPV6TAG,
-        '{'    => self::S_OPENQBRACKET,
-        '}'    => self::S_CLOSEQBRACKET,
-        ''     => self::S_EMPTY,
-        '\0'   => self::C_NUL,
-    );
+    protected $charValue = ['('    => self::S_OPENPARENTHESIS, ')'    => self::S_CLOSEPARENTHESIS, '<'    => self::S_LOWERTHAN, '>'    => self::S_GREATERTHAN, '['    => self::S_OPENBRACKET, ']'    => self::S_CLOSEBRACKET, ':'    => self::S_COLON, ';'    => self::S_SEMICOLON, '@'    => self::S_AT, '\\'   => self::S_BACKSLASH, '/'    => self::S_SLASH, ','    => self::S_COMMA, '.'    => self::S_DOT, "'"    => self::S_SQUOTE, "`"    => self::S_BACKTICK, '"'    => self::S_DQUOTE, '-'    => self::S_HYPHEN, '::'   => self::S_DOUBLECOLON, ' '    => self::S_SP, "\t"   => self::S_HTAB, "\r"   => self::S_CR, "\n"   => self::S_LF, "\r\n" => self::CRLF, 'IPv6' => self::S_IPV6TAG, '{'    => self::S_OPENQBRACKET, '}'    => self::S_CLOSEQBRACKET, ''     => self::S_EMPTY, '\0'   => self::C_NUL];
 
     /**
      * @var bool
@@ -103,12 +74,12 @@ class EmailLexer extends AbstractLexer
      *
      * @var array|null
      */
-    public $lookahead;
+    public $lookahead = null;
 
     /**
      * @psalm-var array{value:'', type:null, position:0}
      */
-    private static $nullToken = [
+    private static array $nullToken = [
         'value' => '',
         'type' => null,
         'position' => 0,
@@ -117,7 +88,6 @@ class EmailLexer extends AbstractLexer
     public function __construct()
     {
         $this->previous = $this->token = self::$nullToken;
-        $this->lookahead = null;
     }
 
     /**
@@ -187,15 +157,17 @@ class EmailLexer extends AbstractLexer
      */
     protected function getCatchablePatterns()
     {
-        return array(
-            '[a-zA-Z_]+[46]?', //ASCII and domain literal
-            '[^\x00-\x7F]',  //UTF-8
+        return [
+            '[a-zA-Z_]+[46]?',
+            //ASCII and domain literal
+            '[^\x00-\x7F]',
+            //UTF-8
             '[0-9]+',
             '\r\n',
             '::',
             '\s+?',
             '.',
-            );
+        ];
     }
 
     /**
@@ -205,7 +177,7 @@ class EmailLexer extends AbstractLexer
      */
     protected function getNonCatchablePatterns()
     {
-        return array('[\xA0-\xff]+');
+        return ['[\xA0-\xff]+'];
     }
 
     /**

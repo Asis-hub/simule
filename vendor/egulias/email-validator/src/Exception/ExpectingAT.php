@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class ExpectingAT extends InvalidEmail
 {
-    const CODE = 202;
-    const REASON = "Expecting AT '@' ";
+    final public const CODE = 202;
+    final public const REASON = "Expecting AT '@' ";
 }

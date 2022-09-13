@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class NoDomainPart extends InvalidEmail
 {
-    const CODE = 131;
-    const REASON = "No Domain part";
+    final public const CODE = 131;
+    final public const REASON = "No Domain part";
 }

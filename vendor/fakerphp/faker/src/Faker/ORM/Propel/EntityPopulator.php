@@ -9,16 +9,14 @@ use Faker\Provider\Base;
  */
 class EntityPopulator
 {
-    protected $class;
     protected $columnFormatters = [];
     protected $modifiers = [];
 
     /**
      * @param string $class A Propel ActiveRecord classname
      */
-    public function __construct($class)
+    public function __construct(protected $class)
     {
-        $this->class = $class;
     }
 
     /**
@@ -67,9 +65,7 @@ class EntityPopulator
 
             if ($columnMap->isForeignKey()) {
                 $relatedClass = $columnMap->getRelation()->getForeignTable()->getClassname();
-                $formatters[$columnMap->getPhpName()] = static function ($inserted) use ($relatedClass, $generator) {
-                    return isset($inserted[$relatedClass]) ? $generator->randomElement($inserted[$relatedClass]) : null;
-                };
+                $formatters[$columnMap->getPhpName()] = static fn($inserted) => isset($inserted[$relatedClass]) ? $generator->randomElement($inserted[$relatedClass]) : null;
 
                 continue;
             }

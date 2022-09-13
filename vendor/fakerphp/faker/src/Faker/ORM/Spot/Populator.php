@@ -9,18 +9,14 @@ use Spot\Locator;
  */
 class Populator
 {
-    protected $generator;
-    protected $locator;
     protected $entities = [];
     protected $quantities = [];
 
     /**
      * Populator constructor.
      */
-    public function __construct(\Faker\Generator $generator, Locator $locator = null)
+    public function __construct(protected \Faker\Generator $generator, protected Locator $locator = null)
     {
-        $this->generator = $generator;
-        $this->locator = $locator;
     }
 
     /**

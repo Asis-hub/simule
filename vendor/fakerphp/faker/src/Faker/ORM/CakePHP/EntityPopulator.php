@@ -6,14 +6,12 @@ use Cake\ORM\TableRegistry;
 
 class EntityPopulator
 {
-    protected $class;
     protected $connectionName;
     protected $columnFormatters = [];
     protected $modifiers = [];
 
-    public function __construct($class)
+    public function __construct(protected $class)
     {
-        $this->class = $class;
     }
 
     /**
@@ -102,9 +100,7 @@ class EntityPopulator
                 } else {
                     $foreignKeys = $table->find('all')
                     ->select(['id'])
-                    ->map(static function ($row) {
-                        return $row->id;
-                    })
+                    ->map(static fn($row) => $row->id)
                     ->toArray();
                 }
 

@@ -64,7 +64,7 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
      */
     public function e164landLineAreaCode()
     {
-        return substr(static::randomElement(static::$landLineareaCodes), 1);
+        return substr((string) static::randomElement(static::$landLineareaCodes), 1);
     }
 
     /**
@@ -80,7 +80,7 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
      */
     public function e164MobileNetworkAreaCode()
     {
-        return substr(static::randomElement(static::$mobileNetworkAreaCodes), 1);
+        return substr((string) static::randomElement(static::$mobileNetworkAreaCodes), 1);
     }
 
     /**

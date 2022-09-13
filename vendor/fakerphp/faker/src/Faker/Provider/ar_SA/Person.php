@@ -77,7 +77,7 @@ class Person extends \Faker\Provider\Person
 
     protected static $titleMale = ['السيد', 'الأستاذ', 'الدكتور', 'المهندس'];
     protected static $titleFemale = ['السيدة', 'الآنسة', 'الدكتورة', 'المهندسة'];
-    private static $prefix = ['أ.', 'د.', 'أ.د', 'م.'];
+    private static array $prefix = ['أ.', 'د.', 'أ.د', 'م.'];
 
     /**
      * @example 'أ.'

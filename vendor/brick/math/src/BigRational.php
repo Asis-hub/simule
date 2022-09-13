@@ -16,21 +16,17 @@ use Brick\Math\Exception\RoundingNecessaryException;
  *
  * @psalm-immutable
  */
-final class BigRational extends BigNumber
+final class BigRational extends BigNumber implements \Stringable
 {
     /**
      * The numerator.
-     *
-     * @var BigInteger
      */
-    private $numerator;
+    private BigInteger $numerator;
 
     /**
      * The denominator. Always strictly positive.
-     *
-     * @var BigInteger
      */
-    private $denominator;
+    private BigInteger $denominator;
 
     /**
      * Protected constructor. Use a factory method to obtain an instance.
@@ -83,15 +79,13 @@ final class BigRational extends BigNumber
      * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
      *
-     * @return BigRational
      *
      * @throws NumberFormatException      If an argument does not represent a valid number.
      * @throws RoundingNecessaryException If an argument represents a non-integer number.
      * @throws DivisionByZeroException    If the denominator is zero.
-     *
      * @psalm-pure
      */
-    public static function nd($numerator, $denominator) : BigRational
+    public static function nd(\Brick\Math\BigNumber|int|float|string $numerator, \Brick\Math\BigNumber|int|float|string $denominator) : BigRational
     {
         $numerator   = BigInteger::of($numerator);
         $denominator = BigInteger::of($denominator);
@@ -102,7 +96,6 @@ final class BigRational extends BigNumber
     /**
      * Returns a BigRational representing zero.
      *
-     * @return BigRational
      *
      * @psalm-pure
      */
@@ -124,7 +117,6 @@ final class BigRational extends BigNumber
     /**
      * Returns a BigRational representing one.
      *
-     * @return BigRational
      *
      * @psalm-pure
      */
@@ -146,7 +138,6 @@ final class BigRational extends BigNumber
     /**
      * Returns a BigRational representing ten.
      *
-     * @return BigRational
      *
      * @psalm-pure
      */
@@ -165,17 +156,11 @@ final class BigRational extends BigNumber
         return $ten;
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getNumerator() : BigInteger
     {
         return $this->numerator;
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getDenominator() : BigInteger
     {
         return $this->denominator;
@@ -183,8 +168,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the quotient of the division of the numerator by the denominator.
-     *
-     * @return BigInteger
      */
     public function quotient() : BigInteger
     {
@@ -193,8 +176,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the remainder of the division of the numerator by the denominator.
-     *
-     * @return BigInteger
      */
     public function remainder() : BigInteger
     {
@@ -220,7 +201,7 @@ final class BigRational extends BigNumber
      *
      * @throws MathException If the number is not valid.
      */
-    public function plus($that) : BigRational
+    public function plus(\Brick\Math\BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -240,7 +221,7 @@ final class BigRational extends BigNumber
      *
      * @throws MathException If the number is not valid.
      */
-    public function minus($that) : BigRational
+    public function minus(\Brick\Math\BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -260,7 +241,7 @@ final class BigRational extends BigNumber
      *
      * @throws MathException If the multiplier is not a valid number.
      */
-    public function multipliedBy($that) : BigRational
+    public function multipliedBy(\Brick\Math\BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -279,7 +260,7 @@ final class BigRational extends BigNumber
      *
      * @throws MathException If the divisor is not a valid number, or is zero.
      */
-    public function dividedBy($that) : BigRational
+    public function dividedBy(\Brick\Math\BigNumber|int|float|string $that) : BigRational
     {
         $that = BigRational::of($that);
 
@@ -322,7 +303,6 @@ final class BigRational extends BigNumber
      *
      * The reciprocal has the numerator and denominator swapped.
      *
-     * @return BigRational
      *
      * @throws DivisionByZeroException If the numerator is zero.
      */
@@ -333,8 +313,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the absolute value of this BigRational.
-     *
-     * @return BigRational
      */
     public function abs() : BigRational
     {
@@ -343,8 +321,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the negated value of this BigRational.
-     *
-     * @return BigRational
      */
     public function negated() : BigRational
     {
@@ -353,8 +329,6 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the simplified value of this BigRational.
-     *
-     * @return BigRational
      */
     public function simplified() : BigRational
     {
@@ -433,7 +407,8 @@ final class BigRational extends BigNumber
      */
     public function toFloat() : float
     {
-        return $this->numerator->toFloat() / $this->denominator->toFloat();
+        $simplified = $this->simplified();
+        return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
     }
 
     /**
@@ -489,8 +464,6 @@ final class BigRational extends BigNumber
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
      *
      * @internal
-     *
-     * @return string
      */
     public function serialize() : string
     {
@@ -505,7 +478,6 @@ final class BigRational extends BigNumber
      *
      * @param string $value
      *
-     * @return void
      *
      * @throws \LogicException
      */

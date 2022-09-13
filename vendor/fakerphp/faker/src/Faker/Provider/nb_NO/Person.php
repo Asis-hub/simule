@@ -45,7 +45,7 @@ class Person extends \Faker\Provider\Person
         'Birgit', 'Birgitta', 'Birgitte', 'Birte', 'Birthe', 'Bitten', 'Bjørg', 'Bjørghild', 'Blanca', 'Bodil',
         'Bolette', 'Bonnie', 'Borghild', 'Borgny', 'Bozena', 'Brigitte', 'Brit', 'Brita', 'Britt', 'Bryngjerd',
         'Brynhild', 'Bushra', 'Caisa', 'Camilla', 'Carina', 'Carita', 'Carla', 'Carlota', 'Carmen', 'Carol', 'Carola',
-        'Carolina', 'Caroline', 'Cassandra', 'Catalina', 'Catarina', 'Cate', 'Catherina', 'Cathinka', 'Cathrine',
+        'Carolina', 'Caroline', \Cassandra::class, 'Catalina', 'Catarina', 'Cate', 'Catherina', 'Cathinka', 'Cathrine',
         'Catrine', 'Cecilia', 'Cecilie', 'Celine', 'Chanette', 'Chantal', 'Charlotte', 'Chi', 'Chloe', 'Christel',
         'Christiane', 'Christin', 'Christina', 'Christine', 'Cicilie', 'Cilje', 'Cindy', 'Clara', 'Claudia', 'Connie',
         'Conny', 'Constance', 'Cora', 'Cordelia', 'Corina', 'Cornelia', 'Cornelie', 'Cristel', 'Cristina', 'Cynthia',
@@ -288,9 +288,7 @@ class Person extends \Faker\Provider\Person
      *
      * @see https://no.wikipedia.org/wiki/Personnummer
      *
-     * @param \DateTime $birthdate
      * @param string    $gender    Person::GENDER_MALE || Person::GENDER_FEMALE
-     *
      * @return string on format DDMMYY#####
      */
     public function personalIdentityNumber(\DateTime $birthdate = null, $gender = null)
@@ -307,20 +305,11 @@ class Person extends \Faker\Provider\Person
          */
         $randomDigits = (string) static::numerify('##');
 
-        switch ($gender) {
-            case static::GENDER_MALE:
-                $genderDigit = static::randomElement([1, 3, 5, 7, 9]);
-
-                break;
-
-            case static::GENDER_FEMALE:
-                $genderDigit = static::randomElement([0, 2, 4, 6, 8]);
-
-                break;
-
-            default:
-                $genderDigit = (string) static::numerify('#');
-        }
+        $genderDigit = match ($gender) {
+            static::GENDER_MALE => static::randomElement([1, 3, 5, 7, 9]),
+            static::GENDER_FEMALE => static::randomElement([0, 2, 4, 6, 8]),
+            default => (string) static::numerify('#'),
+        };
 
         $digits = $datePart . $randomDigits . $genderDigit;
 

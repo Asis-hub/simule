@@ -18,36 +18,24 @@ abstract class Handler implements HandlerInterface
      Return constants that can be returned from Handler::handle
      to message the handler walker.
      */
-    const DONE         = 0x10; // returning this is optional, only exists for
+    public const DONE         = 0x10; // returning this is optional, only exists for
                                // semantic purposes
     /**
      * The Handler has handled the Throwable in some way, and wishes to skip any other Handler.
      * Execution will continue.
      */
-    const LAST_HANDLER = 0x20;
+    public const LAST_HANDLER = 0x20;
     /**
      * The Handler has handled the Throwable in some way, and wishes to quit/stop execution
      */
-    const QUIT         = 0x30;
+    public const QUIT         = 0x30;
 
-    /**
-     * @var RunInterface
-     */
-    private $run;
+    private ?\Whoops\RunInterface $run = null;
 
-    /**
-     * @var Inspector $inspector
-     */
-    private $inspector;
+    private ?\Whoops\Exception\Inspector $inspector = null;
 
-    /**
-     * @var \Throwable $exception
-     */
-    private $exception;
+    private ?\Throwable $exception = null;
 
-    /**
-     * @param RunInterface $run
-     */
     public function setRun(RunInterface $run)
     {
         $this->run = $run;
@@ -61,9 +49,6 @@ abstract class Handler implements HandlerInterface
         return $this->run;
     }
 
-    /**
-     * @param Inspector $inspector
-     */
     public function setInspector(Inspector $inspector)
     {
         $this->inspector = $inspector;

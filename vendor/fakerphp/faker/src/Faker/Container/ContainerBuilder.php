@@ -22,7 +22,7 @@ final class ContainerBuilder
     /**
      * @var array<string, callable|object|string>
      */
-    private $definitions = [];
+    private array $definitions = [];
 
     /**
      * @param callable|object|string $value
@@ -42,7 +42,7 @@ final class ContainerBuilder
             if (is_string($value)) {
                 $name = $value;
             } elseif (is_object($value)) {
-                $name = get_class($value);
+                $name = $value::class;
             } else {
                 throw new \InvalidArgumentException(sprintf(
                     'Second argument to "%s::add()" is required not passing a string or object as first argument',

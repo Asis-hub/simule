@@ -12,23 +12,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HandleCors
 {
-    /** @var CorsService $cors */
-    protected $cors;
-
-    /** @var \Illuminate\Contracts\Container\Container $container */
-    protected $container;
-
-    public function __construct(CorsService $cors, Container $container)
+    public function __construct(protected CorsService $cors, protected Container $container)
     {
-        $this->cors = $cors;
-        $this->container = $container;
     }
 
     /**
      * Handle an incoming request. Based on Asm89\Stack\Cors by asm89
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return Response
      */
     public function handle($request, Closure $next)
@@ -60,10 +51,6 @@ class HandleCors
 
     /**
      * Add the headers to the Response, if they don't exist yet.
-     *
-     * @param Request $request
-     * @param Response $response
-     * @return Response
      */
     protected function addHeaders(Request $request, Response $response): Response
     {
@@ -78,7 +65,6 @@ class HandleCors
     /**
      * Add the headers to the Response, if they don't exist yet.
      *
-     * @param RequestHandled $event
      * @deprecated
      */
     public function onRequestHandled(RequestHandled $event)
@@ -91,9 +77,6 @@ class HandleCors
 
     /**
      * Determine if the request has a URI that should pass through the CORS flow.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
      */
     protected function shouldRun(Request $request): bool
     {
@@ -102,9 +85,6 @@ class HandleCors
 
     /**
      * The the path from the config, to see if the CORS Service should run
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return bool
      */
     protected function isMatchingPath(Request $request): bool
     {
@@ -113,7 +93,7 @@ class HandleCors
 
         foreach ($paths as $path) {
             if ($path !== '/') {
-                $path = trim($path, '/');
+                $path = trim((string) $path, '/');
             }
 
             if ($request->fullUrlIs($path) || $request->is($path)) {
@@ -127,7 +107,6 @@ class HandleCors
     /**
      * Paths by given host or string values in config by default
      *
-     * @param string $host
      * @return array
      */
     protected function getPathsByHost(string $host)
@@ -138,8 +117,6 @@ class HandleCors
             return $paths[$host];
         }
         // Defaults
-        return array_filter($paths, function ($path) {
-            return is_string($path);
-        });
+        return array_filter($paths, fn($path) => is_string($path));
     }
 }

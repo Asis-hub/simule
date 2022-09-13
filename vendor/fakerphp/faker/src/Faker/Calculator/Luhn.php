@@ -28,7 +28,7 @@ class Luhn
         }
 
         for ($i = $length - 2; $i >= 0; $i -= 2) {
-            $sum += array_sum(str_split($number[$i] * 2));
+            $sum += array_sum(str_split((string) ($number[$i] * 2)));
         }
 
         return $sum % 10;

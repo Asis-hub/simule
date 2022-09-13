@@ -10,32 +10,20 @@ use GuzzleHttp\Utils;
 class FileCookieJar extends CookieJar
 {
     /**
-     * @var string filename
-     */
-    private $filename;
-
-    /**
-     * @var bool Control whether to persist session cookies or not.
-     */
-    private $storeSessionCookies;
-
-    /**
      * Create a new FileCookieJar object
      *
-     * @param string $cookieFile          File to store the cookie data
+     * @param string $filename File to store the cookie data
      * @param bool   $storeSessionCookies Set to true to store session cookies
      *                                    in the cookie jar.
      *
      * @throws \RuntimeException if the file cannot be found or created
      */
-    public function __construct(string $cookieFile, bool $storeSessionCookies = false)
+    public function __construct(private readonly string $filename, private readonly bool $storeSessionCookies = false)
     {
         parent::__construct();
-        $this->filename = $cookieFile;
-        $this->storeSessionCookies = $storeSessionCookies;
 
-        if (\file_exists($cookieFile)) {
-            $this->load($cookieFile);
+        if (\file_exists($filename)) {
+            $this->load($filename);
         }
     }
 

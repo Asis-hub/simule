@@ -158,7 +158,7 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
     public static function areaCode()
     {
         return static::numerify(
-            str_pad(static::randomElement(static::$areaCodes), 4, '#')
+            str_pad((string) static::randomElement(static::$areaCodes), 4, '#')
         );
     }
 

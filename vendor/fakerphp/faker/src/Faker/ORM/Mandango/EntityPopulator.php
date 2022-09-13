@@ -10,15 +10,13 @@ use Mandango\Mandango;
  */
 class EntityPopulator
 {
-    protected $class;
     protected $columnFormatters = [];
 
     /**
      * @param string $class A Mandango ActiveRecord classname
      */
-    public function __construct($class)
+    public function __construct(protected $class)
     {
-        $this->class = $class;
     }
 
     /**
@@ -111,7 +109,7 @@ class EntityPopulator
                 }
 
                 if (isset($metadata['referencesMany'][$column])) {
-                    $adder = 'add' . ucfirst($column);
+                    $adder = 'add' . ucfirst((string) $column);
                     $obj->$adder($value);
                 }
             }

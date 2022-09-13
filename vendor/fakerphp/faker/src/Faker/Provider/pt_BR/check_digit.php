@@ -13,7 +13,7 @@ namespace Faker\Provider\pt_BR;
  *
  * @return int
  */
-function check_digit($numbers)
+function check_digit(int|string $numbers)
 {
     $numbers = (string) $numbers;
     $length = strlen($numbers);

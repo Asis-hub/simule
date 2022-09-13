@@ -6,14 +6,8 @@ use Psr\Http\Message\MessageInterface;
 
 final class BodySummarizer implements BodySummarizerInterface
 {
-    /**
-     * @var int|null
-     */
-    private $truncateAt;
-
-    public function __construct(int $truncateAt = null)
+    public function __construct(private readonly ?int $truncateAt = null)
     {
-        $this->truncateAt = $truncateAt;
     }
 
     /**

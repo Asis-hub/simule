@@ -10,7 +10,7 @@ class Isbn
     /**
      * @var string ISBN-10 validation pattern
      */
-    public const PATTERN = '/^\d{9}[0-9X]$/';
+    final public const PATTERN = '/^\d{9}[0-9X]$/';
 
     /**
      * ISBN-10 check digit

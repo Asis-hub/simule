@@ -8,16 +8,6 @@ namespace GuzzleHttp\Cookie;
 class SessionCookieJar extends CookieJar
 {
     /**
-     * @var string session key
-     */
-    private $sessionKey;
-
-    /**
-     * @var bool Control whether to persist session cookies or not.
-     */
-    private $storeSessionCookies;
-
-    /**
      * Create a new SessionCookieJar object
      *
      * @param string $sessionKey          Session key name to store the cookie
@@ -25,11 +15,9 @@ class SessionCookieJar extends CookieJar
      * @param bool   $storeSessionCookies Set to true to store session cookies
      *                                    in the cookie jar.
      */
-    public function __construct(string $sessionKey, bool $storeSessionCookies = false)
+    public function __construct(private string $sessionKey, private readonly bool $storeSessionCookies = false)
     {
         parent::__construct();
-        $this->sessionKey = $sessionKey;
-        $this->storeSessionCookies = $storeSessionCookies;
         $this->load();
     }
 
@@ -54,7 +42,7 @@ class SessionCookieJar extends CookieJar
             }
         }
 
-        $_SESSION[$this->sessionKey] = \json_encode($json);
+        $_SESSION[$this->sessionKey] = \json_encode($json, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -65,12 +53,12 @@ class SessionCookieJar extends CookieJar
         if (!isset($_SESSION[$this->sessionKey])) {
             return;
         }
-        $data = \json_decode($_SESSION[$this->sessionKey], true);
+        $data = \json_decode((string) $_SESSION[$this->sessionKey], true, 512, JSON_THROW_ON_ERROR);
         if (\is_array($data)) {
             foreach ($data as $cookie) {
                 $this->setCookie(new SetCookie($cookie));
             }
-        } elseif (\strlen($data)) {
+        } elseif (\strlen((string) $data)) {
             throw new \RuntimeException("Invalid cookie data");
         }
     }

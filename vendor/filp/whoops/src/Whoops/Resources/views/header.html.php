@@ -1,7 +1,7 @@
 <div class="exception">
   <div class="exc-title">
     <?php foreach ($name as $i => $nameSection): ?>
-      <?php if ($i == count($name) - 1): ?>
+      <?php if ($i == (is_countable($name) ? count($name) : 0) - 1): ?>
         <span class="exc-title-primary"><?php echo $tpl->escape($nameSection) ?></span>
       <?php else: ?>
         <?php echo $tpl->escape($nameSection) . ' \\' ?>
@@ -17,7 +17,7 @@
       <span><?php echo $tpl->escape($message) ?></span>
 
 
-      <?php if (count($previousMessages)): ?>
+      <?php if (is_countable($previousMessages) ? count($previousMessages) : 0): ?>
         <div class="exc-title prev-exc-title">
           <span class="exc-title-secondary">Previous exceptions</span>
         </div>

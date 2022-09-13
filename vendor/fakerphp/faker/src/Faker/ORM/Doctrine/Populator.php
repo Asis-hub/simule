@@ -14,21 +14,6 @@ require_once 'backward-compatibility.php';
 class Populator
 {
     /**
-     * @var int
-     */
-    protected $batchSize;
-
-    /**
-     * @var Generator
-     */
-    protected $generator;
-
-    /**
-     * @var ObjectManager|null
-     */
-    protected $manager;
-
-    /**
      * @var array
      */
     protected $entities = [];
@@ -48,11 +33,8 @@ class Populator
      *
      * @param int $batchSize
      */
-    public function __construct(Generator $generator, ObjectManager $manager = null, $batchSize = 1000)
+    public function __construct(protected Generator $generator, protected ?\Doctrine\Common\Persistence\ObjectManager $manager = null, protected $batchSize = 1000)
     {
-        $this->generator = $generator;
-        $this->manager = $manager;
-        $this->batchSize = $batchSize;
     }
 
     /**
@@ -61,7 +43,7 @@ class Populator
      * @param mixed $entity A Doctrine classname, or a \Faker\ORM\Doctrine\EntityPopulator instance
      * @param int   $number The number of entities to populate
      */
-    public function addEntity($entity, $number, $customColumnFormatters = [], $customModifiers = [], $generateId = false)
+    public function addEntity(mixed $entity, $number, $customColumnFormatters = [], $customModifiers = [], $generateId = false)
     {
         if (!$entity instanceof \Faker\ORM\Doctrine\EntityPopulator) {
             if (null === $this->manager) {

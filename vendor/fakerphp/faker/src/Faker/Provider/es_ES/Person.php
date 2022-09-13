@@ -4,7 +4,7 @@ namespace Faker\Provider\es_ES;
 
 class Person extends \Faker\Provider\Person
 {
-    private static $crcMap = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E', 'T'];
+    private static array $crcMap = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E', 'T'];
 
     protected static $maleNameFormats = [
         '{{firstNameMale}} {{lastName}}',
@@ -110,7 +110,7 @@ class Person extends \Faker\Provider\Person
 
     protected static $titleFemale = ['Sra.', 'Srta.', 'Dña', 'Dr.', 'Lic.', 'Ing.'];
 
-    private static $suffix = ['Hijo', 'Segundo', 'Tercero'];
+    private static array $suffix = ['Hijo', 'Segundo', 'Tercero'];
 
     protected static $licenceCodes = ['AM', 'A1', 'A2', 'A', 'B', 'B+E', 'C1', 'C1+E', 'C', 'C+E', 'D1', 'D1+E', 'D', 'D+E'];
 

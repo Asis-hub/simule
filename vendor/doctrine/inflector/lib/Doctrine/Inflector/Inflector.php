@@ -214,16 +214,8 @@ class Inflector
         '£' => '',
     ];
 
-    /** @var WordInflector */
-    private $singularizer;
-
-    /** @var WordInflector */
-    private $pluralizer;
-
-    public function __construct(WordInflector $singularizer, WordInflector $pluralizer)
+    public function __construct(private readonly WordInflector $singularizer, private readonly WordInflector $pluralizer)
     {
-        $this->singularizer = $singularizer;
-        $this->pluralizer   = $pluralizer;
     }
 
     /**

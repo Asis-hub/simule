@@ -13,12 +13,7 @@ use Faker\Extension\Extension;
  */
 final class Container implements ContainerInterface
 {
-    /**
-     * @var array<string, callable|object|string>
-     */
-    private $definitions;
-
-    private $services = [];
+    private array $services = [];
 
     /**
      * Create a container object with a set of definitions. The array value MUST
@@ -26,9 +21,8 @@ final class Container implements ContainerInterface
      *
      * @param array<string, callable|object|string> $definitions
      */
-    public function __construct(array $definitions)
+    public function __construct(private readonly array $definitions)
     {
-        $this->definitions = $definitions;
     }
 
     /**

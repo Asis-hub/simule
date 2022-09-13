@@ -304,7 +304,7 @@ class Person extends \Faker\Provider\Person
      */
     public function driverLicence()
     {
-        return $this->bothify('########');
+        return static::bothify('########');
     }
 
     /**
@@ -316,7 +316,7 @@ class Person extends \Faker\Provider\Person
      */
     public function passportNumber()
     {
-        return $this->bothify('########');
+        return static::bothify('########');
     }
 
     /**
@@ -326,9 +326,7 @@ class Person extends \Faker\Provider\Person
      * @see https://lt.wikipedia.org/wiki/Asmens_kodas
      *
      * @param string    $gender       [male|female]
-     * @param \DateTime $birthdate
      * @param string    $randomNumber three integers
-     *
      * @return string on format XXXXXXXXXXX
      */
     public function personalIdentityNumber($gender = 'male', \DateTime $birthdate = null, $randomNumber = '')

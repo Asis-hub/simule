@@ -17,17 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Cors implements HttpKernelInterface
 {
-    /**
-     * @var \Symfony\Component\HttpKernel\HttpKernelInterface
-     */
-    private $app;
+    private readonly \Asm89\Stack\CorsService $cors;
 
-    /**
-     * @var \Asm89\Stack\CorsService
-     */
-    private $cors;
-
-    private $defaultOptions = [
+    private array $defaultOptions = [
         'allowedHeaders'         => [],
         'allowedMethods'         => [],
         'allowedOrigins'         => [],
@@ -37,9 +29,8 @@ class Cors implements HttpKernelInterface
         'supportsCredentials'    => false,
     ];
 
-    public function __construct(HttpKernelInterface $app, array $options = [])
+    public function __construct(private readonly HttpKernelInterface $app, array $options = [])
     {
-        $this->app  = $app;
         $this->cors = new CorsService(array_merge($this->defaultOptions, $options));
     }
 

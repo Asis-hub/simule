@@ -30,7 +30,7 @@ class Address extends \Faker\Provider\Address
     /**
      * @see http://www.mapadeportugal.net/indicecidades.asp *
      */
-    private static $cities = [
+    private static array $cities = [
         'Abrantes', 'Agualva-Cacém', 'Águeda', 'Albufeira', 'Alcácer do Sal', 'Alcobaça', 'Almada', 'Almeirim', 'Alverca do Ribatejo', 'Amadora', 'Amarante', 'Amora', 'Anadia', 'Angra do Heroísmo', 'Aveiro', 'Barcelos', 'Barreiro',
         'Beja', 'Braga', 'Bragança', 'Caldas da Rainha', 'Camara de Lobos', 'Cantanhede', 'Cartaxo', 'Castelo Branco', 'Chaves', 'Coimbra', 'Covilhã', 'Elvas', 'Entroncamento', 'Ermesinde', 'Esmoriz', 'Espinho', 'Esposende', 'Estarreja',
         'Estremoz', 'Évora', 'Fafe', 'Faro', 'Fátima', 'Felgueiras', 'Fiães', 'Figueira da Foz', 'Freamunde', 'Funchal', 'Fundão', 'Gafanha da Nazaré', 'Gondomar', 'Gouveia', 'Guarda', 'Guimarães', 'Horta', 'Ílhavo', 'Lagoa', 'Lagos', 'Lamego',

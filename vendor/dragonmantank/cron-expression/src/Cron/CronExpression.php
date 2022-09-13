@@ -26,18 +26,18 @@ use Webmozart\Assert\Assert;
  *
  * @see http://en.wikipedia.org/wiki/Cron
  */
-class CronExpression
+class CronExpression implements \Stringable
 {
-    public const MINUTE = 0;
-    public const HOUR = 1;
-    public const DAY = 2;
-    public const MONTH = 3;
-    public const WEEKDAY = 4;
+    final public const MINUTE = 0;
+    final public const HOUR = 1;
+    final public const DAY = 2;
+    final public const MONTH = 3;
+    final public const WEEKDAY = 4;
 
     /** @deprecated */
-    public const YEAR = 5;
+    final public const YEAR = 5;
 
-    public const MAPPINGS = [
+    final public const MAPPINGS = [
         '@yearly' => '0 0 1 1 *',
         '@annually' => '0 0 1 1 *',
         '@monthly' => '0 0 1 * *',
@@ -77,7 +77,7 @@ class CronExpression
     /**
      * @var array<string, string>
      */
-    private static $registeredAliases = self::MAPPINGS;
+    private static array $registeredAliases = self::MAPPINGS;
 
     /**
      * Registered a user defined CRON Expression Alias.
@@ -165,7 +165,7 @@ class CronExpression
     {
         try {
             new CronExpression($expression);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             return false;
         }
 
@@ -193,8 +193,6 @@ class CronExpression
      * @param string $value CRON expression (e.g. 8 * * * *)
      *
      * @throws \InvalidArgumentException if not a valid CRON expression
-     *
-     * @return CronExpression
      */
     public function setExpression(string $value): CronExpression
     {
@@ -202,7 +200,7 @@ class CronExpression
         Assert::isArray($split);
 
         $this->cronParts = $split;
-        if (\count($this->cronParts) < 5) {
+        if ((is_countable($this->cronParts) ? \count($this->cronParts) : 0) < 5) {
             throw new InvalidArgumentException(
                 $value . ' is not a valid CRON expression'
             );
@@ -222,8 +220,6 @@ class CronExpression
      * @param string $value The value to set
      *
      * @throws \InvalidArgumentException if the value is not valid for the part
-     *
-     * @return CronExpression
      */
     public function setPart(int $position, string $value): CronExpression
     {
@@ -242,8 +238,6 @@ class CronExpression
      * Set max iteration count for searching next run dates.
      *
      * @param int $maxIterationCount Max iteration count when searching for next run date
-     *
-     * @return CronExpression
      */
     public function setMaxIterationCount(int $maxIterationCount): CronExpression
     {
@@ -269,10 +263,8 @@ class CronExpression
      *
      * @throws \RuntimeException on too many iterations
      * @throws \Exception
-     *
-     * @return \DateTime
      */
-    public function getNextRunDate($currentTime = 'now', int $nth = 0, bool $allowCurrentDate = false, $timeZone = null): DateTime
+    public function getNextRunDate(string|\DateTimeInterface $currentTime = 'now', int $nth = 0, bool $allowCurrentDate = false, $timeZone = null): DateTime
     {
         return $this->getRunDate($currentTime, $nth, false, $allowCurrentDate, $timeZone);
     }
@@ -289,11 +281,10 @@ class CronExpression
      * @throws \RuntimeException on too many iterations
      * @throws \Exception
      *
-     * @return \DateTime
      *
      * @see \Cron\CronExpression::getNextRunDate
      */
-    public function getPreviousRunDate($currentTime = 'now', int $nth = 0, bool $allowCurrentDate = false, $timeZone = null): DateTime
+    public function getPreviousRunDate(string|\DateTimeInterface $currentTime = 'now', int $nth = 0, bool $allowCurrentDate = false, $timeZone = null): DateTime
     {
         return $this->getRunDate($currentTime, $nth, true, $allowCurrentDate, $timeZone);
     }
@@ -331,7 +322,7 @@ class CronExpression
         for ($i = 0; $i < $total; ++$i) {
             try {
                 $result = $this->getRunDate($currentTime, 0, $invert, $allowCurrentDate, $timeZone);
-            } catch (RuntimeException $e) {
+            } catch (RuntimeException) {
                 break;
             }
 
@@ -396,7 +387,7 @@ class CronExpression
      *
      * @return bool Returns TRUE if the cron is due to run or FALSE if not
      */
-    public function isDue($currentTime = 'now', $timeZone = null): bool
+    public function isDue(string|\DateTimeInterface $currentTime = 'now', $timeZone = null): bool
     {
         $timeZone = $this->determineTimeZone($currentTime, $timeZone);
 
@@ -418,7 +409,7 @@ class CronExpression
 
         try {
             return $this->getNextRunDate($currentTime, 0, true)->getTimestamp() === $currentTime->getTimestamp();
-        } catch (Exception $e) {
+        } catch (Exception) {
             return false;
         }
     }
@@ -435,8 +426,6 @@ class CronExpression
      *
      * @throws \RuntimeException on too many iterations
      * @throws Exception
-     *
-     * @return \DateTime
      */
     protected function getRunDate($currentTime = null, int $nth = 0, bool $invert = false, bool $allowCurrentDate = false, $timeZone = null): DateTime
     {
@@ -494,9 +483,7 @@ class CronExpression
             }
 
             $combined = array_merge($domRunDates, $dowRunDates);
-            usort($combined, function ($a, $b) {
-                return $a->format('Y-m-d H:i:s') <=> $b->format('Y-m-d H:i:s');
-            });
+            usort($combined, fn($a, $b) => $a->format('Y-m-d H:i:s') <=> $b->format('Y-m-d H:i:s'));
             if ($invert) {
                 $combined = array_reverse($combined);
             }
@@ -511,7 +498,7 @@ class CronExpression
                 // Get the field object used to validate this part
                 $field = $fields[$position];
                 // Check if this is singular or a list
-                if (false === strpos($part, ',')) {
+                if (!str_contains($part, ',')) {
                     $satisfied = $field->isSatisfiedBy($nextRun, $part, $invert);
                 } else {
                     foreach (array_map('trim', explode(',', $part)) as $listPart) {
@@ -550,8 +537,6 @@ class CronExpression
      *
      * @param string|\DateTimeInterface|null $currentTime Relative calculation date
      * @param string|null $timeZone TimeZone to use instead of the system default
-     *
-     * @return string
      */
     protected function determineTimeZone($currentTime, ?string $timeZone): string
     {

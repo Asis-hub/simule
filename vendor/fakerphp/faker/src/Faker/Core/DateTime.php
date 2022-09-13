@@ -19,21 +19,16 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
     /**
      * @var string[]
      */
-    private $centuries = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
+    private array $centuries = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
 
-    /**
-     * @var string
-     */
-    private $defaultTimezone = null;
+    private ?string $defaultTimezone = null;
 
     /**
      * Get the POSIX-timestamp of a DateTime, int or string.
      *
-     * @param \DateTime|float|int|string $until
      *
-     * @return false|int
      */
-    protected function getTimestamp($until = 'now')
+    protected function getTimestamp(\Faker\Core\DateTime|float|int|string $until = 'now'): false|int
     {
         if (is_numeric($until)) {
             return (int) $until;
@@ -72,7 +67,7 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
             return $timezone;
         }
 
-        return null === $this->defaultTimezone ? date_default_timezone_get() : $this->defaultTimezone;
+        return $this->defaultTimezone ?? date_default_timezone_get();
     }
 
     /**
@@ -95,7 +90,7 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
 
     public function dateTimeAD($until = 'now', string $timezone = null): \DateTime
     {
-        $min = (PHP_INT_SIZE > 4) ? -62135597361 : -PHP_INT_MAX;
+        $min = (PHP_INT_SIZE > 4) ? -62_135_597_361 : -PHP_INT_MAX;
 
         return $this->setTimezone(
             $this->getTimestampDateTime($this->generator->numberBetween($min, $this->getTimestamp($until))),

@@ -53,8 +53,6 @@ abstract class AbstractField implements FieldInterface
      * @internal
      * @param int $dateValue Date value to check
      * @param string $value Value to test
-     *
-     * @return bool
      */
     public function isSatisfied(int $dateValue, string $value): bool
     {
@@ -74,12 +72,10 @@ abstract class AbstractField implements FieldInterface
      *
      * @internal
      * @param string $value Value to test
-     *
-     * @return bool
      */
     public function isRange(string $value): bool
     {
-        return false !== strpos($value, '-');
+        return str_contains($value, '-');
     }
 
     /**
@@ -87,12 +83,10 @@ abstract class AbstractField implements FieldInterface
      *
      * @internal
      * @param string $value Value to test
-     *
-     * @return bool
      */
     public function isIncrementsOfRanges(string $value): bool
     {
-        return false !== strpos($value, '/');
+        return str_contains($value, '/');
     }
 
     /**
@@ -101,8 +95,6 @@ abstract class AbstractField implements FieldInterface
      * @internal
      * @param int $dateValue Set date value
      * @param string $value Value to test
-     *
-     * @return bool
      */
     public function isInRange(int $dateValue, $value): bool
     {
@@ -124,11 +116,10 @@ abstract class AbstractField implements FieldInterface
      * @internal
      * @param int $dateValue Set date value
      * @param string $value Value to test
-     *
-     * @return bool
      */
     public function isInIncrementsOfRanges(int $dateValue, string $value): bool
     {
+        $thisRange = [];
         $chunks = array_map('trim', explode('/', $value, 2));
         $range = $chunks[0];
         $step = $chunks[1] ?? 0;
@@ -184,15 +175,13 @@ abstract class AbstractField implements FieldInterface
      *
      * @param string $expression The expression to evaluate
      * @param int $max Maximum offset for range
-     *
-     * @return array
      */
     public function getRangeForExpression(string $expression, int $max): array
     {
         $values = [];
         $expression = $this->convertLiterals($expression);
 
-        if (false !== strpos($expression, ',')) {
+        if (str_contains($expression, ',')) {
             $ranges = explode(',', $expression);
             $values = [];
             foreach ($ranges as $range) {
@@ -236,9 +225,7 @@ abstract class AbstractField implements FieldInterface
     /**
      * Convert literal.
      *
-     * @param string $value
      *
-     * @return string
      */
     protected function convertLiterals(string $value): string
     {
@@ -255,9 +242,7 @@ abstract class AbstractField implements FieldInterface
     /**
      * Checks to see if a value is valid for the field.
      *
-     * @param string $value
      *
-     * @return bool
      */
     public function validate(string $value): bool
     {
@@ -269,7 +254,7 @@ abstract class AbstractField implements FieldInterface
         }
 
         // Validate each chunk of a list individually
-        if (false !== strpos($value, ',')) {
+        if (str_contains($value, ',')) {
             foreach (explode(',', $value) as $listItem) {
                 if (!$this->validate($listItem)) {
                     return false;
@@ -279,7 +264,7 @@ abstract class AbstractField implements FieldInterface
             return true;
         }
 
-        if (false !== strpos($value, '/')) {
+        if (str_contains($value, '/')) {
             [$range, $step] = explode('/', $value);
 
             // Don't allow numeric ranges
@@ -290,7 +275,7 @@ abstract class AbstractField implements FieldInterface
             return $this->validate($range) && filter_var($step, FILTER_VALIDATE_INT);
         }
 
-        if (false !== strpos($value, '-')) {
+        if (str_contains($value, '-')) {
             if (substr_count($value, '-') > 1) {
                 return false;
             }
@@ -310,7 +295,7 @@ abstract class AbstractField implements FieldInterface
             return false;
         }
 
-        if (false !== strpos($value, '.')) {
+        if (str_contains($value, '.')) {
             return false;
         }
 

@@ -100,8 +100,8 @@ class Person extends \Faker\Provider\Person
         'Yadav',
     ];
 
-    private static $middleNameMale = ['Bahadur', 'Dev', 'Kumar', 'Man', 'Mani', 'Nath', 'Prasad', 'Raj', 'Ratna'];
-    private static $middleNameFemale = ['Devi', 'Kumari'];
+    private static array $middleNameMale = ['Bahadur', 'Dev', 'Kumar', 'Man', 'Mani', 'Nath', 'Prasad', 'Raj', 'Ratna'];
+    private static array $middleNameFemale = ['Devi', 'Kumari'];
 
     /**
      * @example 'Bahadur'

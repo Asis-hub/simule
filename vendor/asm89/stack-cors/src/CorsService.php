@@ -160,7 +160,7 @@ class CorsService
             return false;
         }
 
-        return count($this->options['allowedOrigins']) === 1;
+        return (is_countable($this->options['allowedOrigins']) ? count($this->options['allowedOrigins']) : 0) === 1;
     }
 
     private function configureAllowedMethods(Response $response, Request $request)

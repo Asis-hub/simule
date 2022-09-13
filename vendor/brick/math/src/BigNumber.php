@@ -14,7 +14,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
  *
  * @psalm-immutable
  */
-abstract class BigNumber implements \Serializable, \JsonSerializable
+abstract class BigNumber implements \Serializable, \JsonSerializable, \Stringable
 {
     /**
      * The regular expression used to parse integer, decimal and rational numbers.
@@ -70,7 +70,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         /** @psalm-suppress RedundantCastGivenDocblockType We cannot trust the untyped $value here! */
         $value = \is_float($value) ? self::floatToString($value) : (string) $value;
 
-        $throw = static function() use ($value) : void {
+        $throw = static function() use ($value) : never {
             throw new NumberFormatException(\sprintf(
                 'The given value "%s" does not represent a valid number.',
                 $value
@@ -81,9 +81,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
             $throw();
         }
 
-        $getMatch = static function(string $value) use ($matches) : ?string {
-            return isset($matches[$value]) && $matches[$value] !== '' ? $matches[$value] : null;
-        };
+        $getMatch = static fn(string $value): ?string => (($matches[$value] ?? '') !== '') ? $matches[$value] : null;
 
         $sign        = $getMatch('sign');
         $numerator   = $getMatch('numerator');
@@ -124,7 +122,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
         }
 
         if ($point !== null || $exponent !== null) {
-            $fractional = ($fractional ?? '');
+            $fractional ??= '';
             $exponent = ($exponent !== null) ? (int) $exponent : 0;
 
             if ($exponent === PHP_INT_MIN || $exponent === PHP_INT_MAX) {
@@ -155,7 +153,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @see https://github.com/brick/math/pull/20
      *
-     * @param float $float
      *
      * @return string
      *
@@ -187,7 +184,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      * @psalm-suppress TooManyArguments
      * @psalm-suppress UnsafeInstantiation
      */
-    protected static function create(... $args) : BigNumber
+    protected static function create(mixed ... $args) : BigNumber
     {
         return new static(... $args);
     }
@@ -301,8 +298,6 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *       depending on their ability to perform the operation. This will also require a version bump because we're
      *       potentially breaking custom BigNumber implementations (if any...)
      *
-     * @param BigNumber $a
-     * @param BigNumber $b
      *
      * @return BigNumber
      *

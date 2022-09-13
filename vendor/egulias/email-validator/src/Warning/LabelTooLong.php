@@ -4,7 +4,7 @@ namespace Egulias\EmailValidator\Warning;
 
 class LabelTooLong extends Warning
 {
-    const CODE = 63;
+    final public const CODE = 63;
 
     public function __construct()
     {

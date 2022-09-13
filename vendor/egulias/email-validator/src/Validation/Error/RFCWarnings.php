@@ -6,6 +6,6 @@ use Egulias\EmailValidator\Exception\InvalidEmail;
 
 class RFCWarnings extends InvalidEmail
 {
-    const CODE = 997;
-    const REASON = 'Warnings were found.';
+    final public const CODE = 997;
+    final public const REASON = 'Warnings were found.';
 }

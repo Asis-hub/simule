@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class ConsecutiveAt extends InvalidEmail
 {
-    const CODE = 128;
-    const REASON = "Consecutive AT";
+    final public const CODE = 128;
+    final public const REASON = "Consecutive AT";
 }

@@ -521,7 +521,7 @@ class LicensePlate extends Base
 
         $countyCode = static::randomElement($countySelected);
 
-        $suffix = static::regexify(static::randomElement(strlen($countyCode) === 1 ? static::$plateSuffixesGroup1 : static::$plateSuffixesGroup2));
+        $suffix = static::regexify(static::randomElement(strlen((string) $countyCode) === 1 ? static::$plateSuffixesGroup1 : static::$plateSuffixesGroup2));
 
         return "{$voivodeshipCode}{$countyCode} {$suffix}";
     }

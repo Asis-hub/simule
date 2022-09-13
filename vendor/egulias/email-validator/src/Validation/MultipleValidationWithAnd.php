@@ -11,46 +11,34 @@ class MultipleValidationWithAnd implements EmailValidation
      * If one of validations gets failure skips all succeeding validation.
      * This means MultipleErrors will only contain a single error which first found.
      */
-    const STOP_ON_ERROR = 0;
+    final public const STOP_ON_ERROR = 0;
 
     /**
      * All of validations will be invoked even if one of them got failure.
      * So MultipleErrors will contain all causes.
      */
-    const ALLOW_ALL_ERRORS = 1;
+    final public const ALLOW_ALL_ERRORS = 1;
 
     /**
      * @var EmailValidation[]
      */
-    private $validations = [];
+    private array $validations = [];
 
-    /**
-     * @var array
-     */
-    private $warnings = [];
+    private array $warnings = [];
 
-    /**
-     * @var MultipleErrors|null
-     */
-    private $error;
-
-    /**
-     * @var int
-     */
-    private $mode;
+    private ?\Egulias\EmailValidator\Validation\MultipleErrors $error = null;
 
     /**
      * @param EmailValidation[] $validations The validations.
      * @param int               $mode        The validation mode (one of the constants).
      */
-    public function __construct(array $validations, $mode = self::ALLOW_ALL_ERRORS)
+    public function __construct(array $validations, private $mode = self::ALLOW_ALL_ERRORS)
     {
         if (count($validations) == 0) {
             throw new EmptyValidationList();
         }
 
         $this->validations = $validations;
-        $this->mode = $mode;
     }
 
     /**

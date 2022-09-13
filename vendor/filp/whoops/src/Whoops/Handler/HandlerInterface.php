@@ -17,7 +17,6 @@ interface HandlerInterface
     public function handle();
 
     /**
-     * @param  RunInterface  $run
      * @return void
      */
     public function setRun(RunInterface $run);
@@ -29,7 +28,6 @@ interface HandlerInterface
     public function setException($exception);
 
     /**
-     * @param  Inspector $inspector
      * @return void
      */
     public function setInspector(Inspector $inspector);

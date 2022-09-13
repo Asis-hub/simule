@@ -207,7 +207,7 @@ class Payment extends Base
      */
     public function creditCardExpirationDateString($valid = true, $expirationDateFormat = null)
     {
-        return $this->creditCardExpirationDate($valid)->format(null === $expirationDateFormat ? static::$expirationDateFormat : $expirationDateFormat);
+        return $this->creditCardExpirationDate($valid)->format($expirationDateFormat ?? static::$expirationDateFormat);
     }
 
     /**
@@ -265,7 +265,7 @@ class Payment extends Base
 
         foreach ($format as $item) {
             [$class, $length] = $item;
-            $expandedFormat .= str_repeat($class, $length);
+            $expandedFormat .= str_repeat((string) $class, $length);
         }
 
         $result = $prefix;

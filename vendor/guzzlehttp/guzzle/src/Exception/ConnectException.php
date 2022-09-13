@@ -12,25 +12,13 @@ use Psr\Http\Message\RequestInterface;
  */
 class ConnectException extends TransferException implements NetworkExceptionInterface
 {
-    /**
-     * @var RequestInterface
-     */
-    private $request;
-
-    /**
-     * @var array
-     */
-    private $handlerContext;
-
     public function __construct(
         string $message,
-        RequestInterface $request,
+        private readonly RequestInterface $request,
         \Throwable $previous = null,
-        array $handlerContext = []
+        private readonly array $handlerContext = []
     ) {
         parent::__construct($message, 0, $previous);
-        $this->request = $request;
-        $this->handlerContext = $handlerContext;
     }
 
     /**

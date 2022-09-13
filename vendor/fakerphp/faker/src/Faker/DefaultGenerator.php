@@ -12,13 +12,9 @@ namespace Faker;
  */
 class DefaultGenerator
 {
-    protected $default;
-
-    public function __construct($default = null)
+    public function __construct(protected $default = null)
     {
-        trigger_deprecation('fakerphp/faker', '1.16', 'Class "%s" is deprecated, use "%s" instead.', __CLASS__, ChanceGenerator::class);
-
-        $this->default = $default;
+        trigger_deprecation('fakerphp/faker', '1.16', 'Class "%s" is deprecated, use "%s" instead.', self::class, ChanceGenerator::class);
     }
 
     public function ext()

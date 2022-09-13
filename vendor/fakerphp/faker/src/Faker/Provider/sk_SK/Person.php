@@ -108,7 +108,7 @@ class Person extends \Faker\Provider\Person
         'Mgr. art.', 'MSDr.', 'PaedDr.', 'PharmDr.', 'PhDr.', 'PhMr.', 'RNDr.', 'RSDr.', 'ThDr.', 'ThLic.', 'prof.', 'Dr. h. c.',
     ];
 
-    private static $suffix = [
+    private static array $suffix = [
         'CSc.', 'DrSc.', 'DSc.', 'Ph.D.', 'Th.D.',
     ];
 

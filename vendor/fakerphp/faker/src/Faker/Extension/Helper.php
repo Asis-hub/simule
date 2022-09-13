@@ -48,7 +48,7 @@ final class Helper
 
             while ($i < $nbReplacements) {
                 $size = min($nbReplacements - $i, $maxAtOnce);
-                $numbers .= str_pad((string) mt_rand(0, 10 ** $size - 1), $size, '0', STR_PAD_LEFT);
+                $numbers .= str_pad((string) random_int(0, 10 ** $size - 1), $size, '0', STR_PAD_LEFT);
                 $i += $size;
             }
 
@@ -57,9 +57,7 @@ final class Helper
             }
         }
 
-        $string = self::replaceWildcard($string, '%', static function () {
-            return mt_rand(1, 9);
-        });
+        $string = self::replaceWildcard($string, '%', static fn() => random_int(1, 9));
 
         return $string;
     }
@@ -71,9 +69,7 @@ final class Helper
      */
     public static function lexify(string $string): string
     {
-        return self::replaceWildcard($string, '?', static function () {
-            return chr(mt_rand(97, 122));
-        });
+        return self::replaceWildcard($string, '?', static fn() => chr(random_int(97, 122)));
     }
 
     /**
@@ -84,9 +80,7 @@ final class Helper
      */
     public static function bothify(string $string): string
     {
-        $string = self::replaceWildcard($string, '*', static function () {
-            return mt_rand(0, 1) ? '#' : '?';
-        });
+        $string = self::replaceWildcard($string, '*', static fn() => random_int(0, 1) ? '#' : '?');
 
         return static::lexify(static::numerify($string));
     }

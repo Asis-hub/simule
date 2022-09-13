@@ -19,26 +19,23 @@ use Brick\Math\Internal\Calculator;
  *
  * @psalm-immutable
  */
-final class BigInteger extends BigNumber
+final class BigInteger extends BigNumber implements \Stringable
 {
-    /**
-     * The value, as a string of digits with optional leading minus sign.
-     *
-     * No leading zeros must be present.
-     * No leading minus sign must be present if the number is zero.
-     *
-     * @var string
-     */
-    private $value;
-
     /**
      * Protected constructor. Use a factory method to obtain an instance.
      *
      * @param string $value A string of digits, with optional leading minus sign.
      */
-    protected function __construct(string $value)
+    protected function __construct(
+        /**
+         * The value, as a string of digits with optional leading minus sign.
+         *
+         * No leading zeros must be present.
+         * No leading minus sign must be present if the number is zero.
+         */
+        private string $value
+    )
     {
-        $this->value = $value;
     }
 
     /**
@@ -71,11 +68,9 @@ final class BigInteger extends BigNumber
      * @param string $number The number to convert, in the given base.
      * @param int    $base   The base of the number, between 2 and 36.
      *
-     * @return BigInteger
      *
      * @throws NumberFormatException     If the number is empty, or contains invalid chars for the given base.
      * @throws \InvalidArgumentException If the base is out of range.
-     *
      * @psalm-pure
      */
     public static function fromBase(string $number, int $base) : BigInteger
@@ -138,11 +133,9 @@ final class BigInteger extends BigNumber
      * @param string $number   The number to parse.
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
-     * @return BigInteger
      *
      * @throws NumberFormatException     If the given number is empty or contains invalid chars for the given alphabet.
      * @throws \InvalidArgumentException If the alphabet does not contain at least 2 chars.
-     *
      * @psalm-pure
      */
     public static function fromArbitraryBase(string $number, string $alphabet) : BigInteger
@@ -183,7 +176,6 @@ final class BigInteger extends BigNumber
      * @param bool   $signed Whether to interpret as a signed number in two's-complement representation with a leading
      *                       sign bit.
      *
-     * @return BigInteger
      *
      * @throws NumberFormatException If the string is empty.
      */
@@ -224,7 +216,6 @@ final class BigInteger extends BigNumber
      *                                            string of random bytes of the given length. Defaults to the
      *                                            `random_bytes()` function.
      *
-     * @return BigInteger
      *
      * @throws \InvalidArgumentException If $numBits is negative.
      */
@@ -266,12 +257,11 @@ final class BigInteger extends BigNumber
      *                                                         and returns a string of random bytes of the given length.
      *                                                         Defaults to the `random_bytes()` function.
      *
-     * @return BigInteger
      *
      * @throws MathException If one of the parameters cannot be converted to a BigInteger,
      *                       or `$min` is greater than `$max`.
      */
-    public static function randomRange($min, $max, ?callable $randomBytesGenerator = null) : BigInteger
+    public static function randomRange(\Brick\Math\BigNumber|int|float|string $min, \Brick\Math\BigNumber|int|float|string $max, ?callable $randomBytesGenerator = null) : BigInteger
     {
         $min = BigInteger::of($min);
         $max = BigInteger::of($max);
@@ -298,7 +288,6 @@ final class BigInteger extends BigNumber
     /**
      * Returns a BigInteger representing zero.
      *
-     * @return BigInteger
      *
      * @psalm-pure
      */
@@ -320,7 +309,6 @@ final class BigInteger extends BigNumber
     /**
      * Returns a BigInteger representing one.
      *
-     * @return BigInteger
      *
      * @psalm-pure
      */
@@ -342,7 +330,6 @@ final class BigInteger extends BigNumber
     /**
      * Returns a BigInteger representing ten.
      *
-     * @return BigInteger
      *
      * @psalm-pure
      */
@@ -361,6 +348,21 @@ final class BigInteger extends BigNumber
         return $ten;
     }
 
+    public static function gcdMultiple(BigInteger $a, BigInteger ...$n): BigInteger
+    {
+        $result = $a;
+
+        foreach ($n as $next) {
+            $result = $result->gcd($next);
+
+            if ($result->isEqualTo(1)) {
+                return $result;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Returns the sum of this number and the given one.
      *
@@ -370,7 +372,7 @@ final class BigInteger extends BigNumber
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
-    public function plus($that) : BigInteger
+    public function plus(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -396,7 +398,7 @@ final class BigInteger extends BigNumber
      *
      * @throws MathException If the number is not valid, or is not convertible to a BigInteger.
      */
-    public function minus($that) : BigInteger
+    public function minus(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -418,7 +420,7 @@ final class BigInteger extends BigNumber
      *
      * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigInteger.
      */
-    public function multipliedBy($that) : BigInteger
+    public function multipliedBy(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -446,7 +448,7 @@ final class BigInteger extends BigNumber
      * @throws MathException If the divisor is not a valid number, is not convertible to a BigInteger, is zero,
      *                       or RoundingMode::UNNECESSARY is used and the remainder is not zero.
      */
-    public function dividedBy($that, int $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
+    public function dividedBy(\Brick\Math\BigNumber|int|float|string $that, int $roundingMode = RoundingMode::UNNECESSARY) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -498,11 +500,10 @@ final class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
-     * @return BigInteger
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function quotient($that) : BigInteger
+    public function quotient(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -526,11 +527,10 @@ final class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
-     * @return BigInteger
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function remainder($that) : BigInteger
+    public function remainder(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -556,7 +556,7 @@ final class BigInteger extends BigNumber
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function quotientAndRemainder($that) : array
+    public function quotientAndRemainder(\Brick\Math\BigNumber|int|float|string $that) : array
     {
         $that = BigInteger::of($that);
 
@@ -582,11 +582,10 @@ final class BigInteger extends BigNumber
      *
      * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
      *
-     * @return BigInteger
      *
      * @throws DivisionByZeroException If the divisor is zero.
      */
-    public function mod($that) : BigInteger
+    public function mod(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -602,9 +601,7 @@ final class BigInteger extends BigNumber
     /**
      * Returns the modular multiplicative inverse of this BigInteger modulo $m.
      *
-     * @param BigInteger $m
      *
-     * @return BigInteger
      *
      * @throws DivisionByZeroException If $m is zero.
      * @throws NegativeNumberException If $m is negative.
@@ -642,12 +639,11 @@ final class BigInteger extends BigNumber
      * @param BigNumber|int|float|string $exp The exponent. Must be positive or zero.
      * @param BigNumber|int|float|string $mod The modulus. Must be strictly positive.
      *
-     * @return BigInteger
      *
      * @throws NegativeNumberException If any of the operands is negative.
      * @throws DivisionByZeroException If the modulus is zero.
      */
-    public function modPow($exp, $mod) : BigInteger
+    public function modPow(\Brick\Math\BigNumber|int|float|string $exp, \Brick\Math\BigNumber|int|float|string $mod) : BigInteger
     {
         $exp = BigInteger::of($exp);
         $mod = BigInteger::of($mod);
@@ -671,10 +667,8 @@ final class BigInteger extends BigNumber
      * The GCD is always positive, unless both operands are zero, in which case it is zero.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
-    public function gcd($that) : BigInteger
+    public function gcd(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -696,7 +690,6 @@ final class BigInteger extends BigNumber
      *
      * The result is the largest x such that x² ≤ n.
      *
-     * @return BigInteger
      *
      * @throws NegativeNumberException If this number is negative.
      */
@@ -713,8 +706,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the absolute value of this number.
-     *
-     * @return BigInteger
      */
     public function abs() : BigInteger
     {
@@ -723,8 +714,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the inverse of this number.
-     *
-     * @return BigInteger
      */
     public function negated() : BigInteger
     {
@@ -737,10 +726,8 @@ final class BigInteger extends BigNumber
      * This method returns a negative BigInteger if and only if both operands are negative.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
-    public function and($that) : BigInteger
+    public function and(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -753,10 +740,8 @@ final class BigInteger extends BigNumber
      * This method returns a negative BigInteger if and only if either of the operands is negative.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
-    public function or($that) : BigInteger
+    public function or(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -769,10 +754,8 @@ final class BigInteger extends BigNumber
      * This method returns a negative BigInteger if and only if exactly one of the operands is negative.
      *
      * @param BigNumber|int|float|string $that The operand. Must be convertible to an integer number.
-     *
-     * @return BigInteger
      */
-    public function xor($that) : BigInteger
+    public function xor(\Brick\Math\BigNumber|int|float|string $that) : BigInteger
     {
         $that = BigInteger::of($that);
 
@@ -781,8 +764,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns the bitwise-not of this BigInteger.
-     *
-     * @return BigInteger
      */
     public function not() : BigInteger
     {
@@ -793,8 +774,6 @@ final class BigInteger extends BigNumber
      * Returns the integer left shifted by a given number of bits.
      *
      * @param int $distance The distance to shift.
-     *
-     * @return BigInteger
      */
     public function shiftedLeft(int $distance) : BigInteger
     {
@@ -813,8 +792,6 @@ final class BigInteger extends BigNumber
      * Returns the integer right shifted by a given number of bits.
      *
      * @param int $distance The distance to shift.
-     *
-     * @return BigInteger
      */
     public function shiftedRight(int $distance) : BigInteger
     {
@@ -840,8 +817,6 @@ final class BigInteger extends BigNumber
      *
      * For positive BigIntegers, this is equivalent to the number of bits in the ordinary binary representation.
      * Computes (ceil(log2(this < 0 ? -this : this+1))).
-     *
-     * @return int
      */
     public function getBitLength() : int
     {
@@ -860,8 +835,6 @@ final class BigInteger extends BigNumber
      * Returns the index of the rightmost (lowest-order) one bit in this BigInteger.
      *
      * Returns -1 if this BigInteger contains no one bits.
-     *
-     * @return int
      */
     public function getLowestSetBit() : int
     {
@@ -881,8 +854,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns whether this number is even.
-     *
-     * @return bool
      */
     public function isEven() : bool
     {
@@ -891,8 +862,6 @@ final class BigInteger extends BigNumber
 
     /**
      * Returns whether this number is odd.
-     *
-     * @return bool
      */
     public function isOdd() : bool
     {
@@ -906,7 +875,6 @@ final class BigInteger extends BigNumber
      *
      * @param int $n The bit to test, 0-based.
      *
-     * @return bool
      *
      * @throws \InvalidArgumentException If the bit to test is negative.
      */
@@ -1002,7 +970,6 @@ final class BigInteger extends BigNumber
      *
      * @param int $base
      *
-     * @return string
      *
      * @throws \InvalidArgumentException If the base is out of range.
      */
@@ -1027,7 +994,6 @@ final class BigInteger extends BigNumber
      *
      * @param string $alphabet The alphabet, for example '01' for base 2, or '01234567' for base 8.
      *
-     * @return string
      *
      * @throws NegativeNumberException   If this number is negative.
      * @throws \InvalidArgumentException If the given alphabet does not contain at least 2 chars.
@@ -1063,7 +1029,6 @@ final class BigInteger extends BigNumber
      *
      * @param bool $signed Whether to output a signed number in two's-complement representation with a leading sign bit.
      *
-     * @return string
      *
      * @throws NegativeNumberException If $signed is false, and the number is negative.
      */
@@ -1153,8 +1118,6 @@ final class BigInteger extends BigNumber
      * This method is required by interface Serializable and SHOULD NOT be accessed directly.
      *
      * @internal
-     *
-     * @return string
      */
     public function serialize() : string
     {
@@ -1169,7 +1132,6 @@ final class BigInteger extends BigNumber
      *
      * @param string $value
      *
-     * @return void
      *
      * @throws \LogicException
      */

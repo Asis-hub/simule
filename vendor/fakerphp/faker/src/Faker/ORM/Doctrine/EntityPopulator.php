@@ -13,10 +13,6 @@ require_once 'backward-compatibility.php';
 class EntityPopulator
 {
     /**
-     * @var ClassMetadata
-     */
-    protected $class;
-    /**
      * @var array
      */
     protected $columnFormatters = [];
@@ -25,9 +21,8 @@ class EntityPopulator
      */
     protected $modifiers = [];
 
-    public function __construct(ClassMetadata $class)
+    public function __construct(protected ClassMetadata $class)
     {
-        $this->class = $class;
     }
 
     /**
@@ -203,7 +198,7 @@ class EntityPopulator
                 } catch (\InvalidArgumentException $ex) {
                     throw new \InvalidArgumentException(sprintf(
                         'Failed to generate a value for %s::%s: %s',
-                        get_class($obj),
+                        $obj::class,
                         $field,
                         $ex->getMessage()
                     ));
@@ -232,7 +227,7 @@ class EntityPopulator
      */
     private function generateId($obj, $column, ObjectManager $manager)
     {
-        $repository = $manager->getRepository(get_class($obj));
+        $repository = $manager->getRepository($obj::class);
         $result = $repository->createQueryBuilder('e')
                 ->select(sprintf('e.%s', $column))
                 ->getQuery()
@@ -240,7 +235,7 @@ class EntityPopulator
         $ids = array_map('current', $result->toArray());
 
         do {
-            $id = mt_rand();
+            $id = random_int(0, mt_getrandmax());
         } while (in_array($id, $ids, false));
 
         return $id;

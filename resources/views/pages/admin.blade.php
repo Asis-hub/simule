@@ -47,8 +47,17 @@
         Generar
     </button>
 
+    <!-- 
+      $result = \Python::run('/var/www/simule/resources/python/formula_muestra.py')
+    $parameters = array('lb_error', 'lb_confiabilidad', 'lb_p_necesaria', 'lb_p_restante', 'lb_estratos', 'lb_encuestadores'):
+    $result = \Python::run('/path/to/script.py', $parameters):
+
+    -->
 
       <label for="lb_respuesta">Respuesta:</label>
+      <output for="lb_respuesta">$result</output>
+
+    
     
 </form>
     

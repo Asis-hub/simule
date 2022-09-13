@@ -121,6 +121,7 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
      */
     public static function exchangeCode()
     {
+        $digits = [];
         $digits[] = self::numberBetween(2, 9);
         $digits[] = self::randomDigit();
 

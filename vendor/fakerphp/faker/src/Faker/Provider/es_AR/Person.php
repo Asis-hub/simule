@@ -78,7 +78,7 @@ class Person extends \Faker\Provider\Person
 
     protected static $titleFemale = ['Sra.', 'Srita.', 'Dr.', 'Lic.', 'Ing.'];
 
-    private static $suffix = ['Hijo', 'Segundo', 'Tercero'];
+    private static array $suffix = ['Hijo', 'Segundo', 'Tercero'];
 
     /**
      * @example 'Hijo'

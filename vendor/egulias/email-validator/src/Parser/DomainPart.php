@@ -34,8 +34,8 @@ use Egulias\EmailValidator\Warning\TLD;
 
 class DomainPart extends Parser
 {
-    const DOMAIN_MAX_LENGTH = 254;
-    const LABEL_MAX_LENGTH = 63;
+    final public const DOMAIN_MAX_LENGTH = 254;
+    final public const LABEL_MAX_LENGTH = 63;
 
     /**
      * @var string
@@ -125,7 +125,7 @@ class DomainPart extends Parser
         $groupCount = count($matchesIP);
         $colons     = strpos($IPv6, '::');
 
-        if (count(preg_grep('/^[0-9A-Fa-f]{0,4}$/', $matchesIP, PREG_GREP_INVERT)) !== 0) {
+        if ((is_countable(preg_grep('/^[0-9A-Fa-f]{0,4}$/', $matchesIP, PREG_GREP_INVERT)) ? count(preg_grep('/^[0-9A-Fa-f]{0,4}$/', $matchesIP, PREG_GREP_INVERT)) : 0) !== 0) {
             $this->warnings[IPV6BadChar::CODE] = new IPV6BadChar();
         }
 
@@ -223,10 +223,7 @@ class DomainPart extends Parser
         }
     }
 
-    /**
-     * @return string|false
-     */
-    protected function parseDomainLiteral()
+    protected function parseDomainLiteral(): string|false
     {
         if ($this->lexer->isNextToken(EmailLexer::S_COLON)) {
             $this->warnings[IPV6ColonStart::CODE] = new IPV6ColonStart();
@@ -242,10 +239,7 @@ class DomainPart extends Parser
         return $this->doParseDomainLiteral();
     }
 
-    /**
-     * @return string|false
-     */
-    protected function doParseDomainLiteral()
+    protected function doParseDomainLiteral(): string|false
     {
         $IPv6TAG = false;
         $addressLiteral = '';
@@ -261,12 +255,12 @@ class DomainPart extends Parser
                 $this->warnings[ObsoleteDTEXT::CODE] = new ObsoleteDTEXT();
             }
 
-            if ($this->lexer->isNextTokenAny(array(EmailLexer::S_OPENQBRACKET, EmailLexer::S_OPENBRACKET))) {
+            if ($this->lexer->isNextTokenAny([EmailLexer::S_OPENQBRACKET, EmailLexer::S_OPENBRACKET])) {
                 throw new ExpectingDTEXT();
             }
 
             if ($this->lexer->isNextTokenAny(
-                array(EmailLexer::S_HTAB, EmailLexer::S_SP, $this->lexer->token['type'] === EmailLexer::CRLF)
+                [EmailLexer::S_HTAB, EmailLexer::S_SP, $this->lexer->token['type'] === EmailLexer::CRLF]
             )) {
                 $this->warnings[CFWSWithFWS::CODE] = new CFWSWithFWS();
                 $this->parseFWS();
@@ -314,12 +308,10 @@ class DomainPart extends Parser
 
     /**
      * @param string $addressLiteral
-     *
-     * @return string|false
      */
-    protected function checkIPV4Tag($addressLiteral)
+    protected function checkIPV4Tag($addressLiteral): string|false
     {
-        $matchesIP  = array();
+        $matchesIP  = [];
 
         // Extract IPv4 part from the end of the address-literal (if there is one)
         if (preg_match(
@@ -328,7 +320,7 @@ class DomainPart extends Parser
             $matchesIP
         ) > 0
         ) {
-            $index = strrpos($addressLiteral, $matchesIP[0]);
+            $index = strrpos($addressLiteral, (string) $matchesIP[0]);
             if ($index === 0) {
                 $this->warnings[AddressLiteral::CODE] = new AddressLiteral();
                 return false;
@@ -342,14 +334,7 @@ class DomainPart extends Parser
 
     protected function checkDomainPartExceptions(array $prev)
     {
-        $invalidDomainTokens = array(
-            EmailLexer::S_DQUOTE => true,
-            EmailLexer::S_SQUOTE => true,
-            EmailLexer::S_BACKTICK => true,
-            EmailLexer::S_SEMICOLON => true,
-            EmailLexer::S_GREATERTHAN => true,
-            EmailLexer::S_LOWERTHAN => true,
-        );
+        $invalidDomainTokens = [EmailLexer::S_DQUOTE => true, EmailLexer::S_SQUOTE => true, EmailLexer::S_BACKTICK => true, EmailLexer::S_SEMICOLON => true, EmailLexer::S_GREATERTHAN => true, EmailLexer::S_LOWERTHAN => true];
 
         if (isset($invalidDomainTokens[$this->lexer->token['type']])) {
             throw new ExpectingATEXT();
@@ -388,7 +373,7 @@ class DomainPart extends Parser
 
         try {
             $this->lexer->find(EmailLexer::S_CLOSEBRACKET);
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             throw new ExpectingDomainLiteralClose();
         }
 

@@ -61,10 +61,8 @@ class Lorem extends Base
      *
      * @param int  $nb     how many words to return
      * @param bool $asText if true the sentences are returned as one string
-     *
-     * @return array|string
      */
-    public static function words($nb = 3, $asText = false)
+    public static function words($nb = 3, $asText = false): array|string
     {
         $words = [];
 
@@ -97,7 +95,7 @@ class Lorem extends Base
         }
 
         $words = static::words($nbWords);
-        $words[0] = ucwords($words[0]);
+        $words[0] = ucwords((string) $words[0]);
 
         return implode(' ', $words) . '.';
     }
@@ -109,10 +107,8 @@ class Lorem extends Base
      *
      * @param int  $nb     how many sentences to return
      * @param bool $asText if true the sentences are returned as one string
-     *
-     * @return array|string
      */
-    public static function sentences($nb = 3, $asText = false)
+    public static function sentences($nb = 3, $asText = false): array|string
     {
         $sentences = [];
 
@@ -154,10 +150,8 @@ class Lorem extends Base
      *
      * @param int  $nb     how many paragraphs to return
      * @param bool $asText if true the paragraphs are returned as one string, separated by two newlines
-     *
-     * @return array|string
      */
-    public static function paragraphs($nb = 3, $asText = false)
+    public static function paragraphs($nb = 3, $asText = false): array|string
     {
         $paragraphs = [];
 

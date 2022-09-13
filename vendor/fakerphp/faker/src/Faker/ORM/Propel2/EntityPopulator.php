@@ -10,16 +10,14 @@ use Propel\Runtime\Map\ColumnMap;
  */
 class EntityPopulator
 {
-    protected $class;
     protected $columnFormatters = [];
     protected $modifiers = [];
 
     /**
      * @param string $class A Propel ActiveRecord classname
      */
-    public function __construct($class)
+    public function __construct(protected $class)
     {
-        $this->class = $class;
     }
 
     /**
@@ -69,7 +67,7 @@ class EntityPopulator
             if ($columnMap->isForeignKey()) {
                 $relatedClass = $columnMap->getRelation()->getForeignTable()->getClassname();
                 $formatters[$columnMap->getPhpName()] = static function ($inserted) use ($relatedClass, $generator) {
-                    $relatedClass = trim($relatedClass, '\\');
+                    $relatedClass = trim((string) $relatedClass, '\\');
 
                     return isset($inserted[$relatedClass]) ? $generator->randomElement($inserted[$relatedClass]) : null;
                 };

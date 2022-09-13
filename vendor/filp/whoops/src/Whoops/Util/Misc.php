@@ -27,7 +27,7 @@ class Misc
     {
         return (
             !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
-            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+            && strtolower((string) $_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
 
     /**
@@ -50,7 +50,7 @@ class Misc
         $constants = get_defined_constants(true);
         if (array_key_exists('Core', $constants)) {
             foreach ($constants['Core'] as $constant => $value) {
-                if (substr($constant, 0, 2) == 'E_' && $value == $error_code) {
+                if (substr((string) $constant, 0, 2) == 'E_' && $value == $error_code) {
                     return $constant;
                 }
             }

@@ -4,7 +4,6 @@ namespace Facade\IgnitionContracts;
 
 class BaseSolution implements Solution
 {
-    protected $title;
     protected $description;
     protected $links = [];
 
@@ -13,9 +12,8 @@ class BaseSolution implements Solution
         return new static($title);
     }
 
-    public function __construct(string $title)
+    public function __construct(protected string $title)
     {
-        $this->title = $title;
     }
 
     public function getSolutionTitle(): string

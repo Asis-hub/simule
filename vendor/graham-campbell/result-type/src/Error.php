@@ -24,20 +24,14 @@ use PhpOption\Some;
 final class Error extends Result
 {
     /**
-     * @var E
-     */
-    private $value;
-
-    /**
      * Internal constructor for an error value.
      *
      * @param E $value
      *
      * @return void
      */
-    private function __construct($value)
+    private function __construct(private $value)
     {
-        $this->value = $value;
     }
 
     /**

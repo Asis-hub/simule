@@ -22,10 +22,8 @@ class NativeCalculator extends Calculator
      * For addition, it is assumed that an extra digit can hold a carry (1) without overflowing.
      * Example: 32-bit: max number 1,999,999,999 (9 digits + carry)
      *          64-bit: max number 1,999,999,999,999,999,999 (18 digits + carry)
-     *
-     * @var int
      */
-    private $maxDigits;
+    private int $maxDigits;
 
     /**
      * Class constructor.
@@ -34,18 +32,11 @@ class NativeCalculator extends Calculator
      */
     public function __construct()
     {
-        switch (PHP_INT_SIZE) {
-            case 4:
-                $this->maxDigits = 9;
-                break;
-
-            case 8:
-                $this->maxDigits = 18;
-                break;
-
-            default:
-                throw new \RuntimeException('The platform is not 32-bit or 64-bit as expected.');
-        }
+        $this->maxDigits = match (PHP_INT_SIZE) {
+            4 => 9,
+            8 => 18,
+            default => throw new \RuntimeException('The platform is not 32-bit or 64-bit as expected.'),
+        };
     }
 
     /**
@@ -309,8 +300,6 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     *
-     * @return string
      */
     private function doAdd(string $a, string $b) : string
     {
@@ -366,8 +355,6 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     *
-     * @return string
      */
     private function doSub(string $a, string $b) : string
     {
@@ -448,8 +435,6 @@ class NativeCalculator extends Calculator
      *
      * @param string $a The first operand.
      * @param string $b The second operand.
-     *
-     * @return string
      */
     private function doMul(string $a, string $b) : string
     {

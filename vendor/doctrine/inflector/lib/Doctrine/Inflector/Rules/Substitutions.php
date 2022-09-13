@@ -13,7 +13,7 @@ use function substr;
 class Substitutions implements WordInflector
 {
     /** @var Substitution[] */
-    private $substitutions;
+    private ?array $substitutions = null;
 
     public function __construct(Substitution ...$substitutions)
     {

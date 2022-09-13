@@ -15,7 +15,7 @@ use Egulias\EmailValidator\Warning\EmailTooLong;
  */
 class EmailParser
 {
-    const EMAIL_MAX_LENGTH = 254;
+    final public const EMAIL_MAX_LENGTH = 254;
 
     /**
      * @var array
@@ -31,10 +31,6 @@ class EmailParser
      * @var string
      */
     protected $localPart = '';
-    /**
-     * @var EmailLexer
-     */
-    protected $lexer;
 
     /**
      * @var LocalPart
@@ -46,9 +42,8 @@ class EmailParser
      */
     protected $domainPartParser;
 
-    public function __construct(EmailLexer $lexer)
+    public function __construct(protected EmailLexer $lexer)
     {
-        $this->lexer = $lexer;
         $this->localPartParser = new LocalPart($this->lexer);
         $this->domainPartParser = new DomainPart($this->lexer);
     }
@@ -75,7 +70,7 @@ class EmailParser
             throw new ExpectingATEXT();
         }
 
-        return array('local' => $this->localPart, 'domain' => $this->domainPart);
+        return ['local' => $this->localPart, 'domain' => $this->domainPart];
     }
 
     /**

@@ -10,15 +10,11 @@ use Mandango\Mandango;
  */
 class Populator
 {
-    protected $generator;
-    protected $mandango;
     protected $entities = [];
     protected $quantities = [];
 
-    public function __construct(\Faker\Generator $generator, Mandango $mandango)
+    public function __construct(protected \Faker\Generator $generator, protected Mandango $mandango)
     {
-        $this->generator = $generator;
-        $this->mandango = $mandango;
     }
 
     /**
@@ -27,7 +23,7 @@ class Populator
      * @param mixed $entity A Propel ActiveRecord classname, or a \Faker\ORM\Propel\EntityPopulator instance
      * @param int   $number The number of entities to populate
      */
-    public function addEntity($entity, $number, $customColumnFormatters = [])
+    public function addEntity(mixed $entity, $number, $customColumnFormatters = [])
     {
         if (!$entity instanceof \Faker\ORM\Mandango\EntityPopulator) {
             $entity = new \Faker\ORM\Mandango\EntityPopulator($entity);

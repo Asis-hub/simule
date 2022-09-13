@@ -35,6 +35,7 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
      */
     public static function areaCode()
     {
+        $digits = [];
         $digits[] = self::numberBetween(1, 5);
 
         switch ($digits[0]) {
@@ -72,6 +73,7 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
 
     public static function cellphoneCode()
     {
+        $digits = [];
         $digits[] = self::numberBetween(6, 8);
 
         switch ($digits[0]) {

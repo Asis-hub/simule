@@ -8,16 +8,10 @@ use function preg_match;
 
 final class Pattern
 {
-    /** @var string */
-    private $pattern;
+    private ?string $regex = null;
 
-    /** @var string */
-    private $regex;
-
-    public function __construct(string $pattern)
+    public function __construct(private readonly string $pattern)
     {
-        $this->pattern = $pattern;
-
         if (isset($this->pattern[0]) && $this->pattern[0] === '/') {
             $this->regex = $this->pattern;
         } else {

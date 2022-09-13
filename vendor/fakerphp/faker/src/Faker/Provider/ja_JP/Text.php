@@ -611,7 +611,7 @@ EOT;
 
     protected static function strlen($text)
     {
-        return function_exists('mb_strlen') ? mb_strlen($text, 'UTF-8') : count(static::explode($text));
+        return function_exists('mb_strlen') ? mb_strlen((string) $text, 'UTF-8') : count(static::explode($text));
     }
 
     protected static function validStart($word)
@@ -623,7 +623,7 @@ EOT;
     {
         // extract the last char of $text
         if (function_exists('mb_substr')) {
-            $last = mb_substr($text, 0, mb_strlen($text) - 1, 'UTF-8');
+            $last = mb_substr((string) $text, 0, mb_strlen((string) $text) - 1, 'UTF-8');
         } else {
             $chars = static::split($text);
             $last = end($chars);

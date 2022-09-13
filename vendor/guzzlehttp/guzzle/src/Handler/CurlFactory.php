@@ -19,29 +19,23 @@ use Psr\Http\Message\RequestInterface;
  */
 class CurlFactory implements CurlFactoryInterface
 {
-    public const CURL_VERSION_STR = 'curl_version';
+    final public const CURL_VERSION_STR = 'curl_version';
 
     /**
      * @deprecated
      */
-    public const LOW_CURL_VERSION_NUMBER = '7.21.2';
+    final public const LOW_CURL_VERSION_NUMBER = '7.21.2';
 
     /**
      * @var resource[]|\CurlHandle[]
      */
-    private $handles = [];
-
-    /**
-     * @var int Total number of idle handles to keep in cache
-     */
-    private $maxHandles;
+    private array $handles = [];
 
     /**
      * @param int $maxHandles Maximum number of idle handles.
      */
-    public function __construct(int $maxHandles)
+    public function __construct(private readonly int $maxHandles)
     {
-        $this->maxHandles = $maxHandles;
     }
 
     public function create(RequestInterface $request, array $options): EasyHandle
@@ -201,7 +195,7 @@ class CurlFactory implements CurlFactoryInterface
             'see https://curl.haxx.se/libcurl/c/libcurl-errors.html'
         );
         $uriString = (string) $easy->request->getUri();
-        if ($uriString !== '' && false === \strpos($ctx['error'], $uriString)) {
+        if ($uriString !== '' && !str_contains((string) $ctx['error'], $uriString)) {
             $message .= \sprintf(' for %s', $uriString);
         }
 
@@ -278,7 +272,7 @@ class CurlFactory implements CurlFactoryInterface
 
         // Send the body as a string if the size is less than 1MB OR if the
         // [curl][body_as_string] request value is set.
-        if (($size !== null && $size < 1000000) || !empty($options['_body_as_string'])) {
+        if (($size !== null && $size < 1_000_000) || !empty($options['_body_as_string'])) {
             $conf[\CURLOPT_POSTFIELDS] = (string) $request->getBody();
             // Don't duplicate the Content-Length header
             $this->removeHeader('Content-Length', $conf);
@@ -293,9 +287,7 @@ class CurlFactory implements CurlFactoryInterface
             if ($body->isSeekable()) {
                 $body->rewind();
             }
-            $conf[\CURLOPT_READFUNCTION] = static function ($ch, $fd, $length) use ($body) {
-                return $body->read($length);
-            };
+            $conf[\CURLOPT_READFUNCTION] = static fn($ch, $fd, $length) => $body->read($length);
         }
 
         // If the Expect header is not present, prevent curl from adding it
@@ -408,9 +400,7 @@ class CurlFactory implements CurlFactoryInterface
             $sink = new LazyOpenStream($sink, 'w+');
         }
         $easy->sink = $sink;
-        $conf[\CURLOPT_WRITEFUNCTION] = static function ($ch, $write) use ($sink): int {
-            return $sink->write($write);
-        };
+        $conf[\CURLOPT_WRITEFUNCTION] = static fn($ch, $write): int => $sink->write($write);
 
         $timeoutRequiresNoSignal = false;
         if (isset($options['timeout'])) {
@@ -461,7 +451,7 @@ class CurlFactory implements CurlFactoryInterface
             }
             # OpenSSL (versions 0.9.3 and later) also support "P12" for PKCS#12-encoded files.
             # see https://curl.se/libcurl/c/CURLOPT_SSLCERTTYPE.html
-            $ext = pathinfo($cert, \PATHINFO_EXTENSION);
+            $ext = pathinfo((string) $cert, \PATHINFO_EXTENSION);
             if (preg_match('#^(der|p12)$#i', $ext)) {
                 $conf[\CURLOPT_SSLCERTTYPE] = strtoupper($ext);
             }
@@ -477,7 +467,7 @@ class CurlFactory implements CurlFactoryInterface
                 }
             }
 
-            $sslKey = $sslKey ?? $options['ssl_key'];
+            $sslKey ??= $options['ssl_key'];
 
             if (!\file_exists($sslKey)) {
                 throw new \InvalidArgumentException("SSL private key not found: {$sslKey}");

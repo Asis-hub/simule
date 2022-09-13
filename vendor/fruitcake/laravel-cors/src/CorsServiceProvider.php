@@ -19,9 +19,7 @@ class CorsServiceProvider extends BaseServiceProvider
     {
         $this->mergeConfigFrom($this->configPath(), 'cors');
 
-        $this->app->singleton(CorsService::class, function ($app) {
-            return new CorsService($this->corsOptions(), $app);
-        });
+        $this->app->singleton(CorsService::class, fn($app) => new CorsService($this->corsOptions(), $app));
     }
 
     /**
@@ -86,7 +84,7 @@ class CorsServiceProvider extends BaseServiceProvider
 
         // Transform wildcard pattern
         foreach ($options['allowedOrigins'] as $origin) {
-            if (strpos($origin, '*') !== false) {
+            if (str_contains((string) $origin, '*')) {
                 $options['allowedOriginsPatterns'][] = $this->convertWildcardToPattern($origin);
             }
         }

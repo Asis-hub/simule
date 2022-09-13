@@ -6,19 +6,14 @@ use Egulias\EmailValidator\Exception\InvalidEmail;
 
 class MultipleErrors extends InvalidEmail
 {
-    const CODE = 999;
-    const REASON = "Accumulated errors for multiple validations";
-    /**
-     * @var InvalidEmail[]
-     */
-    private $errors = [];
+    final public const CODE = 999;
+    final public const REASON = "Accumulated errors for multiple validations";
 
     /**
      * @param InvalidEmail[] $errors
      */
-    public function __construct(array $errors)
+    public function __construct(private readonly array $errors)
     {
-        $this->errors = $errors;
         parent::__construct();
     }
 

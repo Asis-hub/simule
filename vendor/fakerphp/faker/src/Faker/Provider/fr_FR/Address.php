@@ -43,7 +43,7 @@ class Address extends \Faker\Provider\Address
         'Territoire britannique de l\'océan Indien', 'Territoires français du sud', 'Thailande', 'Timor', 'Togo', 'Tokelau', 'Tonga', 'Trinité et Tobago', 'Tunisie', 'Turkménistan', 'Turks et Caïques (Îles)', 'Turquie', 'Tuvalu', 'Ukraine', 'Uruguay', 'Vanuatu', 'Vatican (Etat du)', 'Venezuela', 'Vierges (Îles)', 'Vierges britanniques (Îles)', 'Vietnam', 'Wallis et Futuna (Îles)', 'Yemen', 'Yougoslavie', 'Zambie', 'Zaïre', 'Zimbabwe',
     ];
 
-    private static $regions = [
+    private static array $regions = [
         'Alsace', 'Aquitaine', 'Auvergne', 'Bourgogne', 'Bretagne', 'Centre', 'Champagne-Ardenne',
         'Corse', 'Franche-Comté', 'Île-de-France', 'Languedoc-Roussillon', 'Limousin',
         'Lorraine', 'Midi-Pyrénées', 'Nord-Pas-de-Calais', 'Basse-Normandie', 'Haute-Normandie',
@@ -52,7 +52,7 @@ class Address extends \Faker\Provider\Address
         'Saint-Barthélémy', 'Saint-Martin', 'Wallis-et-Futuna', 'Polynésie française', 'Nouvelle-Calédonie',
     ];
 
-    private static $departments = [
+    private static array $departments = [
         ['01' => 'Ain'], ['02' => 'Aisne'], ['03' => 'Allier'], ['04' => 'Alpes-de-Haute-Provence'], ['05' => 'Hautes-Alpes'],
         ['06' => 'Alpes-Maritimes'], ['07' => 'Ardèche'], ['08' => 'Ardennes'], ['09' => 'Ariège'], ['10' => 'Aube'],
         ['11' => 'Aude'], ['12' => 'Aveyron'], ['13' => 'Bouches-du-Rhône'], ['14' => 'Calvados'], ['15' => 'Cantal'],

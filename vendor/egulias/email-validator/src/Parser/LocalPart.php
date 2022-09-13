@@ -74,18 +74,9 @@ class LocalPart extends Parser
     protected function parseDoubleQuote()
     {
         $parseAgain = true;
-        $special = array(
-            EmailLexer::S_CR => true,
-            EmailLexer::S_HTAB => true,
-            EmailLexer::S_LF => true
-        );
+        $special = [EmailLexer::S_CR => true, EmailLexer::S_HTAB => true, EmailLexer::S_LF => true];
 
-        $invalid = array(
-            EmailLexer::C_NUL => true,
-            EmailLexer::S_HTAB => true,
-            EmailLexer::S_CR => true,
-            EmailLexer::S_LF => true
-        );
+        $invalid = [EmailLexer::C_NUL => true, EmailLexer::S_HTAB => true, EmailLexer::S_CR => true, EmailLexer::S_LF => true];
         $setSpecialsWarning = true;
 
         $this->lexer->moveNext();
@@ -127,16 +118,7 @@ class LocalPart extends Parser
      */
     protected function isInvalidToken(array $token, $closingQuote)
     {
-        $forbidden = array(
-            EmailLexer::S_COMMA,
-            EmailLexer::S_CLOSEBRACKET,
-            EmailLexer::S_OPENBRACKET,
-            EmailLexer::S_GREATERTHAN,
-            EmailLexer::S_LOWERTHAN,
-            EmailLexer::S_COLON,
-            EmailLexer::S_SEMICOLON,
-            EmailLexer::INVALID
-        );
+        $forbidden = [EmailLexer::S_COMMA, EmailLexer::S_CLOSEBRACKET, EmailLexer::S_OPENBRACKET, EmailLexer::S_GREATERTHAN, EmailLexer::S_LOWERTHAN, EmailLexer::S_COLON, EmailLexer::S_SEMICOLON, EmailLexer::INVALID];
 
         if (in_array($token['type'], $forbidden) && !$closingQuote) {
             throw new ExpectingATEXT();

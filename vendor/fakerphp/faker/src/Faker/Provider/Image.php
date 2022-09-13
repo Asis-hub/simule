@@ -10,11 +10,11 @@ class Image extends Base
     /**
      * @var string
      */
-    public const BASE_URL = 'https://via.placeholder.com';
+    final public const BASE_URL = 'https://via.placeholder.com';
 
-    public const FORMAT_JPG = 'jpg';
-    public const FORMAT_JPEG = 'jpeg';
-    public const FORMAT_PNG = 'png';
+    final public const FORMAT_JPG = 'jpg';
+    final public const FORMAT_JPEG = 'jpeg';
+    final public const FORMAT_PNG = 'png';
 
     /**
      * @var array
@@ -102,8 +102,6 @@ class Image extends Base
      * Requires curl, or allow_url_fopen to be on in php.ini.
      *
      * @example '/path/to/dir/13b73edae8443990be1aa8f1a483bc27.png'
-     *
-     * @return bool|string
      */
     public static function image(
         $dir = null,
@@ -115,14 +113,14 @@ class Image extends Base
         $word = null,
         $gray = false,
         $format = 'png'
-    ) {
+    ): bool|string {
         trigger_deprecation(
             'fakerphp/faker',
             '1.20',
             'Provider is deprecated and will no longer be available in Faker 2. Please use a custom provider instead'
         );
 
-        $dir = null === $dir ? sys_get_temp_dir() : $dir; // GNU/Linux / OS X / Windows compatible
+        $dir ??= sys_get_temp_dir(); // GNU/Linux / OS X / Windows compatible
         // Validate directory path
         if (!is_dir($dir) || !is_writable($dir)) {
             throw new \InvalidArgumentException(sprintf('Cannot write to directory "%s"', $dir));

@@ -4,11 +4,11 @@ namespace Faker\Provider\en_GB;
 
 class Company extends \Faker\Provider\Company
 {
-    public const VAT_PREFIX = 'GB';
-    public const VAT_TYPE_DEFAULT = 'vat';
-    public const VAT_TYPE_BRANCH = 'branch';
-    public const VAT_TYPE_GOVERNMENT = 'gov';
-    public const VAT_TYPE_HEALTH_AUTHORITY = 'health';
+    final public const VAT_PREFIX = 'GB';
+    final public const VAT_TYPE_DEFAULT = 'vat';
+    final public const VAT_TYPE_BRANCH = 'branch';
+    final public const VAT_TYPE_GOVERNMENT = 'gov';
+    final public const VAT_TYPE_HEALTH_AUTHORITY = 'health';
 
     /**
      * UK VAT number
@@ -20,21 +20,12 @@ class Company extends \Faker\Provider\Company
      */
     public static function vat(string $type = null): string
     {
-        switch ($type) {
-
-            case static::VAT_TYPE_BRANCH:
-                return static::generateBranchTraderVatNumber();
-
-            case static::VAT_TYPE_GOVERNMENT:
-                return static::generateGovernmentVatNumber();
-
-            case static::VAT_TYPE_HEALTH_AUTHORITY:
-                return static::generateHealthAuthorityVatNumber();
-
-            default:
-                return static::generateStandardVatNumber();
-
-        }
+        return match ($type) {
+            static::VAT_TYPE_BRANCH => static::generateBranchTraderVatNumber(),
+            static::VAT_TYPE_GOVERNMENT => static::generateGovernmentVatNumber(),
+            static::VAT_TYPE_HEALTH_AUTHORITY => static::generateHealthAuthorityVatNumber(),
+            default => static::generateStandardVatNumber(),
+        };
     }
 
     /**

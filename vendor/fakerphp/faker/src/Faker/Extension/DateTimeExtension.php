@@ -25,7 +25,7 @@ interface DateTimeExtension
      *
      * @example DateTime('2005-08-16 20:39:21')
      */
-    public function dateTime($until = 'now', string $timezone = null): \DateTime;
+    public function dateTime(\DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a DateTime object for a date between January 1, 0001, and now.
@@ -38,7 +38,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeAD($until = 'now', string $timezone = null): \DateTime;
+    public function dateTimeAD(\DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a DateTime object a random date between `$from` and `$until`.
@@ -52,7 +52,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeBetween($from = '-30 years', $until = 'now', string $timezone = null): \DateTime;
+    public function dateTimeBetween(\DateTime|string $from = '-30 years', \DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a DateTime object based on a random date between `$from` and an interval.
@@ -66,7 +66,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeInInterval($from = '-30 years', string $interval = '+5 days', string $timezone = null): \DateTime;
+    public function dateTimeInInterval(\DateTime|int|string $from = '-30 years', string $interval = '+5 days', string $timezone = null): \DateTime;
 
     /**
      * Get a date time object somewhere inside the current week.
@@ -78,7 +78,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeThisWeek($until = 'now', string $timezone = null): \DateTime;
+    public function dateTimeThisWeek(\DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a date time object somewhere inside the current month.
@@ -90,7 +90,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeThisMonth($until = 'now', string $timezone = null): \DateTime;
+    public function dateTimeThisMonth(\DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a date time object somewhere inside the current year.
@@ -102,7 +102,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeThisYear($until = 'now', string $timezone = null): \DateTime;
+    public function dateTimeThisYear(\DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a date time object somewhere inside the current decade.
@@ -114,7 +114,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeThisDecade($until = 'now', string $timezone = null): \DateTime;
+    public function dateTimeThisDecade(\DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a date time object somewhere inside the current century.
@@ -126,7 +126,7 @@ interface DateTimeExtension
      * @see http://php.net/manual/en/timezones.php
      * @see http://php.net/manual/en/function.date-default-timezone-get.php
      */
-    public function dateTimeThisCentury($until = 'now', string $timezone = null): \DateTime;
+    public function dateTimeThisCentury(\DateTime|int|string $until = 'now', string $timezone = null): \DateTime;
 
     /**
      * Get a date string between January 1, 1970, and `$until`.
@@ -136,7 +136,7 @@ interface DateTimeExtension
      *
      * @see https://www.php.net/manual/en/datetime.format.php
      */
-    public function date(string $format = 'Y-m-d', $until = 'now'): string;
+    public function date(string $format = 'Y-m-d', \DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a time string (24h format by default).
@@ -146,21 +146,21 @@ interface DateTimeExtension
      *
      * @see https://www.php.net/manual/en/datetime.format.php
      */
-    public function time(string $format = 'H:i:s', $until = 'now'): string;
+    public function time(string $format = 'H:i:s', \DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a UNIX (POSIX-compatible) timestamp between January 1, 1970, and `$until`.
      *
      * @param \DateTime|int|string $until maximum timestamp, defaults to "now"
      */
-    public function unixTime($until = 'now'): int;
+    public function unixTime(\DateTime|int|string $until = 'now'): int;
 
     /**
      * Get a date string according to the ISO-8601 standard.
      *
      * @param \DateTime|int|string $until maximum timestamp, defaults to "now"
      */
-    public function iso8601($until = 'now'): string;
+    public function iso8601(\DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a string containing either "am" or "pm".
@@ -169,7 +169,7 @@ interface DateTimeExtension
      *
      * @example 'am'
      */
-    public function amPm($until = 'now'): string;
+    public function amPm(\DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a localized random day of the month.
@@ -178,7 +178,7 @@ interface DateTimeExtension
      *
      * @example '16'
      */
-    public function dayOfMonth($until = 'now'): string;
+    public function dayOfMonth(\DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a localized random day of the week.
@@ -192,7 +192,7 @@ interface DateTimeExtension
      * @see setlocale
      * @see https://www.php.net/manual/en/function.setlocale.php Set a different output language
      */
-    public function dayOfWeek($until = 'now'): string;
+    public function dayOfWeek(\DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a random month (numbered).
@@ -201,7 +201,7 @@ interface DateTimeExtension
      *
      * @example '7'
      */
-    public function month($until = 'now'): string;
+    public function month(\DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a random month.
@@ -213,7 +213,7 @@ interface DateTimeExtension
      *
      * @example 'September'
      */
-    public function monthName($until = 'now'): string;
+    public function monthName(\DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a random year between 1970 and `$until`.
@@ -222,7 +222,7 @@ interface DateTimeExtension
      *
      * @example '1987'
      */
-    public function year($until = 'now'): string;
+    public function year(\DateTime|int|string $until = 'now'): string;
 
     /**
      * Get a random century, formatted as Roman numerals.

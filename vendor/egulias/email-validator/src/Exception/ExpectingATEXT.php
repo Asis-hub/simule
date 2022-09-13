@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class ExpectingATEXT extends InvalidEmail
 {
-    const CODE = 137;
-    const REASON = "Expecting ATEXT";
+    final public const CODE = 137;
+    final public const REASON = "Expecting ATEXT";
 }

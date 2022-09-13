@@ -80,7 +80,7 @@ class Address extends \Faker\Provider\Address
     /**
      * @see https://en.wikipedia.org/wiki/Municipalities_of_Lithuania
      */
-    private static $municipality = [
+    private static array $municipality = [
         'Akmenės rajono savivaldybė',
         'Alytaus miesto savivaldybė',
         'Alytaus rajono savivaldybė',

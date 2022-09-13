@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class NoDNSRecord extends InvalidEmail
 {
-    const CODE = 5;
-    const REASON = 'No MX or A DSN record was found for this email';
+    final public const CODE = 5;
+    final public const REASON = 'No MX or A DSN record was found for this email';
 }

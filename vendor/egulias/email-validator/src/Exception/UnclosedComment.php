@@ -4,6 +4,6 @@ namespace Egulias\EmailValidator\Exception;
 
 class UnclosedComment extends InvalidEmail
 {
-    const CODE = 146;
-    const REASON = "No closing comment token found";
+    final public const CODE = 146;
+    final public const REASON = "No closing comment token found";
 }

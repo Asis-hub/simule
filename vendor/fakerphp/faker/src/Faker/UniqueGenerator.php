@@ -13,9 +13,6 @@ use Faker\Extension\Extension;
  */
 class UniqueGenerator
 {
-    protected $generator;
-    protected $maxRetries;
-
     /**
      * Maps from method names to a map with serialized result keys.
      *
@@ -33,10 +30,8 @@ class UniqueGenerator
      * @param int                                $maxRetries
      * @param array<string, array<string, null>> $uniques
      */
-    public function __construct($generator, $maxRetries = 10000, &$uniques = [])
+    public function __construct(protected $generator, protected $maxRetries = 10000, &$uniques = [])
     {
-        $this->generator = $generator;
-        $this->maxRetries = $maxRetries;
         $this->uniques = &$uniques;
     }
 

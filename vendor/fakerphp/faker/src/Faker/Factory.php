@@ -4,9 +4,9 @@ namespace Faker;
 
 class Factory
 {
-    public const DEFAULT_LOCALE = 'en_US';
+    final public const DEFAULT_LOCALE = 'en_US';
 
-    protected static $defaultProviders = ['Address', 'Barcode', 'Biased', 'Color', 'Company', 'DateTime', 'File', 'HtmlLorem', 'Image', 'Internet', 'Lorem', 'Medical', 'Miscellaneous', 'Payment', 'Person', 'PhoneNumber', 'Text', 'UserAgent', 'Uuid'];
+    protected static $defaultProviders = ['Address', 'Barcode', 'Biased', 'Color', 'Company', \DateTime::class, 'File', 'HtmlLorem', 'Image', 'Internet', 'Lorem', 'Medical', 'Miscellaneous', 'Payment', 'Person', 'PhoneNumber', 'Text', 'UserAgent', 'Uuid'];
 
     /**
      * Create a new generator

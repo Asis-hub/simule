@@ -23,16 +23,11 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
     /**
      * @var array[]
      */
-    private $frames;
+    private array $frames;
 
-    /**
-     * @param array $frames
-     */
     public function __construct(array $frames)
     {
-        $this->frames = array_map(function ($frame) {
-            return new Frame($frame);
-        }, $frames);
+        $this->frames = array_map(fn($frame) => new Frame($frame), $frames);
     }
 
     /**
@@ -62,7 +57,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
             if (!$frame instanceof Frame) {
                 throw new UnexpectedValueException(
-                    "Callable to " . __CLASS__ . "::map must return a Frame object"
+                    "Callable to " . self::class . "::map must return a Frame object"
                 );
             }
 
@@ -121,9 +116,9 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
      * @param int $offset
      */
     #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): never
     {
-        throw new \Exception(__CLASS__ . ' is read only');
+        throw new \Exception(self::class . ' is read only');
     }
 
     /**
@@ -131,9 +126,9 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
      * @param int $offset
      */
     #[ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): never
     {
-        throw new \Exception(__CLASS__ . ' is read only');
+        throw new \Exception(self::class . ' is read only');
     }
 
     /**
@@ -153,9 +148,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
      */
     public function countIsApplication()
     {
-        return count(array_filter($this->frames, function (Frame $f) {
-            return $f->isApplication();
-        }));
+        return count(array_filter($this->frames, fn(Frame $f) => $f->isApplication()));
     }
 
     /**

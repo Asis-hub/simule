@@ -4,8 +4,8 @@ namespace Egulias\EmailValidator\Warning;
 
 class LocalTooLong extends Warning
 {
-    const CODE = 64;
-    const LOCAL_PART_LENGTH = 64;
+    final public const CODE = 64;
+    final public const LOCAL_PART_LENGTH = 64;
 
     public function __construct()
     {

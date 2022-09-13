@@ -135,7 +135,7 @@ class Person extends \Faker\Provider\Person
             $countyCode = static::$cnpCountyCodes[$county];
         }
 
-        $cnp = (string) $this->getGenderDigit($date, $gender, $isResident)
+        $cnp = (string) static::getGenderDigit($date, $gender, $isResident)
             . $date->format('ymd')
             . $countyCode
             . static::numerify('##%')
@@ -236,7 +236,7 @@ class Person extends \Faker\Provider\Person
      */
     protected function getChecksumDigit($value)
     {
-        $checkNumber = 279146358279;
+        $checkNumber = 279_146_358_279;
 
         $checksum = 0;
 

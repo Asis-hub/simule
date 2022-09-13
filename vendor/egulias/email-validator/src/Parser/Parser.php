@@ -27,18 +27,12 @@ abstract class Parser
     protected $warnings = [];
 
     /**
-     * @var EmailLexer
-     */
-    protected $lexer;
-
-    /**
      * @var int
      */
     protected $openedParenthesis = 0;
 
-    public function __construct(EmailLexer $lexer)
+    public function __construct(protected EmailLexer $lexer)
     {
-        $this->lexer = $lexer;
     }
 
     /**
@@ -88,7 +82,7 @@ abstract class Parser
         }
 
         $this->lexer->moveNext();
-        if ($this->lexer->isNextTokenAny(array(EmailLexer::GENERIC, EmailLexer::S_EMPTY))) {
+        if ($this->lexer->isNextTokenAny([EmailLexer::GENERIC, EmailLexer::S_EMPTY])) {
             throw new ExpectingATEXT();
         }
 
@@ -105,7 +99,7 @@ abstract class Parser
         try {
             $this->lexer->find(EmailLexer::S_CLOSEPARENTHESIS);
             return true;
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             throw new UnclosedComment();
         }
     }
@@ -193,7 +187,7 @@ abstract class Parser
             throw new ExpectingATEXT();
         }
 
-        if (!$this->lexer->isNextTokenAny(array(EmailLexer::S_SP, EmailLexer::S_HTAB, EmailLexer::C_DEL))) {
+        if (!$this->lexer->isNextTokenAny([EmailLexer::S_SP, EmailLexer::S_HTAB, EmailLexer::C_DEL])) {
             return false;
         }
 
@@ -224,7 +218,7 @@ abstract class Parser
         try {
             $this->lexer->find(EmailLexer::S_DQUOTE);
             $hasClosingQuote = true;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new UnclosedQuotedString();
         }
         $this->warnings[QuotedString::CODE] = new QuotedString($previous['value'], $this->lexer->token['value']);
@@ -238,11 +232,11 @@ abstract class Parser
             return;
         }
 
-        if (!$this->lexer->isNextTokenAny(array(EmailLexer::S_SP, EmailLexer::S_HTAB))) {
+        if (!$this->lexer->isNextTokenAny([EmailLexer::S_SP, EmailLexer::S_HTAB])) {
             throw new CRLFX2();
         }
 
-        if (!$this->lexer->isNextTokenAny(array(EmailLexer::S_SP, EmailLexer::S_HTAB))) {
+        if (!$this->lexer->isNextTokenAny([EmailLexer::S_SP, EmailLexer::S_HTAB])) {
             throw new CRLFAtTheEnd();
         }
     }
