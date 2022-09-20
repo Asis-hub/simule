@@ -22,6 +22,8 @@ Route::get('/lucky/number', fn() => controller('App\Http\Controllers\Calculos\Lu
 
 Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth'])->name('dashboard');
 
-Route::get('/admin', [ControllerCalculo::class, 'calcularMuestraDos']);
+#Route::get('/admin', [ControllerCalculo::class, 'calcularMuestraDos']);
+
+#Route::get('/lucky/number', [LuckyController::class, 'number']);
 
 require __DIR__.'/auth.php';

@@ -15,33 +15,31 @@
       <h1 class="txtheader">SIMULE</h1>
     </div>
 
-    <form action="/foo/bar" method="POST">
+    <form action="/python/cgi-enabled/formula_muestra.py" method="POST">
     @method('PUT')
       <label for="title_datos">Datos</label>
 
       <label for="lb_error">Error:</label>
 
-      <input id="lb_error" type="text">
+      <input id="lb_error" name="lb_error" type="text">
 
       <label for="lb_confiabilidad">Confiabilidad:</label>
 
-      <input id="lb_confiabilidad" type="text">
+      <input id="lb_confiabilidad" name="lb_confiabilidad" type="text">
 
       <label for="lb_p_necesaria">Proporción necesaria:</label>
 
-      <input id="lb_p_necesaria" type="text">
+      <input id="lb_p_necesaria" name="lb_p_necesaria" type="text">
 
       <label for="lb_p_restante">Proporción restante:</label>
 
-      <input id="lb_p_restante" type="text">
+      <input id="lb_p_restante" name="lb_p_restante" type="text">
 
       <label for="lb_estratos">Número de estratos:</label>
 
-      <input id="lb_estratos" type="text">
+      <input id="lb_estratos" name="lb_estratos" type="text">
 
       <label for="lb_encuestadores">Número de encuestadores:</label>
-
-      <input id="lb_encuestadores" type="text">
 
       <button type="submit" class="p-4 bg-blue-400">
         Generar
@@ -54,8 +52,7 @@
 
     -->
 
-      <label for="lb_respuesta">Respuesta:</label>
-      <output for="lb_respuesta">$result</output>
+      <output for="lb_respuesta">{$result}</output>
 
     
     

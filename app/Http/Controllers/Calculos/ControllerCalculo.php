@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers\Calculos;
 
@@ -15,6 +15,8 @@ class ControllerCalculo extends Controller{
 
         $process = new Process(['python', '/var/www/simule/resources/python/hola_mundo.py']);
 $process->run();
+
+
 
 
 // executes after the command finishes
