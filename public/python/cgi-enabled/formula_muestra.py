@@ -7,23 +7,27 @@
 #q = float(input("Ingresa la proporcion restante q \n")) #ESTOS PUEDEN VARIAR ENTRE CERO Y UNO 
 #n = float(input("Ingresa el tamaño de poblacion N \n")) #ESTE VALOR SALE DE ARCHIVO 1 TOTAL DE XALAPA 
 #e = float(input("Ingresa el Error E \n")) #ESTE VALOR PUEDE VARIAR ENTRE 0 Y 1
-print("Content-Type: text/html\n")
+
+print("Content-type: text/html\n")
 
 import cgi
+import json
 
 form = cgi.FieldStorage()
 
-e = float(form["lb_error"].value)
-z = float(form["lb_confiabilidad"].value)
-p = float(form["lb_p_necesaria"].value)
-q = float(form["lb_p_restante"].value)
-n = float(form["lb_estratos"].value)
-
-
+e = float(form["error_py"].value)
+z = float(form["confiabilidad_py"].value)
+p = float(form["p_necesaria_py"].value)
+q = float(form["p_restante_py"].value)
+n = float(form["estratos_py"].value)
 
 
 numerador = (z**2) * (p * q) * n #NUMERADOR
 denominador = ((e**2)*(n-1)) + ((z**2)*(p*q)) #DENOMINADOR
 
-print(numerador/denominador)
+resultado = numerador/denominador
 
+text = json.dumps(resultado)
+
+
+print (text)
