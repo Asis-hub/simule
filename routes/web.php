@@ -18,8 +18,6 @@ Route::get('/', fn() => view('pages.login'));
 
 Route::get('/admin', fn() => view('pages.admin'));
 
-Route::get('/lucky/number', fn() => controller('App\Http\Controllers\Calculos\LuckyController::number'));
-
 Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth'])->name('dashboard');
 
 #Route::get('/admin', [ControllerCalculo::class, 'calcularMuestraDos']);

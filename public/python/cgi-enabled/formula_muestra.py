@@ -12,6 +12,7 @@ print("Content-type: text/html\n")
 
 import cgi
 import json
+import numpy as np
 
 form = cgi.FieldStorage()
 
@@ -25,7 +26,8 @@ n = float(form["estratos_py"].value)
 numerador = (z**2) * (p * q) * n #NUMERADOR
 denominador = ((e**2)*(n-1)) + ((z**2)*(p*q)) #DENOMINADOR
 
-resultado = numerador/denominador
+resultado = int(np.ceil(numerador/denominador))
+
 
 text = json.dumps(resultado)
 
