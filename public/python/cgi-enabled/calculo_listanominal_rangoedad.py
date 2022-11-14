@@ -5,7 +5,7 @@ import numpy as np
 #INE
 #https://ine.mx/transparencia/datos-abiertos/#/archivo/datos-por-rangos-de-edad-entidad-de-origen-y-sexo-del-padron-electoral-y-lista-nominal-2022
 
-df = pd.read_excel(r'https://ine.mx/wp-content/uploads/2022/03/DatosAbiertos-derfe-pdln_edms_re_20220311.xlsx', sheet_name='pdln_edms_re_sexo_11032022')
+df = pd.read_excel(r'https://ine.mx/wp-content/uploads/2022/03/DatosAbiertos-derfe-pdln_edms_re_20220311.xlsx', sheet_name=0)
 
 suma_listahombres18 = df[df["NOMBRE\nMUNICIPIO"] == "XALAPA"]["LISTA_18_HOMBRES"].sum()
 suma_listamujeres18 = df[df["NOMBRE\nMUNICIPIO"] == "XALAPA"]["LISTA_18_MUJERES"].sum()
