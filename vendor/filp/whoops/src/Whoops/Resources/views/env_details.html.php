@@ -34,7 +34,7 @@
     <label>Registered Handlers</label>
     <?php foreach ($handlers as $i => $h): ?>
       <div class="handler <?php echo ($h === $handler) ? 'active' : ''?>">
-        <?php echo $i ?>. <?php echo $tpl->escape($h::class) ?>
+        <?php echo $i ?>. <?php echo $tpl->escape(get_class($h)) ?>
       </div>
     <?php endforeach ?>
   </div>

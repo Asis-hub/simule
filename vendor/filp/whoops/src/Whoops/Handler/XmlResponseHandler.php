@@ -16,13 +16,16 @@ use Whoops\Exception\Formatter;
  */
 class XmlResponseHandler extends Handler
 {
-    private bool $returnFrames = false;
+    /**
+     * @var bool
+     */
+    private $returnFrames = false;
 
     /**
      * @param  bool|null  $returnFrames
      * @return bool|static
      */
-    public function addTraceToOutput($returnFrames = null): bool|static
+    public function addTraceToOutput($returnFrames = null)
     {
         if (func_num_args() == 0) {
             return $this->returnFrames;

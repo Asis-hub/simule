@@ -1,11 +1,11 @@
 <?php
 
-namespace RectorPrefix202209\Clue\React\NDJson;
+namespace RectorPrefix202211\Clue\React\NDJson;
 
-use RectorPrefix202209\Evenement\EventEmitter;
-use RectorPrefix202209\React\Stream\ReadableStreamInterface;
-use RectorPrefix202209\React\Stream\Util;
-use RectorPrefix202209\React\Stream\WritableStreamInterface;
+use RectorPrefix202211\Evenement\EventEmitter;
+use RectorPrefix202211\React\Stream\ReadableStreamInterface;
+use RectorPrefix202211\React\Stream\Util;
+use RectorPrefix202211\React\Stream\WritableStreamInterface;
 /**
  * The Decoder / Parser reads from a plain stream and emits data objects for each JSON element
  */

@@ -3,9 +3,8 @@
 declare (strict_types=1);
 namespace Rector\TypeDeclaration\NodeAnalyzer;
 
+use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Param;
-use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\Node\Stmt\Function_;
 use Rector\NodeNameResolver\NodeNameResolver;
 final class ParamAnalyzer
 {
@@ -18,10 +17,7 @@ final class ParamAnalyzer
     {
         $this->nodeNameResolver = $nodeNameResolver;
     }
-    /**
-     * @param \PhpParser\Node\Stmt\ClassMethod|\PhpParser\Node\Stmt\Function_ $functionLike
-     */
-    public function getParamByName(string $desiredParamName, $functionLike) : ?Param
+    public function getParamByName(string $desiredParamName, FunctionLike $functionLike) : ?Param
     {
         foreach ($functionLike->getParams() as $param) {
             $paramName = $this->nodeNameResolver->getName($param);

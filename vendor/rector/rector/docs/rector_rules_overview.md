@@ -1,4 +1,4 @@
-# 394 Rules Overview
+# 400 Rules Overview
 
 <br>
 
@@ -6,7 +6,7 @@
 
 - [Arguments](#arguments) (5)
 
-- [CodeQuality](#codequality) (72)
+- [CodeQuality](#codequality) (77)
 
 - [CodingStyle](#codingstyle) (36)
 
@@ -64,7 +64,7 @@
 
 - [Transform](#transform) (34)
 
-- [TypeDeclaration](#typedeclaration) (29)
+- [TypeDeclaration](#typedeclaration) (30)
 
 - [Visibility](#visibility) (3)
 
@@ -211,7 +211,7 @@ return static function (RectorConfig $rectorConfig): void {
 
 ### SwapFuncCallArgumentsRector
 
-Swap arguments in function calls
+Reorder arguments in function calls
 
 :wrench: **configure it!**
 
@@ -225,7 +225,7 @@ use Rector\Config\RectorConfig;
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->ruleWithConfiguration(
         SwapFuncCallArgumentsRector::class,
-        [new SwapFuncCallArguments('some_function', [1, 0])]
+        [new SwapFuncCallArguments('some_function', [2, 1, 0])]
     );
 };
 ```
@@ -235,10 +235,10 @@ return static function (RectorConfig $rectorConfig): void {
 ```diff
  final class SomeClass
  {
-     public function run($one, $two)
+     public function run()
      {
--        return some_function($one, $two);
-+        return some_function($two, $one);
+-        return some_function('one', 'two', 'three');
++        return some_function('three', 'two', 'one');
      }
  }
 ```
@@ -379,6 +379,25 @@ Negated identical boolean compare to not identical compare (does not apply to no
 +        var_dump($a !== $b); // true
 +        var_dump($a !== $b); // true
          var_dump($a !== $b); // true
+     }
+ }
+```
+
+<br>
+
+### BoolvalToTypeCastRector
+
+Change `boolval()` to faster and readable (bool) `$value`
+
+- class: [`Rector\CodeQuality\Rector\FuncCall\BoolvalToTypeCastRector`](../rules/CodeQuality/Rector/FuncCall/BoolvalToTypeCastRector.php)
+
+```diff
+ class SomeClass
+ {
+     public function run($value)
+     {
+-        return boolval($value);
++        return (bool) $value;
      }
  }
 ```
@@ -674,6 +693,27 @@ Flip type control to use exclusive type
 
 <br>
 
+### FloatvalToTypeCastRector
+
+Change `floatval()` and `doubleval()` to faster and readable (float) `$value`
+
+- class: [`Rector\CodeQuality\Rector\FuncCall\FloatvalToTypeCastRector`](../rules/CodeQuality/Rector/FuncCall/FloatvalToTypeCastRector.php)
+
+```diff
+ class SomeClass
+ {
+     public function run($value)
+     {
+-        $a = floatval($value);
+-        $b = doubleval($value);
++        $a = (float) $value;
++        $b = (float) $value;
+     }
+ }
+```
+
+<br>
+
 ### ForRepeatedCountToOwnVariableRector
 
 Change `count()` in for function to own variable
@@ -808,12 +848,12 @@ Move property default from constructor to property default
  final class SomeClass
  {
 -    private $name;
--
--    public function __construct()
--    {
--        $this->name = 'John';
--    }
 +    private $name = 'John';
+
+     public function __construct()
+     {
+-        $this->name = 'John';
+     }
  }
 ```
 
@@ -1438,6 +1478,25 @@ Simplify tautology ternary to value
 
 <br>
 
+### SimplifyUselessLastVariableAssignRector
+
+Removes the latest useless variable assigns before a variable will return.
+
+- class: [`Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessLastVariableAssignRector`](../rules/CodeQuality/Rector/FunctionLike/SimplifyUselessLastVariableAssignRector.php)
+
+```diff
+ function ($b) {
+-    $a = true;
+     if ($b === 1) {
+         return $b;
+     }
+-    return $a;
++    return true;
+ };
+```
+
+<br>
+
 ### SimplifyUselessVariableRector
 
 Removes useless variable assigns
@@ -1539,6 +1598,25 @@ Changes strlen comparison to 0 to direct empty string compare
 
 <br>
 
+### StrvalToTypeCastRector
+
+Change `strval()` to faster and readable (string) `$value`
+
+- class: [`Rector\CodeQuality\Rector\FuncCall\StrvalToTypeCastRector`](../rules/CodeQuality/Rector/FuncCall/StrvalToTypeCastRector.php)
+
+```diff
+ class SomeClass
+ {
+     public function run($value)
+     {
+-        return strval($value);
++        return (string) $value;
+     }
+ }
+```
+
+<br>
+
 ### SwitchNegatedTernaryRector
 
 Switch negated ternary condition rector
@@ -1556,6 +1634,27 @@ Switch negated ternary condition rector
 +        return $upper
 +            ? strtoupper($name)
 +            : $name;
+     }
+ }
+```
+
+<br>
+
+### TernaryEmptyArrayArrayDimFetchToCoalesceRector
+
+Change ternary empty on array property with array dim fetch to coalesce operator
+
+- class: [`Rector\CodeQuality\Rector\Ternary\TernaryEmptyArrayArrayDimFetchToCoalesceRector`](../rules/CodeQuality/Rector/Ternary/TernaryEmptyArrayArrayDimFetchToCoalesceRector.php)
+
+```diff
+ final class SomeClass
+ {
+     private array $items = [];
+
+     public function run()
+     {
+-        return ! empty($this->items) ? $this->items[0] : 'default';
++        return $this->items[0] ?? 'default';
      }
  }
 ```
@@ -5819,16 +5918,21 @@ Changed nested annotations to attributes
 ```php
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
+use Rector\Php80\ValueObject\AnnotationPropertyToAttributeClass;
 use Rector\Php80\ValueObject\NestedAnnotationToAttribute;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->ruleWithConfiguration(
         NestedAnnotationToAttributeRector::class,
         [[
-            new NestedAnnotationToAttribute('Doctrine\ORM\Mapping\JoinTable', [
-                'Doctrine\ORM\Mapping\JoinColumn',
-                'Doctrine\ORM\Mapping\InverseJoinColumn',
-            ], false),
+            new NestedAnnotationToAttribute([
+                new AnnotationPropertyToAttributeClass('Doctrine\ORM\Mapping\JoinColumn', 'joinColumns', false),
+                new AnnotationPropertyToAttributeClass(
+                    'Doctrine\ORM\Mapping\InverseJoinColumn',
+                    'inverseJoinColumns',
+                    false
+                ),
+            ], 'Doctrine\ORM\Mapping\JoinTable', false),
         ]]
     );
 };
@@ -8608,6 +8712,19 @@ Adds `@return` annotation to array parameters inferred from the rest of the code
          return $this->values;
      }
  }
+```
+
+<br>
+
+### AddArrowFunctionReturnTypeRector
+
+Add known return type to arrow function
+
+- class: [`Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector`](../rules/TypeDeclaration/Rector/ArrowFunction/AddArrowFunctionReturnTypeRector.php)
+
+```diff
+-fn () => [];
++fn (): array => [];
 ```
 
 <br>

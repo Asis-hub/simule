@@ -3,9 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Core\StaticReflection\SourceLocator;
 
-use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
-use PhpParser\Node\Stmt\Namespace_;
 use PHPStan\BetterReflection\Identifier\Identifier;
 use PHPStan\BetterReflection\Identifier\IdentifierType;
 use PHPStan\BetterReflection\Reflection\Reflection;
@@ -16,7 +14,7 @@ use PHPStan\BetterReflection\SourceLocator\Located\LocatedSource;
 use PHPStan\BetterReflection\SourceLocator\Type\SourceLocator;
 use PHPStan\Reflection\ReflectionProvider;
 use Rector\Core\PhpParser\AstResolver;
-use RectorPrefix202209\Symfony\Contracts\Service\Attribute\Required;
+use RectorPrefix202211\Symfony\Contracts\Service\Attribute\Required;
 /**
  * This mimics classes that PHPStan fails to find in scope, but actually has an access in static reflection.
  * Some weird bug, that crashes on parent classes.
@@ -50,14 +48,14 @@ final class ParentAttributeSourceLocator implements SourceLocator
         $identifierName = $identifier->getName();
         if ($identifierName === 'Symfony\\Component\\DependencyInjection\\Attribute\\Autoconfigure' && $this->reflectionProvider->hasClass($identifierName)) {
             $classReflection = $this->reflectionProvider->getClass($identifierName);
-            $class = $this->astResolver->resolveClassFromClassReflection($classReflection, $identifierName);
+            $class = $this->astResolver->resolveClassFromClassReflection($classReflection);
             if ($class === null) {
                 return null;
             }
             $class->namespacedName = new FullyQualified($identifierName);
             $fakeLocatedSource = new LocatedSource('virtual', null);
             $classReflector = new ClassReflector($this);
-            return ReflectionClass::createFromNode($classReflector, $class, $fakeLocatedSource, new Namespace_(new Name('Symfony\\Component\\DependencyInjection\\Attribute')));
+            return ReflectionClass::createFromNode($classReflector, $class, $fakeLocatedSource, 'Symfony\\Component\\DependencyInjection\\Attribute');
         }
         return null;
     }

@@ -12,9 +12,9 @@ use Whoops\Handler\HandlerInterface;
 
 interface RunInterface
 {
-    public const EXCEPTION_HANDLER = "handleException";
-    public const ERROR_HANDLER     = "handleError";
-    public const SHUTDOWN_HANDLER  = "handleShutdown";
+    const EXCEPTION_HANDLER = "handleException";
+    const ERROR_HANDLER     = "handleError";
+    const SHUTDOWN_HANDLER  = "handleShutdown";
 
     /**
      * Pushes a handler to the end of the stack
@@ -23,7 +23,7 @@ interface RunInterface
      * @param  Callable|HandlerInterface $handler
      * @return Run
      */
-    public function pushHandler(callable|\Whoops\Handler\HandlerInterface $handler);
+    public function pushHandler($handler);
 
     /**
      * Removes the last handler in the stack and returns it.
@@ -66,9 +66,10 @@ interface RunInterface
     /**
      * Should Whoops allow Handlers to force the script to quit?
      *
+     * @param  bool|int $exit
      * @return bool
      */
-    public function allowQuit(bool|int $exit = null);
+    public function allowQuit($exit = null);
 
     /**
      * Silence particular errors in particular files
@@ -77,7 +78,7 @@ interface RunInterface
      * @param  int          $levels   Defaults to E_STRICT | E_DEPRECATED
      * @return \Whoops\Run
      */
-    public function silenceErrorsInPaths(array|string $patterns, $levels = 10240);
+    public function silenceErrorsInPaths($patterns, $levels = 10240);
 
     /**
      * Should Whoops send HTTP error code to the browser if possible?
@@ -102,9 +103,10 @@ interface RunInterface
      * Should Whoops push output directly to the client?
      * If this is false, output will be returned by handleException
      *
+     * @param  bool|int $send
      * @return bool
      */
-    public function writeToOutput(bool|int $send = null);
+    public function writeToOutput($send = null);
 
     /**
      * Handles an exception, ultimately generating a Whoops error

@@ -19,7 +19,7 @@ final class AssertCallAnalyzer
     /**
      * @var int
      */
-    private const MAX_NESTED_METHOD_CALL_LEVEL = 3;
+    private const MAX_NESTED_METHOD_CALL_LEVEL = 5;
     /**
      * @var array<string, bool>
      */
@@ -157,6 +157,7 @@ final class AssertCallAnalyzer
             'expectOutput*',
             'should*',
             'doTestFileInfo',
+            'expectNotToPerformAssertions',
         ]);
     }
 }

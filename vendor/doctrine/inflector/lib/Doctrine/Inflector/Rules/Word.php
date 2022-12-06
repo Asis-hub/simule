@@ -6,8 +6,12 @@ namespace Doctrine\Inflector\Rules;
 
 class Word
 {
-    public function __construct(private readonly string $word)
+    /** @var string */
+    private $word;
+
+    public function __construct(string $word)
     {
+        $this->word = $word;
     }
 
     public function getWord(): string

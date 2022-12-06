@@ -5,9 +5,9 @@
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 declare (strict_types=1);
-namespace RectorPrefix202209\Nette\Utils;
+namespace RectorPrefix202211\Nette\Utils;
 
-use RectorPrefix202209\Nette;
+use RectorPrefix202211\Nette;
 /**
  * Validation utilities.
  */
@@ -70,7 +70,7 @@ class Validators
     {
         if (!static::is($value, $expected)) {
             $expected = \str_replace(['|', ':'], [' or ', ' in range '], $expected);
-            static $translate = ['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'NULL' => 'null'];
+            $translate = ['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'NULL' => 'null'];
             $type = $translate[\gettype($value)] ?? \gettype($value);
             if (\is_int($value) || \is_float($value) || \is_string($value) && \strlen($value) < 40) {
                 $type .= ' ' . \var_export($value, \true);

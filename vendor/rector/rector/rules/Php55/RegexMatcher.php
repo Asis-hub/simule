@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Php55;
 
-use RectorPrefix202209\Nette\Utils\Strings;
+use RectorPrefix202211\Nette\Utils\Strings;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Scalar\String_;
@@ -43,6 +43,9 @@ final class RegexMatcher
             /** @var string $modifiers */
             $modifiers = Strings::after($pattern, $delimiter, -1);
             if (\strpos($modifiers, 'e') === \false) {
+                return null;
+            }
+            if (\in_array($pattern[\strlen($pattern) - 1], [')', '}', ']', '>'], \true)) {
                 return null;
             }
             $patternWithoutE = $this->createPatternWithoutE($pattern, $delimiter, $modifiers);

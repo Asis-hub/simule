@@ -23,11 +23,16 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
     /**
      * @var array[]
      */
-    private array $frames;
+    private $frames;
 
+    /**
+     * @param array $frames
+     */
     public function __construct(array $frames)
     {
-        $this->frames = array_map(fn($frame) => new Frame($frame), $frames);
+        $this->frames = array_map(function ($frame) {
+            return new Frame($frame);
+        }, $frames);
     }
 
     /**
@@ -57,7 +62,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
             if (!$frame instanceof Frame) {
                 throw new UnexpectedValueException(
-                    "Callable to " . self::class . "::map must return a Frame object"
+                    "Callable to " . __CLASS__ . "::map must return a Frame object"
                 );
             }
 
@@ -116,9 +121,9 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
      * @param int $offset
      */
     #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value): never
+    public function offsetSet($offset, $value)
     {
-        throw new \Exception(self::class . ' is read only');
+        throw new \Exception(__CLASS__ . ' is read only');
     }
 
     /**
@@ -126,9 +131,9 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
      * @param int $offset
      */
     #[ReturnTypeWillChange]
-    public function offsetUnset($offset): never
+    public function offsetUnset($offset)
     {
-        throw new \Exception(self::class . ' is read only');
+        throw new \Exception(__CLASS__ . ' is read only');
     }
 
     /**
@@ -148,7 +153,9 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
      */
     public function countIsApplication()
     {
-        return count(array_filter($this->frames, fn(Frame $f) => $f->isApplication()));
+        return count(array_filter($this->frames, function (Frame $f) {
+            return $f->isApplication();
+        }));
     }
 
     /**

@@ -14,7 +14,10 @@ class AddMoreFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->renameColumn('name', 'username');
+            $table->string('nombre');
+            $table->string('esActivo');
+            $table->string('tipo');
         });
     }
 

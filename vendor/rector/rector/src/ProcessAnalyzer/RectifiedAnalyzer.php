@@ -59,7 +59,15 @@ final class RectifiedAnalyzer
      */
     private function hasCreatedByRule(string $rectorClass, Node $node, ?Node $originalNode) : bool
     {
-        $originalNode = $originalNode ?? $node;
+        if (!$originalNode instanceof Node) {
+            $createdByRule = $node->getAttribute(AttributeKey::CREATED_BY_RULE) ?? [];
+            \end($createdByRule);
+            $lastRectorRuleKey = \key($createdByRule);
+            if ($lastRectorRuleKey === null) {
+                return \false;
+            }
+            return $createdByRule[$lastRectorRuleKey] === $rectorClass;
+        }
         $createdByRule = $originalNode->getAttribute(AttributeKey::CREATED_BY_RULE) ?? [];
         return \in_array($rectorClass, $createdByRule, \true);
     }
@@ -79,26 +87,21 @@ final class RectifiedAnalyzer
         if ($originalNode instanceof Node) {
             return \true;
         }
-        if ($this->isPreviousCreatedByRuleAttributeEquals($rectifiedNodeClass, $rectifiedNodeNode, $node)) {
+        $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
+        if (!$parentNode instanceof Node) {
             return \true;
         }
+        $parentOriginalNode = $parentNode->getAttribute(AttributeKey::ORIGINAL_NODE);
+        if ($parentOriginalNode instanceof Node) {
+            return \true;
+        }
+        /**
+         * Start token pos must be < 0 to continue, as the node and parent node just re-printed
+         *
+         * - Node's original node is null
+         * - Parent Node's original node is null
+         */
         $startTokenPos = $node->getStartTokenPos();
         return $startTokenPos < 0;
-    }
-    /**
-     * @param class-string<RectorInterface> $rectifiedNodeClass
-     */
-    private function isPreviousCreatedByRuleAttributeEquals(string $rectifiedNodeClass, Node $rectifiedNodeNode, Node $node) : bool
-    {
-        /** @var class-string<RectorInterface>[] $createdByRule */
-        $createdByRule = $node->getAttribute(AttributeKey::CREATED_BY_RULE) ?? [];
-        if (\count($createdByRule) !== 1) {
-            return \false;
-        }
-        // different rule, allowed
-        if (\current($createdByRule) !== $rectifiedNodeClass) {
-            return \true;
-        }
-        return $rectifiedNodeNode === $node;
     }
 }

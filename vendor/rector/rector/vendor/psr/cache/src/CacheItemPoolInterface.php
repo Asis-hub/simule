@@ -1,6 +1,6 @@
 <?php
 
-namespace RectorPrefix202209\Psr\Cache;
+namespace RectorPrefix202211\Psr\Cache;
 
 /**
  * CacheItemPoolInterface generates CacheItemInterface objects.

@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-namespace RectorPrefix202209;
+namespace RectorPrefix202211;
 
 use Rector\Config\RectorConfig;
 use Rector\Symfony\Rector\BinaryOp\ResponseStatusCodeRector;
@@ -17,5 +17,6 @@ return static function (RectorConfig $rectorConfig) : void {
         // int and string literals to const fetches
         ResponseStatusCodeRector::class,
         LiteralGetToRequestClassConstantRector::class,
+        \Rector\Symfony\Rector\ClassMethod\RemoveUnusedRequestParamRector::class,
     ]);
 };

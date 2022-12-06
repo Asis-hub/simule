@@ -11,6 +11,7 @@ class Formatter
     /**
      * Returns all basic information about the exception in a simple array
      * for further convertion to other languages
+     * @param  Inspector $inspector
      * @param  bool      $shouldAddTrace
      * @return array
      */
@@ -18,7 +19,7 @@ class Formatter
     {
         $exception = $inspector->getException();
         $response = [
-            'type'    => $exception::class,
+            'type'    => get_class($exception),
             'message' => $exception->getMessage(),
             'code'    => $exception->getCode(),
             'file'    => $exception->getFile(),

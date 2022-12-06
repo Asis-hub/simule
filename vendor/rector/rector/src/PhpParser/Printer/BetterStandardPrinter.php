@@ -3,7 +3,7 @@
 declare (strict_types=1);
 namespace Rector\Core\PhpParser\Printer;
 
-use RectorPrefix202209\Nette\Utils\Strings;
+use RectorPrefix202211\Nette\Utils\Strings;
 use PhpParser\Comment;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
@@ -15,8 +15,10 @@ use PhpParser\Node\Expr\Ternary;
 use PhpParser\Node\Expr\Yield_;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Param;
 use PhpParser\Node\Scalar\DNumber;
 use PhpParser\Node\Scalar\EncapsedStringPart;
+use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -216,8 +218,8 @@ final class BetterStandardPrinter extends Standard implements NodePrinterInterfa
      */
     protected function pScalar_DNumber(DNumber $dNumber) : string
     {
-        if (\is_string($dNumber->value)) {
-            return $dNumber->value;
+        if ($this->shouldPrintNewRawValue($dNumber)) {
+            return (string) $dNumber->getAttribute(AttributeKey::RAW_VALUE);
         }
         return parent::pScalar_DNumber($dNumber);
     }
@@ -383,6 +385,32 @@ final class BetterStandardPrinter extends Standard implements NodePrinterInterfa
     protected function pModifiers(int $modifiers) : string
     {
         return (($modifiers & Class_::MODIFIER_FINAL) !== 0 ? 'final ' : '') . (($modifiers & Class_::MODIFIER_ABSTRACT) !== 0 ? 'abstract ' : '') . (($modifiers & Class_::MODIFIER_PUBLIC) !== 0 ? 'public ' : '') . (($modifiers & Class_::MODIFIER_PROTECTED) !== 0 ? 'protected ' : '') . (($modifiers & Class_::MODIFIER_PRIVATE) !== 0 ? 'private ' : '') . (($modifiers & Class_::MODIFIER_STATIC) !== 0 ? 'static ' : '') . (($modifiers & Class_::MODIFIER_READONLY) !== 0 ? 'readonly ' : '');
+    }
+    /**
+     * Invoke re-print even if only raw value was changed.
+     * That allows PHPStan to use int strict types, while changing the value with literal "_"
+     * @return string|int
+     */
+    protected function pScalar_LNumber(LNumber $lNumber)
+    {
+        if ($this->shouldPrintNewRawValue($lNumber)) {
+            return (string) $lNumber->getAttribute(AttributeKey::RAW_VALUE);
+        }
+        return parent::pScalar_LNumber($lNumber);
+    }
+    /**
+     * Keep attributes on newlines
+     */
+    protected function pParam(Param $param) : string
+    {
+        return $this->pAttrGroups($param->attrGroups) . $this->pModifiers($param->flags) . ($param->type instanceof Node ? $this->p($param->type) . ' ' : '') . ($param->byRef ? '&' : '') . ($param->variadic ? '...' : '') . $this->p($param->var) . ($param->default instanceof Expr ? ' = ' . $this->p($param->default) : '');
+    }
+    /**
+     * @param \PhpParser\Node\Scalar\LNumber|\PhpParser\Node\Scalar\DNumber $lNumber
+     */
+    private function shouldPrintNewRawValue($lNumber) : bool
+    {
+        return $lNumber->getAttribute(AttributeKey::REPRINT_RAW_VALUE) === \true;
     }
     private function resolveContentOnExpr(Expr $expr, string $content) : string
     {

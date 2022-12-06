@@ -68,18 +68,21 @@ final class AddRouteAnnotationRector extends AbstractRector
         }
         $controllerReference = $this->resolveControllerReference($class, $node);
         // is there a route for this annotation?
-        $symfonyRouteMetadata = $this->matchSymfonyRouteMetadataByControllerReference($controllerReference);
-        if (!$symfonyRouteMetadata instanceof SymfonyRouteMetadata) {
+        $symfonyRoutes = $this->matchSymfonyRouteMetadataByControllerReference($controllerReference);
+        if ($symfonyRoutes === []) {
             return null;
         }
+        // skip if already has an annotation
         $phpDocInfo = $this->phpDocInfoFactory->createFromNodeOrEmpty($node);
         $doctrineAnnotationTagValueNode = $phpDocInfo->getByAnnotationClass(SymfonyAnnotation::ROUTE);
         if ($doctrineAnnotationTagValueNode !== null) {
             return null;
         }
-        $items = $this->createRouteItems($symfonyRouteMetadata);
-        $symfonyRouteTagValueNode = $this->symfonyRouteTagValueNodeFactory->createFromItems($items);
-        $phpDocInfo->addTagValueNode($symfonyRouteTagValueNode);
+        foreach ($symfonyRoutes as $symfonyRoute) {
+            $items = $this->createRouteItems($symfonyRoute);
+            $symfonyRouteTagValueNode = $this->symfonyRouteTagValueNodeFactory->createFromItems($items);
+            $phpDocInfo->addTagValueNode($symfonyRouteTagValueNode);
+        }
         return $node;
     }
     public function getRuleDefinition() : RuleDefinition
@@ -124,25 +127,6 @@ CODE_SAMPLE
         $arrayItemNodes = [];
         $arrayItemNodes[] = new ArrayItemNode($symfonyRouteMetadata->getPath(), 'path', String_::KIND_DOUBLE_QUOTED);
         $arrayItemNodes[] = new ArrayItemNode($symfonyRouteMetadata->getName(), 'name', String_::KIND_DOUBLE_QUOTED);
-        $defaultsWithoutController = $symfonyRouteMetadata->getDefaultsWithoutController();
-        if ($defaultsWithoutController !== []) {
-            $defaultsWithoutControllerCurlyList = $this->createCurlyQuoted($defaultsWithoutController);
-            $arrayItemNodes[] = new ArrayItemNode($defaultsWithoutControllerCurlyList, 'defaults');
-        }
-        if ($symfonyRouteMetadata->getHost() !== '') {
-            $arrayItemNodes[] = new ArrayItemNode($symfonyRouteMetadata->getHost(), 'host');
-        }
-        if ($symfonyRouteMetadata->getSchemes() !== []) {
-            $schemesArrayItemNodes = $this->createCurlyQuoted($symfonyRouteMetadata->getSchemes());
-            $arrayItemNodes[] = new ArrayItemNode($schemesArrayItemNodes, 'schemes');
-        }
-        if ($symfonyRouteMetadata->getMethods() !== []) {
-            $methodsCurlyList = $this->createCurlyQuoted($symfonyRouteMetadata->getMethods());
-            $arrayItemNodes[] = new ArrayItemNode($methodsCurlyList, 'methods');
-        }
-        if ($symfonyRouteMetadata->getCondition() !== '') {
-            $arrayItemNodes[] = new ArrayItemNode($symfonyRouteMetadata->getCondition(), 'condition', String_::KIND_DOUBLE_QUOTED);
-        }
         if ($symfonyRouteMetadata->getRequirements() !== []) {
             $requriementsCurlyList = $this->createCurlyQuoted($symfonyRouteMetadata->getRequirements());
             $arrayItemNodes[] = new ArrayItemNode($requriementsCurlyList, 'requirements');
@@ -152,16 +136,39 @@ CODE_SAMPLE
             $optionsCurlyQuoted = $this->createCurlyQuoted($optionsWithoutDefaultCompilerClass);
             $arrayItemNodes[] = new ArrayItemNode($optionsCurlyQuoted, 'options');
         }
+        $defaultsWithoutController = $symfonyRouteMetadata->getDefaultsWithoutController();
+        if ($defaultsWithoutController !== []) {
+            $defaultsWithoutControllerCurlyList = $this->createCurlyQuoted($defaultsWithoutController);
+            $arrayItemNodes[] = new ArrayItemNode($defaultsWithoutControllerCurlyList, 'defaults');
+        }
+        if ($symfonyRouteMetadata->getHost() !== '') {
+            $arrayItemNodes[] = new ArrayItemNode($symfonyRouteMetadata->getHost(), 'host', String_::KIND_DOUBLE_QUOTED);
+        }
+        if ($symfonyRouteMetadata->getMethods() !== []) {
+            $methodsCurlyList = $this->createCurlyQuoted($symfonyRouteMetadata->getMethods());
+            $arrayItemNodes[] = new ArrayItemNode($methodsCurlyList, 'methods');
+        }
+        if ($symfonyRouteMetadata->getSchemes() !== []) {
+            $schemesArrayItemNodes = $this->createCurlyQuoted($symfonyRouteMetadata->getSchemes());
+            $arrayItemNodes[] = new ArrayItemNode($schemesArrayItemNodes, 'schemes');
+        }
+        if ($symfonyRouteMetadata->getCondition() !== '') {
+            $arrayItemNodes[] = new ArrayItemNode($symfonyRouteMetadata->getCondition(), 'condition', String_::KIND_DOUBLE_QUOTED);
+        }
         return $arrayItemNodes;
     }
-    private function matchSymfonyRouteMetadataByControllerReference(string $controllerReference) : ?SymfonyRouteMetadata
+    /**
+     * @return SymfonyRouteMetadata[]
+     */
+    private function matchSymfonyRouteMetadataByControllerReference(string $controllerReference) : array
     {
+        $matches = [];
         foreach ($this->symfonyRoutesProvider->provide() as $symfonyRouteMetadata) {
             if ($symfonyRouteMetadata->getControllerReference() === $controllerReference) {
-                return $symfonyRouteMetadata;
+                $matches[] = $symfonyRouteMetadata;
             }
         }
-        return null;
+        return $matches;
     }
     /**
      * @param mixed[] $values
@@ -171,11 +178,16 @@ CODE_SAMPLE
         $methodsArrayItems = $this->arrayParser->createArrayFromValues($values);
         $curlyListNode = new CurlyListNode($methodsArrayItems);
         foreach ($curlyListNode->values as $nestedMethodsArrayItem) {
-            if (!\is_numeric($nestedMethodsArrayItem->value)) {
+            if (\is_string($nestedMethodsArrayItem->value)) {
                 $nestedMethodsArrayItem->kindValueQuoted = String_::KIND_DOUBLE_QUOTED;
             }
             if (\is_string($nestedMethodsArrayItem->key)) {
                 $nestedMethodsArrayItem->kindKeyQuoted = String_::KIND_DOUBLE_QUOTED;
+            }
+            if ($nestedMethodsArrayItem->value === null) {
+                $nestedMethodsArrayItem->value = 'null';
+            } elseif (\is_bool($nestedMethodsArrayItem->value)) {
+                $nestedMethodsArrayItem->value = $nestedMethodsArrayItem->value ? 'true' : 'false';
             }
         }
         return $curlyListNode;

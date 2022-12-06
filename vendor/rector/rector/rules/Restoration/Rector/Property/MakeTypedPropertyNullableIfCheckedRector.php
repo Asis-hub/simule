@@ -5,6 +5,7 @@ namespace Rector\Restoration\Rector\Property;
 
 use PhpParser\Node;
 use PhpParser\Node\ComplexType;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
 use PhpParser\Node\Expr\BooleanNot;
@@ -14,6 +15,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\PropertyProperty;
 use Rector\Core\Rector\AbstractRector;
+use Rector\Privatization\NodeManipulator\VisibilityManipulator;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
@@ -21,6 +23,15 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 final class MakeTypedPropertyNullableIfCheckedRector extends AbstractRector
 {
+    /**
+     * @readonly
+     * @var \Rector\Privatization\NodeManipulator\VisibilityManipulator
+     */
+    private $visibilityManipulator;
+    public function __construct(VisibilityManipulator $visibilityManipulator)
+    {
+        $this->visibilityManipulator = $visibilityManipulator;
+    }
     public function getRuleDefinition() : RuleDefinition
     {
         return new RuleDefinition('Make typed property nullable if checked', [new CodeSample(<<<'CODE_SAMPLE'
@@ -68,8 +79,12 @@ CODE_SAMPLE
         }
         /** @var PropertyProperty $onlyProperty */
         $onlyProperty = $node->props[0];
-        $isPropretyNullChecked = $this->isPropertyNullChecked($onlyProperty);
-        if (!$isPropretyNullChecked) {
+        //Skip properties with default values
+        if ($onlyProperty->default instanceof Expr) {
+            return null;
+        }
+        $isPropertyNullChecked = $this->isPropertyNullChecked($onlyProperty);
+        if (!$isPropertyNullChecked) {
             return null;
         }
         if ($node->type instanceof ComplexType) {
@@ -81,6 +96,9 @@ CODE_SAMPLE
         }
         $node->type = new NullableType($currentPropertyType);
         $onlyProperty->default = $this->nodeFactory->createNull();
+        if ($node->isReadonly()) {
+            $this->visibilityManipulator->removeReadonly($node);
+        }
         return $node;
     }
     private function shouldSkipProperty(Property $property) : bool

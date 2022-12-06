@@ -3,8 +3,8 @@
 declare (strict_types=1);
 namespace Rector\Core\NodeManipulator;
 
-use RectorPrefix202209\Doctrine\ORM\Mapping\ManyToMany;
-use RectorPrefix202209\Doctrine\ORM\Mapping\Table;
+use RectorPrefix202211\Doctrine\ORM\Mapping\ManyToMany;
+use RectorPrefix202211\Doctrine\ORM\Mapping\Table;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
@@ -314,7 +314,7 @@ final class PropertyManipulator
         if ($parentNode instanceof ArrayDimFetch) {
             return !$this->readWritePropertyAnalyzer->isRead($propertyFetch);
         }
-        return \false;
+        return $parentNode instanceof Unset_;
     }
     /**
      * @param \PhpParser\Node\Expr\MethodCall|\PhpParser\Node\Expr\StaticCall $node

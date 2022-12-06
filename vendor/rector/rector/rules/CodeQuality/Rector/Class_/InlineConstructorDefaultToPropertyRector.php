@@ -7,6 +7,7 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
+use PhpParser\Node\Stmt\PropertyProperty;
 use Rector\CodeQuality\NodeAnalyzer\ConstructorPropertyDefaultExprResolver;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\ValueObject\MethodName;
@@ -43,6 +44,10 @@ CODE_SAMPLE
 final class SomeClass
 {
     private $name = 'John';
+
+    public function __construct()
+    {
+    }
 }
 CODE_SAMPLE
 )]);
@@ -69,22 +74,34 @@ CODE_SAMPLE
             return null;
         }
         $hasChanged = \false;
+        $propertyProperties = $this->getNonReadonlyPropertyProperty($node);
         foreach ($defaultPropertyExprAssigns as $defaultPropertyExprAssign) {
-            $property = $node->getProperty($defaultPropertyExprAssign->getPropertyName());
-            if (!$property instanceof Property) {
-                continue;
+            foreach ($propertyProperties as $propertyProperty) {
+                if (!$this->isName($propertyProperty, $defaultPropertyExprAssign->getPropertyName())) {
+                    continue;
+                }
+                $propertyProperty->default = $defaultPropertyExprAssign->getDefaultExpr();
+                $hasChanged = \true;
+                $this->removeNode($defaultPropertyExprAssign->getAssignExpression());
             }
-            if ($property->isReadonly()) {
-                continue;
-            }
-            $propertyProperty = $property->props[0];
-            $propertyProperty->default = $defaultPropertyExprAssign->getDefaultExpr();
-            $hasChanged = \true;
-            $this->removeNode($defaultPropertyExprAssign->getAssignExpression());
         }
         if (!$hasChanged) {
             return null;
         }
         return $node;
+    }
+    /**
+     * @return PropertyProperty[]
+     */
+    private function getNonReadonlyPropertyProperty(Class_ $class) : array
+    {
+        $propertyProperties = [];
+        foreach ($class->getProperties() as $property) {
+            if ($property->isReadonly()) {
+                continue;
+            }
+            $propertyProperties = \array_merge($propertyProperties, $property->props);
+        }
+        return $propertyProperties;
     }
 }

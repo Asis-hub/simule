@@ -19,7 +19,9 @@ class SystemFacade
     }
 
     /**
+     * @param callable $handler
      * @param int      $types
+     *
      * @return callable|null
      */
     public function setErrorHandler(callable $handler, $types = 'use-php-defaults')
@@ -32,6 +34,8 @@ class SystemFacade
     }
 
     /**
+     * @param callable $handler
+     *
      * @return callable|null
      */
     public function setExceptionHandler(callable $handler)
@@ -56,6 +60,8 @@ class SystemFacade
     }
 
     /**
+     * @param callable $function
+     *
      * @return void
      */
     public function registerShutdownFunction(callable $function)
@@ -63,7 +69,10 @@ class SystemFacade
         register_shutdown_function($function);
     }
 
-    public function cleanOutputBuffer(): string|false
+    /**
+     * @return string|false
+     */
+    public function cleanOutputBuffer()
     {
         return ob_get_clean();
     }
@@ -128,7 +137,7 @@ class SystemFacade
     /**
      * @param int $exitStatus
      */
-    public function stopExecution($exitStatus): never
+    public function stopExecution($exitStatus)
     {
         exit($exitStatus);
     }

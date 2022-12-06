@@ -40,15 +40,15 @@ final class DoctrineSetList implements SetListInterface
     /**
      * @var string
      */
-    public const DOCTRINE_GEDMO_TO_KNPLABS = __DIR__ . '/../../config/sets/doctrine-gedmo-to-knplabs.php';
-    /**
-     * @var string
-     */
     public const DOCTRINE_REPOSITORY_AS_SERVICE = __DIR__ . '/../../config/sets/doctrine-repository-as-service.php';
     /**
      * @var string
      */
     public const DOCTRINE_ORM_29 = __DIR__ . '/../../config/sets/doctrine-orm-29.php';
+    /**
+     * @var string
+     */
+    public const DOCTRINE_ORM_213 = __DIR__ . '/../../config/sets/doctrine-orm-213.php';
     /**
      * @var string
      */

@@ -18,32 +18,53 @@ use Whoops\Util\SystemFacade;
 
 final class Run implements RunInterface
 {
-    private ?bool $isRegistered = null;
+    /**
+     * @var bool
+     */
+    private $isRegistered;
 
-    private bool $allowQuit       = true;
+    /**
+     * @var bool
+     */
+    private $allowQuit       = true;
 
-    private bool $sendOutput      = true;
+    /**
+     * @var bool
+     */
+    private $sendOutput      = true;
 
-    private int|bool $sendHttpCode    = 500;
+    /**
+     * @var integer|false
+     */
+    private $sendHttpCode    = 500;
 
-    private int|bool $sendExitCode    = 1;
+    /**
+     * @var integer|false
+     */
+    private $sendExitCode    = 1;
 
     /**
      * @var HandlerInterface[]
      */
-    private array $handlerStack = [];
+    private $handlerStack = [];
 
     /**
+     * @var array
      * @psalm-var list<array{patterns: string, levels: int}>
      */
-    private array $silencedPatterns = [];
+    private $silencedPatterns = [];
 
-    private readonly \Whoops\Util\SystemFacade $system;
+    /**
+     * @var SystemFacade
+     */
+    private $system;
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions.
+     *
+     * @var bool
      */
-    private bool $canThrowExceptions = true;
+    private $canThrowExceptions = true;
 
     public function __construct(SystemFacade $system = null)
     {
@@ -57,7 +78,7 @@ final class Run implements RunInterface
      *
      * @return Run
      */
-    public function appendHandler(callable|\Whoops\Handler\HandlerInterface $handler)
+    public function appendHandler($handler)
     {
         array_unshift($this->handlerStack, $this->resolveHandler($handler));
         return $this;
@@ -70,7 +91,7 @@ final class Run implements RunInterface
      *
      * @return Run
      */
-    public function prependHandler(callable|\Whoops\Handler\HandlerInterface $handler)
+    public function prependHandler($handler)
     {
         return $this->pushHandler($handler);
     }
@@ -154,10 +175,10 @@ final class Run implements RunInterface
         if (!$this->isRegistered) {
             // Workaround PHP bug 42098
             // https://bugs.php.net/bug.php?id=42098
-            class_exists('\\' . \Whoops\Exception\ErrorException::class);
-            class_exists('\\' . \Whoops\Exception\FrameCollection::class);
-            class_exists('\\' . \Whoops\Exception\Frame::class);
-            class_exists('\\' . \Whoops\Exception\Inspector::class);
+            class_exists("\\Whoops\\Exception\\ErrorException");
+            class_exists("\\Whoops\\Exception\\FrameCollection");
+            class_exists("\\Whoops\\Exception\\Frame");
+            class_exists("\\Whoops\\Exception\\Inspector");
 
             $this->system->setErrorHandler([$this, self::ERROR_HANDLER]);
             $this->system->setExceptionHandler([$this, self::EXCEPTION_HANDLER]);
@@ -215,10 +236,12 @@ final class Run implements RunInterface
         $this->silencedPatterns = array_merge(
             $this->silencedPatterns,
             array_map(
-                fn($pattern) => [
-                    "pattern" => $pattern,
-                    "levels" => $levels,
-                ],
+                function ($pattern) use ($levels) {
+                    return [
+                        "pattern" => $pattern,
+                        "levels" => $levels,
+                    ];
+                },
                 (array) $patterns
             )
         );
@@ -243,10 +266,11 @@ final class Run implements RunInterface
      *
      * @param bool|int $code
      *
+     * @return int|false
      *
      * @throws InvalidArgumentException
      */
-    public function sendHttpCode($code = null): int|false
+    public function sendHttpCode($code = null)
     {
         if (func_num_args() == 0) {
             return $this->sendHttpCode;
@@ -483,7 +507,7 @@ final class Run implements RunInterface
      *
      * @throws InvalidArgumentException
      */
-    private function resolveHandler(callable|\Whoops\Handler\HandlerInterface $handler)
+    private function resolveHandler($handler)
     {
         if (is_callable($handler)) {
             $handler = new CallbackHandler($handler);
@@ -492,7 +516,7 @@ final class Run implements RunInterface
         if (!$handler instanceof HandlerInterface) {
             throw new InvalidArgumentException(
                 "Handler must be a callable, or instance of "
-                . \Whoops\Handler\HandlerInterface::class
+                . "Whoops\\Handler\\HandlerInterface"
             );
         }
 

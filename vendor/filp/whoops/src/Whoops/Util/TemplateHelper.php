@@ -19,24 +19,34 @@ class TemplateHelper
 {
     /**
      * An array of variables to be passed to all templates
+     * @var array
      */
-    private array $variables = [];
+    private $variables = [];
 
-    private ?\Symfony\Component\VarDumper\Dumper\HtmlDumper $htmlDumper = null;
+    /**
+     * @var HtmlDumper
+     */
+    private $htmlDumper;
 
-    private ?\Whoops\Util\HtmlDumperOutput $htmlDumperOutput = null;
+    /**
+     * @var HtmlDumperOutput
+     */
+    private $htmlDumperOutput;
 
     /**
      * @var AbstractCloner
      */
     private $cloner;
 
-    private string $applicationRootPath;
+    /**
+     * @var string
+     */
+    private $applicationRootPath;
 
     public function __construct()
     {
         // root path for ordinary composer projects
-        $this->applicationRootPath = dirname(__DIR__, 6);
+        $this->applicationRootPath = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
     }
 
     /**
@@ -117,7 +127,7 @@ class TemplateHelper
 
     private function getDumper()
     {
-        if (!$this->htmlDumper && class_exists(\Symfony\Component\VarDumper\Cloner\VarCloner::class)) {
+        if (!$this->htmlDumper && class_exists('Symfony\Component\VarDumper\Cloner\VarCloner')) {
             $this->htmlDumperOutput = new HtmlDumperOutput();
             // re-use the same var-dumper instance, so it won't re-render the global styles/scripts on each dump.
             $this->htmlDumper = new HtmlDumper($this->htmlDumperOutput);
@@ -145,16 +155,17 @@ class TemplateHelper
     /**
      * Format the given value into a human readable string.
      *
+     * @param  mixed $value
      * @return string
      */
-    public function dump(mixed $value)
+    public function dump($value)
     {
         $dumper = $this->getDumper();
 
         if ($dumper) {
             // re-use the same DumpOutput instance, so it won't re-render the global styles/scripts on each dump.
             // exclude verbose information (e.g. exception stack traces)
-            if (class_exists(\Symfony\Component\VarDumper\Caster\Caster::class)) {
+            if (class_exists('Symfony\Component\VarDumper\Caster\Caster')) {
                 $cloneVar = $this->getCloner()->cloneVar($value, Caster::EXCLUDE_VERBOSE);
                 // Symfony VarDumper 2.6 Caster class dont exist.
             } else {
@@ -178,6 +189,7 @@ class TemplateHelper
     /**
      * Format the args of the given Frame as a human readable html string
      *
+     * @param  Frame $frame
      * @return string the rendered html
      */
     public function dumpArgs(Frame $frame)
@@ -220,6 +232,7 @@ class TemplateHelper
      * passed to the template.
      *
      * @param string $template
+     * @param array  $additionalVariables
      */
     public function render($template, array $additionalVariables = null)
     {
@@ -233,8 +246,7 @@ class TemplateHelper
         }
 
         call_user_func(function () {
-            $funcGetArg = func_get_arg(1);
-            extract($funcGetArg);
+            extract(func_get_arg(1));
             require func_get_arg(0);
         }, $template, $variables);
     }
@@ -242,6 +254,8 @@ class TemplateHelper
     /**
      * Sets the variables to be passed to all templates rendered
      * by this template helper.
+     *
+     * @param array $variables
      */
     public function setVariables(array $variables)
     {
@@ -252,8 +266,9 @@ class TemplateHelper
      * Sets a single template variable, by its name:
      *
      * @param string $variableName
+     * @param mixed  $variableValue
      */
-    public function setVariable($variableName, mixed $variableValue)
+    public function setVariable($variableName, $variableValue)
     {
         $this->variables[$variableName] = $variableValue;
     }
@@ -263,11 +278,13 @@ class TemplateHelper
      * $defaultValue if the variable does not exist
      *
      * @param  string $variableName
+     * @param  mixed  $defaultValue
      * @return mixed
      */
-    public function getVariable($variableName, mixed $defaultValue = null)
+    public function getVariable($variableName, $defaultValue = null)
     {
-        return $this->variables[$variableName] ?? $defaultValue;
+        return isset($this->variables[$variableName]) ?
+            $this->variables[$variableName] : $defaultValue;
     }
 
     /**

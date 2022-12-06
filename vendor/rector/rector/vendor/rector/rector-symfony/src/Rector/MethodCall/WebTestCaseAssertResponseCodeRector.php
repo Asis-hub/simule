@@ -128,10 +128,7 @@ CODE_SAMPLE
         if (!$this->nodeNameResolver->isName($nestedMethodCall->name, 'getStatusCode')) {
             return null;
         }
-        $statusCode = $this->valueResolver->getValue($args[0]->value);
-        if ($statusCode === null) {
-            return null;
-        }
+        $statusCode = $this->valueResolver->getValue($args[0]->value, \true);
         // handled by another method
         if ($statusCode === 200) {
             return null;

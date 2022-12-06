@@ -1,16 +1,16 @@
 <?php
 
-namespace RectorPrefix202209\React\ChildProcess;
+namespace RectorPrefix202211\React\ChildProcess;
 
-use RectorPrefix202209\Evenement\EventEmitter;
-use RectorPrefix202209\React\EventLoop\Loop;
-use RectorPrefix202209\React\EventLoop\LoopInterface;
-use RectorPrefix202209\React\Stream\ReadableResourceStream;
-use RectorPrefix202209\React\Stream\ReadableStreamInterface;
-use RectorPrefix202209\React\Stream\WritableResourceStream;
-use RectorPrefix202209\React\Stream\WritableStreamInterface;
-use RectorPrefix202209\React\Stream\DuplexResourceStream;
-use RectorPrefix202209\React\Stream\DuplexStreamInterface;
+use RectorPrefix202211\Evenement\EventEmitter;
+use RectorPrefix202211\React\EventLoop\Loop;
+use RectorPrefix202211\React\EventLoop\LoopInterface;
+use RectorPrefix202211\React\Stream\ReadableResourceStream;
+use RectorPrefix202211\React\Stream\ReadableStreamInterface;
+use RectorPrefix202211\React\Stream\WritableResourceStream;
+use RectorPrefix202211\React\Stream\WritableStreamInterface;
+use RectorPrefix202211\React\Stream\DuplexResourceStream;
+use RectorPrefix202211\React\Stream\DuplexStreamInterface;
 /**
  * Process component.
  *
@@ -180,10 +180,17 @@ class Process extends EventEmitter
             $options['bypass_shell'] = \true;
             $options['suppress_errors'] = \true;
         }
+        $errstr = '';
+        \set_error_handler(function ($_, $error) use(&$errstr) {
+            // Match errstr from PHP's warning message.
+            // proc_open(/dev/does-not-exist): Failed to open stream: No such file or directory
+            $errstr = $error;
+        });
+        $pipes = array();
         $this->process = @\proc_open($cmd, $fdSpec, $pipes, $this->cwd, $this->env, $options);
+        \restore_error_handler();
         if (!\is_resource($this->process)) {
-            $error = \error_get_last();
-            throw new \RuntimeException('Unable to launch a new process: ' . $error['message']);
+            throw new \RuntimeException('Unable to launch a new process: ' . $errstr);
         }
         // count open process pipes and await close event for each to drain buffers before detecting exit
         $that = $this;

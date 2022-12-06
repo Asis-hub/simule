@@ -7,8 +7,8 @@ use Rector\Caching\UnchangedFilesFilter;
 use Rector\Core\Util\StringUtils;
 use Rector\Skipper\Enum\AsteriskMatch;
 use Rector\Skipper\SkipCriteriaResolver\SkippedPathsResolver;
-use RectorPrefix202209\Symfony\Component\Finder\Finder;
-use RectorPrefix202209\Symfony\Component\Finder\SplFileInfo;
+use RectorPrefix202211\Symfony\Component\Finder\Finder;
+use RectorPrefix202211\Symfony\Component\Finder\SplFileInfo;
 /**
  * @see \Rector\Core\Tests\FileSystem\FilesFinder\FilesFinderTest
  */
@@ -72,7 +72,13 @@ final class FilesFinder
         $this->addFilterWithExcludedPaths($finder);
         $filePaths = [];
         foreach ($finder as $fileInfo) {
-            $filePaths[] = $fileInfo->getRealPath();
+            // getRealPath() function will return false when it checks broken symlinks.
+            // So we should check if this file exists or we got broken symlink
+            /** @var string|false $path */
+            $path = $fileInfo->getRealPath();
+            if ($path !== \false) {
+                $filePaths[] = $path;
+            }
         }
         return $this->unchangedFilesFilter->filterAndJoinWithDependentFileInfos($filePaths);
     }

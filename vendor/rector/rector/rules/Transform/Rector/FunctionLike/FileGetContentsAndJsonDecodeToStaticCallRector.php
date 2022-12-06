@@ -12,12 +12,13 @@ use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
+use PhpParser\Node\VariadicPlaceholder;
 use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Transform\ValueObject\StaticCallRecipe;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
-use RectorPrefix202209\Webmozart\Assert\Assert;
+use RectorPrefix202211\Webmozart\Assert\Assert;
 /**
  * @see \Rector\Tests\Transform\Rector\FunctionLike\FileGetContentsAndJsonDecodeToStaticCallRector\FileGetContentsAndJsonDecodeToStaticCallRectorTest
  */
@@ -93,7 +94,7 @@ CODE_SAMPLE
     private function createStaticCall(FuncCall $fileGetContentsFuncCall) : StaticCall
     {
         $fullyQualified = new FullyQualified($this->staticCallRecipe->getClassName());
-        return new StaticCall($fullyQualified, $this->staticCallRecipe->getMethodName(), $fileGetContentsFuncCall->getArgs());
+        return new StaticCall($fullyQualified, $this->staticCallRecipe->getMethodName(), $fileGetContentsFuncCall->isFirstClassCallable() ? [new VariadicPlaceholder()] : $fileGetContentsFuncCall->getArgs());
     }
     private function processStmt(?Stmt $previousStmt, Stmt $currentStmt) : bool
     {

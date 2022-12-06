@@ -8,10 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace RectorPrefix202209\Symfony\Component\Console\Helper;
+namespace RectorPrefix202211\Symfony\Component\Console\Helper;
 
-use RectorPrefix202209\Symfony\Component\Console\Formatter\OutputFormatterInterface;
-use RectorPrefix202209\Symfony\Component\String\UnicodeString;
+use RectorPrefix202211\Symfony\Component\Console\Formatter\OutputFormatterInterface;
+use RectorPrefix202211\Symfony\Component\String\UnicodeString;
 /**
  * Helper is the base class for all helper classes.
  *
@@ -113,6 +113,8 @@ abstract class Helper implements HelperInterface
         $string = $formatter->format($string ?? '');
         // remove already formatted characters
         $string = \preg_replace("/\x1b\\[[^m]*m/", '', $string ?? '');
+        // remove terminal hyperlinks
+        $string = \preg_replace('/\\033]8;[^;]*;[^\\033]*\\033\\\\/', '', $string ?? '');
         $formatter->setDecorated($isDecorated);
         return $string;
     }

@@ -11,6 +11,7 @@ use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\Use_;
 use PHPStan\PhpDocParser\Ast\Node as DocNode;
@@ -23,6 +24,7 @@ use Rector\Core\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Core\Rector\AbstractRector;
 use Rector\Core\ValueObject\PhpVersionFeature;
 use Rector\Naming\Naming\UseImportsResolver;
+use Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer;
 use Rector\Php80\NodeFactory\AttrGroupsFactory;
 use Rector\Php80\NodeManipulator\AttributeGroupNamedArgumentManipulator;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
@@ -32,7 +34,7 @@ use Rector\PhpDocParser\PhpDocParser\PhpDocNodeTraverser;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
-use RectorPrefix202209\Webmozart\Assert\Assert;
+use RectorPrefix202211\Webmozart\Assert\Assert;
 /**
  * @changelog https://wiki.php.net/rfc/attributes_v2
  *
@@ -69,13 +71,19 @@ final class AnnotationToAttributeRector extends AbstractRector implements Config
      * @var \Rector\Naming\Naming\UseImportsResolver
      */
     private $useImportsResolver;
-    public function __construct(PhpAttributeGroupFactory $phpAttributeGroupFactory, AttrGroupsFactory $attrGroupsFactory, PhpDocTagRemover $phpDocTagRemover, AttributeGroupNamedArgumentManipulator $attributeGroupNamedArgumentManipulator, UseImportsResolver $useImportsResolver)
+    /**
+     * @readonly
+     * @var \Rector\Php80\NodeAnalyzer\PhpAttributeAnalyzer
+     */
+    private $phpAttributeAnalyzer;
+    public function __construct(PhpAttributeGroupFactory $phpAttributeGroupFactory, AttrGroupsFactory $attrGroupsFactory, PhpDocTagRemover $phpDocTagRemover, AttributeGroupNamedArgumentManipulator $attributeGroupNamedArgumentManipulator, UseImportsResolver $useImportsResolver, PhpAttributeAnalyzer $phpAttributeAnalyzer)
     {
         $this->phpAttributeGroupFactory = $phpAttributeGroupFactory;
         $this->attrGroupsFactory = $attrGroupsFactory;
         $this->phpDocTagRemover = $phpDocTagRemover;
         $this->attributeGroupNamedArgumentManipulator = $attributeGroupNamedArgumentManipulator;
         $this->useImportsResolver = $useImportsResolver;
+        $this->phpAttributeAnalyzer = $phpAttributeAnalyzer;
     }
     public function getRuleDefinition() : RuleDefinition
     {
@@ -110,10 +118,10 @@ CODE_SAMPLE
      */
     public function getNodeTypes() : array
     {
-        return [Class_::class, Property::class, Param::class, ClassMethod::class, Function_::class, Closure::class, ArrowFunction::class];
+        return [Class_::class, Property::class, Param::class, ClassMethod::class, Function_::class, Closure::class, ArrowFunction::class, Interface_::class];
     }
     /**
-     * @param Class_|Property|Param|ClassMethod|Function_|Closure|ArrowFunction $node
+     * @param Class_|Property|Param|ClassMethod|Function_|Closure|ArrowFunction|Interface_ $node
      */
     public function refactor(Node $node) : ?Node
     {
@@ -188,6 +196,7 @@ CODE_SAMPLE
             return [];
         }
         $doctrineTagAndAnnotationToAttributes = [];
+        $doctrineTagValueNodes = [];
         foreach ($phpDocInfo->getPhpDocNode()->children as $phpDocChildNode) {
             if (!$phpDocChildNode instanceof PhpDocTagNode) {
                 continue;
@@ -201,9 +210,16 @@ CODE_SAMPLE
                 continue;
             }
             $doctrineTagAndAnnotationToAttributes[] = new DoctrineTagAndAnnotationToAttribute($doctrineTagValueNode, $annotationToAttribute);
+            $doctrineTagValueNodes[] = $doctrineTagValueNode;
+        }
+        $attributeGroups = $this->attrGroupsFactory->create($doctrineTagAndAnnotationToAttributes, $uses);
+        if ($this->phpAttributeAnalyzer->hasRemoveArrayState($attributeGroups)) {
+            return [];
+        }
+        foreach ($doctrineTagValueNodes as $doctrineTagValueNode) {
             $this->phpDocTagRemover->removeTagValueFromNode($phpDocInfo, $doctrineTagValueNode);
         }
-        return $this->attrGroupsFactory->create($doctrineTagAndAnnotationToAttributes, $uses);
+        return $attributeGroups;
     }
     private function matchAnnotationToAttribute(DoctrineAnnotationTagValueNode $doctrineAnnotationTagValueNode) : ?\Rector\Php80\ValueObject\AnnotationToAttribute
     {

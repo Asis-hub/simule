@@ -17,6 +17,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\Native\NativeFunctionReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\BooleanType;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\FloatType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\NullType;
@@ -51,9 +52,29 @@ final class AlwaysStrictScalarExprAnalyzer
             return null;
         }
         if ($expr instanceof FuncCall) {
-            return $this->resolveFuncCallType($expr);
+            $returnType = $this->resolveFuncCallType($expr);
+            if (!$returnType instanceof Type) {
+                return null;
+            }
+            if (!$this->isScalarType($returnType)) {
+                return null;
+            }
+            return $returnType;
         }
         return null;
+    }
+    private function isScalarType(Type $type) : bool
+    {
+        if ($type instanceof StringType && !$type instanceof ConstantStringType) {
+            return \true;
+        }
+        if ($type instanceof FloatType) {
+            return \true;
+        }
+        if ($type instanceof IntegerType) {
+            return \true;
+        }
+        return $type instanceof BooleanType;
     }
     private function resolveTypeFromScalar(Scalar $scalar) : ?\PHPStan\Type\Type
     {

@@ -9,7 +9,7 @@ use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
 use Rector\Core\ValueObject\Visibility;
-use RectorPrefix202209\Webmozart\Assert\Assert;
+use RectorPrefix202211\Webmozart\Assert\Assert;
 /**
  * @see \Rector\Tests\Privatization\NodeManipulator\VisibilityManipulatorTest
  */
@@ -31,13 +31,6 @@ final class VisibilityManipulator
         $this->addVisibilityFlag($node, Visibility::STATIC);
     }
     /**
-     * @param \PhpParser\Node\Stmt\ClassMethod|\PhpParser\Node\Stmt\Class_ $node
-     */
-    public function makeAbstract($node) : void
-    {
-        $this->addVisibilityFlag($node, Visibility::ABSTRACT);
-    }
-    /**
      * @api
      * @param \PhpParser\Node\Stmt\ClassMethod|\PhpParser\Node\Stmt\Property $node
      */
@@ -47,6 +40,24 @@ final class VisibilityManipulator
             return;
         }
         $node->flags -= Class_::MODIFIER_STATIC;
+    }
+    /**
+     * @param \PhpParser\Node\Stmt\ClassMethod|\PhpParser\Node\Stmt\Class_ $node
+     */
+    public function makeAbstract($node) : void
+    {
+        $this->addVisibilityFlag($node, Visibility::ABSTRACT);
+    }
+    /**
+     * @api
+     * @param \PhpParser\Node\Stmt\ClassMethod|\PhpParser\Node\Stmt\Class_ $node
+     */
+    public function makeNonAbstract($node) : void
+    {
+        if (!$node->isAbstract()) {
+            return;
+        }
+        $node->flags -= Class_::MODIFIER_ABSTRACT;
     }
     /**
      * @param \PhpParser\Node\Stmt\Class_|\PhpParser\Node\Stmt\ClassMethod|\PhpParser\Node\Stmt\ClassConst $node
@@ -77,6 +88,7 @@ final class VisibilityManipulator
             return;
         }
         if ($node->isPublic()) {
+            $node->flags |= Class_::MODIFIER_PUBLIC;
             $node->flags -= Class_::MODIFIER_PUBLIC;
         }
         if ($node->isProtected()) {

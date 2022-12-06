@@ -8,7 +8,7 @@ Rector instantly upgrades and refactors the PHP code of your application.  It ca
 
 ### 1. Instant Upgrades
 
-Rector now supports upgrades from PHP 5.3 to 8.1 and major open-source projects like [Symfony](https://github.com/rectorphp/rector-symfony), [PHPUnit](https://github.com/rectorphp/rector-phpunit), [Laravel](https://github.com/rectorphp/rector-laravel), [CakePHP](https://github.com/rectorphp/rector-cakephp) and [Doctrine](https://github.com/rectorphp/rector-doctrine). Do you want to **be constantly on the latest PHP and Framework without effort**?
+Rector now supports upgrades from PHP 5.3 to 8.1 and major open-source projects like [Symfony](https://github.com/rectorphp/rector-symfony), [PHPUnit](https://github.com/rectorphp/rector-phpunit), and [Doctrine](https://github.com/rectorphp/rector-doctrine). Do you want to **be constantly on the latest PHP and Framework without effort**?
 
 Use Rector to handle **instant upgrades** for you.
 
@@ -43,11 +43,12 @@ By [buying a book](https://leanpub.com/rector-the-power-of-automated-refactoring
 
 ### For Rule Developers and Contributors
 
-- [How to add Test for Rector Rule](/docs/how_to_add_test_for_rector_rule.md)
 - [How Does Rector Work?](/docs/how_it_works.md)
 - [PHP Parser Nodes](https://github.com/rectorphp/php-parser-nodes-docs/)
 - [How to Work with Doc Block and Comments](/docs/how_to_work_with_doc_block_and_comments.md)
 - [How to Create Own Rector Rule](/docs/create_own_rule.md)
+- [How to add Test for Rector Rule](/docs/how_to_add_test_for_rector_rule.md)
+- [How to Persist Cache Between CI Runs](/docs/how_to_persist_cache_between_ci_runs.md)
 
 See [the full documentation](/docs).
 
@@ -147,6 +148,8 @@ Among there projects belong:
 * [Sylius/SyliusRector](https://github.com/Sylius/SyliusRector)
 * [CoditoNet/rector-money](https://github.com/CoditoNet/rector-money)
 * [laminas/laminas-servicemanager-migration](https://github.com/laminas/laminas-servicemanager-migration)
+* [cakephp/upgrade](https://github.com/cakephp/upgrade)
+* [driftingly/rector-laravel](https://github.com/driftingly/rector-laravel)
 
 <br>
 
