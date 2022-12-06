@@ -12,11 +12,11 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
+            <!-- Username -->
             <div>
-                <x-label for="name" :value="__('Name')" />
+                <x-label for="username" :value="__('Username')" />
 
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus />
             </div>
 
             <!-- Email Address -->
@@ -53,6 +53,27 @@
                 <x-button class="ml-4">
                     {{ __('Register') }}
                 </x-button>
+            </div>
+
+            <!-- Nombre -->
+            <div>
+                <x-label for="nombre" :value="__('Nombre')" />
+
+                <x-input id="nombre" class="block mt-1 w-full" type="text" name="nombre" :value="old('nombre')" />
+            </div>
+
+            <!-- esActivo -->
+            <div>
+                <x-label for="esActivo" :value="__('EsActivo')" />
+
+                <x-input id="esActivo" class="block mt-1 w-full" type="text" name="esActivo" :value="old('esActivo')" />
+            </div>
+
+            <!-- Tipo -->
+            <div>
+                <x-label for="tipo" :value="__('Tipo')" />
+
+                <x-input id="tipo" class="block mt-1 w-full" type="text" name="tipo" :value="old('tipo')" />
             </div>
         </form>
     </x-auth-card>
