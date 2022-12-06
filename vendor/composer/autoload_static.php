@@ -547,7 +547,6 @@ class ComposerStaticInitd5b9b15a6ab17c58446c40ecb170393f
         'App\\Http\\Controllers\\Auth\\RegisteredUserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisteredUserController.php',
         'App\\Http\\Controllers\\Auth\\VerifyEmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerifyEmailController.php',
         'App\\Http\\Controllers\\Calculos\\ControllerCalculo' => __DIR__ . '/../..' . '/app/Http/Controllers/Calculos/ControllerCalculo.php',
-        'App\\Http\\Controllers\\Calculos\\LuckyController' => __DIR__ . '/../..' . '/app/Http/Controllers/Calculos/LuckyController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
