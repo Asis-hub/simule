@@ -69,10 +69,10 @@ $(document).ready(function(){
           url : '/python/cgi-enabled/calculo_listanominal.py',
           method : 'get',
           data : {lista_nominal_py : URL_lista_nominal},
-          dataType : 'text',
+          dataType : 'json',
           success : function(data)
           {
-            $("#lb_ListaNominalCalculada").html(data)
+            $("#lb_ListaNominalCalculada").html(data[0])
             console.log(data)
           }
       });    

@@ -30,9 +30,14 @@ suma_listanominal = df[df["NOMBRE\nMUNICIPIO"] == "XALAPA"]["LISTA\nNOMINAL"].su
 #print("Lista nominal mujeres: " + suma_listamujeres)
 #print("Lista nominal total: " + suma_listanominal)
 
-resultado = int(suma_listanominal)
+resultadoTotal = int(suma_listanominal)
+resultadoMujeres = int(suma_listamujeres)
+resultadoHombres = int(suma_listahombres)
+
+resultado = [resultadoTotal, resultadoMujeres, resultadoHombres]
 
 text = json.dumps(resultado)
+
 
 print (text)
 
