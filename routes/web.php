@@ -24,6 +24,9 @@ Route::get('/admin', fn() => view('pages.admin'));
 
 Route::get('/listanominal', fn() => view('pages.listanominal'));
 
+Route::get('/listaporedad', fn() => view('pages.listaporedad'));
+
+
 Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth'])->name('dashboard');
 
 #Route::get('/admin', [ControllerCalculo::class, 'calcularMuestraDos']);

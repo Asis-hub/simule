@@ -44,36 +44,25 @@
 </li>
 
 <li>
-      <label>Lista nominal mujeres:</label>
-
-</li>
-<li>
+      <label>Lista nominal mujeres:  </label> 
       <output id="lb_ListaNominalMujeres" name ="respuesta" for="lb_ListaNominalMujeres"></output>
 
-      </li>
-
-      <li>
-      <label>Lista nominal hombres:</label>
 
 </li>
-<li>
+      <li>
+      <label>Lista nominal hombres:  </label> 
       <output id="lb_ListaNominalHombres" name ="respuesta" for="lb_ListaNominalHombres"></output>
 
-      </li>
-
-<li>
-      <label>Lista nominal total:</label>
-
 </li>
+
 <li>
+      <label>Lista nominal total:  </label> 
       <output id="lb_ListaNominalCalculada" name ="respuesta" for="lb_ListaNominalCalculada"></output>
 
-      </li>
-
+</li>
   </ul>
       
 </form>
-
 
 <script>
 $(document).ready(function(){
@@ -94,9 +83,6 @@ $(document).ready(function(){
             console.log(data)
           }
       });    
-  
-
-
 });
 });
 </script>
