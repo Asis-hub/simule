@@ -16,11 +16,11 @@ form = cgi.FieldStorage()
 #https://ine.mx/transparencia/datos-abiertos/#/archivo/datos-por-rangos-de-edad-entidad-de-origen-y-sexo-del-padron-electoral-y-lista-nominal-2022
 
 #xlsx_en_home = '/home/asis/porSexoListaNominal.xlsx'
-#xlsx_en_URL_INE = str(form["lista_nominal_py"].value)
+xlsx_en_URL_INE = str(form["lista_nominal_py"].value)
 
+df = pd.read_excel(xlsx_en_URL_INE, sheet_name=0)
 #df = pd.read_excel(xlsx_en_URL_INE, sheet_name=0)
-#df = pd.read_excel(xlsx_en_URL_INE, sheet_name=0)
-df = pd.read_excel(r'/home/asis/porSexoListaNominalFinalOctubre.xlsx', sheet_name='pdln_edms_sexo_20221028')
+#df = pd.read_excel(r'/home/asis/porSexoListaNominalFinalOctubre.xlsx', sheet_name='pdln_edms_sexo_20221028')
 
 suma_listahombres = df[df["NOMBRE\nMUNICIPIO"] == "XALAPA"]["LISTA\nHOMBRES"].sum()
 suma_listamujeres = df[df["NOMBRE\nMUNICIPIO"] == "XALAPA"]["LISTA\nMUJERES"].sum()
