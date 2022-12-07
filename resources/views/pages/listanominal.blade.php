@@ -42,6 +42,25 @@
         Generar
     </button>
 </li>
+
+<li>
+      <label>Lista nominal mujeres:</label>
+
+</li>
+<li>
+      <output id="lb_ListaNominalMujeres" name ="respuesta" for="lb_ListaNominalMujeres"></output>
+
+      </li>
+
+      <li>
+      <label>Lista nominal hombres:</label>
+
+</li>
+<li>
+      <output id="lb_ListaNominalHombres" name ="respuesta" for="lb_ListaNominalHombres"></output>
+
+      </li>
+
 <li>
       <label>Lista nominal total:</label>
 
@@ -63,9 +82,6 @@ $(document).ready(function(){
     const URL_lista_nominal = $('[name=lb_URL_ListaNominal').val();
 
         $.ajax({
-
-          
-
           url : '/python/cgi-enabled/calculo_listanominal.py',
           method : 'get',
           data : {lista_nominal_py : URL_lista_nominal},
@@ -73,6 +89,8 @@ $(document).ready(function(){
           success : function(data)
           {
             $("#lb_ListaNominalCalculada").html(data[0])
+            $("#lb_ListaNominalMujeres").html(data[1])
+            $("#lb_ListaNominalHombres").html(data[2])
             console.log(data)
           }
       });    
