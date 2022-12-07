@@ -38,34 +38,16 @@
 </li>
 
 <li>
-      <button type="button" class="send" id="send_ListaNomTotal">
+      <button type="button" class="send" id="send">
         Generar
     </button>
 </li>
 <li>
-      <label for="lb_ListaNominalCalculada">Lista nominal total:</label>
+      <label>Lista nominal total:</label>
 
 </li>
 <li>
-      <output id="lb_ListaNominalCalculada" name ="respuesta_URL_ListaNominal" for="lb_ListaNominalCalculada"></output>
-
-      </li>
-
-      <li>
-      <label for="lb_ListaNominalHombres">Lista nominal hombres:</label>
-
-</li>
-<li>
-      <output id="lb_ListaNominalHombres" name ="respuesta_URL_ListaHombres" for="lb_ListaNominalHombres"></output>
-
-      </li>
-
-      <li>
-      <label for="lb_ListaNominalMujeres">Lista nominal mujeres:</label>
-
-</li>
-<li>
-      <output id="lb_ListaNominalMujeres" name ="respuesta_URL_ListaNominalMujeres" for="lb_ListaNominalMujeres"></output>
+      <output id="lb_ListaNominalCalculada" name ="respuesta" for="lb_ListaNominalCalculada"></output>
 
       </li>
 
@@ -73,17 +55,12 @@
       
 </form>
 
-<div id="resultado_URL_ListaNominal" class="resultado_URL_ListaNominal">
-
-
-
-</div>
 
 <script>
 $(document).ready(function(){
-  $('#send_ListaNomTotal').click(function(){
+  $('#send').click(function(){
 
-    const URL_lista_nominal = $('[name=lb_ListaNominalCalculada').val();
+    const URL_lista_nominal = $('[name=lb_URL_ListaNominal').val();
 
         $.ajax({
 
@@ -91,11 +68,9 @@ $(document).ready(function(){
 
           url : '/python/cgi-enabled/calculo_listanominal.py',
           method : 'get',
-          data : {lista_nominal_py : URL_lista_nominal},
-          dataType : 'text',
           success : function(data)
           {
-            $("#lb_respuesta_URL_ListaNominal").html(data)
+            $("#lb_ListaNominalCalculada").html(data)
             console.log(data)
           }
       });    

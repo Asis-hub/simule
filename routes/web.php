@@ -14,7 +14,11 @@ use App\Http\Controllers\Calculos\ControllerCalculo;
 |
 */
 
-Route::get('/', fn() => view('pages.login'));
+Route::get('/', fn() => view('auth.login'));
+
+#Route::get('/', fn() => view('pages.login'));
+
+Route::get('/register', fn() => view('auth.register'));
 
 Route::get('/admin', fn() => view('pages.admin'));
 

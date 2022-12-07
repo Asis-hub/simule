@@ -79,11 +79,7 @@
       
 </form>
 
-<div id="resultado" class="resultado">
 
-
-
-</div>
 
 <script>
 $(document).ready(function(){

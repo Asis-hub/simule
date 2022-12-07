@@ -55,8 +55,6 @@ class LoginRequest extends FormRequest
 
         $user = Auth::user();
 
-        event(new LoginHistory($user));
-
         RateLimiter::clear($this->throttleKey());
     }
 
