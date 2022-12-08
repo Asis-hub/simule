@@ -26,12 +26,12 @@
     @method('PUT')
     <ul >
     <li>
-      <span>Lista nominal por rangos de edad</span>
+      <h2>Lista nominal por rangos de edad</h2>
 </li>
 
 <li>
 
-      <span>URL de Lista nominal:</span>
+      <h3>URL de Lista nominal:</h3>
 
       <input id="lb_URL_ListaPorEdad" name="lb_URL_ListaPorEdad" type="text" required="required">
 
@@ -44,7 +44,7 @@
 </li>
 
 <li>
-      <span>Estrato 1</span>
+      <h4>Estrato 1</h4>
 </li>
 
 <li>
@@ -60,7 +60,7 @@
 </li>
 
 <li>
-      <span>Estrato 2</span>
+      <h4>Estrato 2</h4>
 </li>
 
 <li>
@@ -76,7 +76,7 @@
 </li>
 
 <li>
-      <span>Estrato 3</span>
+      <h4>Estrato 3</h4>
 </li>
 
 <li>
@@ -92,7 +92,7 @@
 </li>
 
 <li>
-      <span>Estrato 4</span>
+      <h4>Estrato 4</h4>
 </li>
 
 <li>
@@ -108,7 +108,7 @@
 </li>
 
 <li>
-      <span>Estrato 5</span>
+      <h4>Estrato 5</h4>
 </li>
 
 <li>
@@ -124,13 +124,13 @@
 </li>
 
 <li>
-      <span>Lista nominal total:  </span> 
+      <h4>Lista nominal total:  </h4> 
       <output id="lb_ListaNominalCalculada" name ="respuesta" for="lb_ListaNominalCalculada"></output>
 
 </li>
 
 <li>
-      <span>Proporción en relación con lista nominal</span>
+      <h3>Proporción en relación con lista nominal</h3>
 </li>
 
 <li>
@@ -200,7 +200,7 @@
 
 <li>
 
-      <span>Numero de encuestadores:</span>
+      <h3>Numero de encuestadores:</h3>
 
       <input id="lb_input_numEncuestadores" name="lb_input_numEncuestadores" type="text">
 
@@ -213,7 +213,7 @@
 </li>
 
 <li>
-      <span>Numero de encuestadores:</span>
+      <h4>Numero de encuestadores:</h4>
 </li>
 
 <li>
