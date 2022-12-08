@@ -92,11 +92,7 @@ lista_hombres_65_mas + lista_mujeres_65_mas)
 
 #print("La lista nominal total es: " + str(listaTotal))
 
-resultado = [listaTotal, lista_mujeres_18_24, lista_hombres_18_24, lista_mujeres25_34, lista_hombres25_34,
-lista_mujeres_35_49, lista_hombres_35_49, lista_mujeres_50_64, lista_hombres_50_64, lista_mujeres_65_mas,
-lista_hombres_65_mas]
 
-text = json.dumps(resultado)
 
 
 ##print("La proporción para hombres de 18 a 24 años sería: " + (str(round(float(lista_hombres_18_24/listaTotal),3))))
@@ -109,6 +105,18 @@ text = json.dumps(resultado)
 #print("La proporción para mujeres de 50 a 64 años sería: " + (str(round(float(lista_mujeres_50_64/listaTotal),3))))
 #print("La proporción para hombres de 65 o más años sería: " + (str(round(float(lista_hombres_65_mas/listaTotal),3))))
 #print("La proporción para mujeres de 65 o más años sería: " + (str(round(float(lista_mujeres_65_mas/listaTotal),3))))
+
+proporcionHombres_18_24  = (str(round(float(lista_hombres_18_24/listaTotal),3)))
+proporcionMujeres_18_24  = (str(round(float(lista_mujeres_18_24/listaTotal),3)))
+proporcionHombres_25_34  = (str(round(float(lista_hombres25_34/listaTotal),3)))
+proporcionMujeres_25_34  = (str(round(float(lista_mujeres25_34/listaTotal),3)))
+proporcionHombres_35_49  = (str(round(float(lista_hombres_35_49/listaTotal),3)))
+proporcionMujeres_35_49  = (str(round(float(lista_mujeres_35_49/listaTotal),3)))
+proporcionHombres_50_64  = (str(round(float(lista_hombres_50_64/listaTotal),3)))
+proporcionMujeres_50_64  = (str(round(float(lista_mujeres_50_64/listaTotal),3)))
+proporcionHombres_65  = (str(round(float(lista_hombres_65_mas/listaTotal),3)))
+proporcionMujeres_65  = (str(round(float(lista_mujeres_65_mas/listaTotal),3)))
+
 #
 #print("Si fueran 600 encuestas por realizar, a los hombres de 18 a 24 años les tocaría: " + (str(int((round(float(lista_hombres_18_24/listaTotal),3))*600))))
 #print("Si fueran 600 encuestas por realizar, a las mujeres de 18 a 24 años les tocaría: " + (str(int((round(float(lista_mujeres_18_24/listaTotal),3))*600))))
@@ -120,5 +128,12 @@ text = json.dumps(resultado)
 #print("Si fueran 600 encuestas por realizar, a las mujeres de 50 a 64 años les tocaría: " + (str(int((round(float(lista_mujeres_50_64/listaTotal),3))*600))))
 #print("Si fueran 600 encuestas por realizar, a los hombres de 65 o más años les tocaría: " + (str(int((round(float(lista_hombres_65_mas/listaTotal),3))*600))))
 #print("Si fueran 600 encuestas por realizar, a las mujeres de 65 o más años les tocaría: " + (str(int((round(float(lista_mujeres_65_mas/listaTotal),3))*600))))
+
+resultado = [listaTotal, lista_mujeres_18_24, lista_hombres_18_24, lista_mujeres25_34, lista_hombres25_34,
+lista_mujeres_35_49, lista_hombres_35_49, lista_mujeres_50_64, lista_hombres_50_64, lista_mujeres_65_mas,
+lista_hombres_65_mas, proporcionMujeres_18_24, proporcionHombres_18_24, proporcionMujeres_25_34, proporcionHombres_25_34,
+proporcionMujeres_35_49, proporcionHombres_35_49, proporcionMujeres_50_64, proporcionHombres_50_64, proporcionMujeres_65, proporcionHombres_65]
+
+text = json.dumps(resultado)
 
 print (text)

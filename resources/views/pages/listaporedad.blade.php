@@ -128,6 +128,70 @@
       <output id="lb_ListaNominalCalculada" name ="respuesta" for="lb_ListaNominalCalculada"></output>
 
 </li>
+
+<li>
+      <label for="proporcion_datos">Proporción en relación con lista nominal</label>
+</li>
+
+<li>
+      <label>Proporción mujeres 18-24:  </label> 
+      <output id="lb_ProporcionMujeres_18_24" for="lb_ProporcionMujeres_18_24"></output>
+
+
+</li>
+      <li>
+      <label>Proporción hombres 18-24:  </label> 
+      <output id="lb_ProporcionHombres_18_24" for="lb_ProporcionHombres_18_24"></output>
+
+</li>
+
+<li>
+      <label>Proporción mujeres 25-34:  </label> 
+      <output id="lb_ProporcionMujeres_25_34"  for="lb_ProporcionMujeres_25_34"></output>
+
+
+</li>
+      <li>
+      <label>Proporción hombres 25-34:  </label> 
+      <output id="lb_ProporcionHombres_25_34" for="lb_ProporcionHombres_25_34"></output>
+
+</li>
+
+<li>
+      <label>Proporción mujeres 35-49:  </label> 
+      <output id="lb_ProporcionMujeres_35_49" for="lb_ProporcionMujeres_35_49"></output>
+
+
+</li>
+      <li>
+      <label>Proporción hombres 35-49:  </label> 
+      <output id="lb_ProporcionHombres_35_49" for="lb_ProporcionHombres_35_49"></output>
+
+</li>
+
+<li>
+      <label>Proporción mujeres 50-64:  </label> 
+      <output id="lb_ProporcionMujeres_50_64" for="lb_ProporcionMujeres_50_64"></output>
+
+
+</li>
+      <li>
+      <label>Proporción hombres 50-64:  </label> 
+      <output id="lb_ProporcionHombres_50_64" for="lb_ProporcionHombres_50_64"></output>
+
+</li>
+
+<li>
+      <label>Proporción mujeres 65 o más:  </label> 
+      <output id="lb_ProporcionMujeres_65" for="lb_ProporcionMujeres_65"></output>
+
+
+</li>
+      <li>
+      <label>Proporción hombres 65 o más:  </label> 
+      <output id="lb_ProporcionHombres_65" for="lb_ProporcionHombres_65"></output>
+
+</li>
   </ul>
       
 </form>
@@ -157,6 +221,16 @@ $(document).ready(function(){
             $("#lb_ListaNominalHombres_50_64").html(data[8])
             $("#lb_ListaNominalMujeres_65").html(data[9])
             $("#lb_ListaNominalHombres_65").html(data[10])
+            $("#lb_ProporcionMujeres_18_24").html(data[11])
+            $("#lb_ProporcionHombres_18_24").html(data[12])
+            $("#lb_ProporcionMujeres_25_34").html(data[13])
+            $("#lb_ProporcionHombres_25_34").html(data[14])
+            $("#lb_ProporcionMujeres_35_49").html(data[15])
+            $("#lb_ProporcionHombres_35_49").html(data[16])
+            $("#lb_ProporcionMujeres_50_64").html(data[17])
+            $("#lb_ProporcionHombres_50_64").html(data[18])
+            $("#lb_ProporcionMujeres_65").html(data[19])
+            $("#lb_ProporcionHombres_65").html(data[20])
             
           }
       });    
