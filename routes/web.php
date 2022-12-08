@@ -20,11 +20,13 @@ Route::get('/', fn() => view('auth.login'));
 
 Route::get('/register', fn() => view('auth.register'));
 
-Route::get('/admin', fn() => view('pages.admin'));
+Route::get('/admin', fn() => view('pages.admin'))->name('muestra');
 
-Route::get('/listanominal', fn() => view('pages.listanominal'));
+Route::get('/menu', fn() => view('pages.menuPrincipal'));
 
-Route::get('/listaporedad', fn() => view('pages.listaporedad'));
+Route::get('/listanominal', fn() => view('pages.listanominal'))->name('listanominal');
+
+Route::get('/listaporedad', fn() => view('pages.listaporedad'))->name('listaporedad');
 
 
 Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth'])->name('dashboard');

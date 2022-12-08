@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     
      #Aquí se debe cambiar a lo que será el HOMEPAGE o dashboard
-    final public const HOME = '/admin';
+    final public const HOME = '/menu';
 
     /**
      * The controller namespace for the application.
