@@ -23,16 +23,16 @@ inputncuestadores_Hombres_50_64 = float(form["encuestadores_Hombres_50_64_py"].v
 inputncuestadores_Mujeres_65 = float(form["encuestadores_Mujeres_65_py"].value)
 inputncuestadores_Hombres_65 = float(form["encuestadores_Hombres_65_py"].value)
 
-resultado_inputncuestadores_Mujeres_18_24 = int(inputncuestadores_Mujeres_18_24 * numEncuestadores)
-resultado_inputncuestadores_Hombres_18_24 = int(inputncuestadores_Hombres_18_24 * numEncuestadores)
-resultado_inputncuestadores_Mujeres_25_34 = int(inputncuestadores_Mujeres_25_34 * numEncuestadores)
-resultado_inputncuestadores_Hombres_25_34 = int(inputncuestadores_Hombres_25_34 * numEncuestadores)
-resultado_inputncuestadores_Mujeres_35_49 = int(inputncuestadores_Mujeres_35_49 * numEncuestadores)
-resultado_inputncuestadores_Hombres_35_49 = int(inputncuestadores_Hombres_35_49 * numEncuestadores)
-resultado_inputncuestadores_Mujeres_50_64 = int(inputncuestadores_Mujeres_50_64 * numEncuestadores)
-resultado_inputncuestadores_Hombres_50_64 = int(inputncuestadores_Hombres_50_64 * numEncuestadores)
-resultado_inputncuestadores_Mujeres_65 = int(inputncuestadores_Mujeres_65 * numEncuestadores)
-resultado_inputncuestadores_Hombres_65 = int(inputncuestadores_Hombres_65 * numEncuestadores)
+resultado_inputncuestadores_Mujeres_18_24 = int(np.floor(inputncuestadores_Mujeres_18_24 * numEncuestadores))
+resultado_inputncuestadores_Hombres_18_24 = int(np.floor(inputncuestadores_Hombres_18_24 * numEncuestadores))
+resultado_inputncuestadores_Mujeres_25_34 = int(np.floor(inputncuestadores_Mujeres_25_34 * numEncuestadores))
+resultado_inputncuestadores_Hombres_25_34 = int(np.floor(inputncuestadores_Hombres_25_34 * numEncuestadores))
+resultado_inputncuestadores_Mujeres_35_49 = int(np.floor(inputncuestadores_Mujeres_35_49 * numEncuestadores))
+resultado_inputncuestadores_Hombres_35_49 = int(np.floor(inputncuestadores_Hombres_35_49 * numEncuestadores))
+resultado_inputncuestadores_Mujeres_50_64 = int(np.floor(inputncuestadores_Mujeres_50_64 * numEncuestadores))
+resultado_inputncuestadores_Hombres_50_64 = int(np.floor(inputncuestadores_Hombres_50_64 * numEncuestadores))
+resultado_inputncuestadores_Mujeres_65 = int(np.floor(inputncuestadores_Mujeres_65 * numEncuestadores))
+resultado_inputncuestadores_Hombres_65 = int(np.floor(inputncuestadores_Hombres_65 * numEncuestadores))
 
 resultado = [resultado_inputncuestadores_Mujeres_18_24, resultado_inputncuestadores_Hombres_18_24, resultado_inputncuestadores_Mujeres_25_34,
 resultado_inputncuestadores_Hombres_25_34, resultado_inputncuestadores_Mujeres_35_49, resultado_inputncuestadores_Hombres_35_49,
