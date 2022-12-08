@@ -316,27 +316,48 @@ $(document).ready(function(){
             $("#lb_ProporcionMujeres_65").html(data[19])
             $("#lb_ProporcionHombres_65").html(data[20])
             
+            proporcion_18_24_Mujeres = data[11]
+            proporcion_18_24_Hombres = data[12]
+            proporcion_25_34_Mujeres = data[13]
+            proporcion_25_34_Hombres = data[14]
+            proporcion_35_49_Mujeres = data[15]
+            proporcion_35_49_Hombres = data[16]
+            proporcion_50_64_Mujeres = data[17]
+            proporcion_50_64_Hombres = data[18]
+            proporcion_65_Mujeres = data[19]
+            proporcion_65_Hombres = data[20]
+
           }
       });    
 });
 });
-</script>
 
-<script>
 $(document).ready(function(){
   $('#sendEncuestadores').click(function(){
 
       const numEncuestadores = $('[name=lb_input_numEncuestadores').val();
-      const encuestadores_Mujeres_18_24 = $('[name=lb_ProporcionMujeres_18_24').val();
-      const encuestadores_Hombres_18_24 = $('[name=lb_ProporcionHombres_18_24').val();
-      const encuestadores_Mujeres_25_34 = $('[name=lb_ProporcionMujeres_25_34').val();
-      const encuestadores_Hombres_25_34 = $('[name=lb_ProporcionHombres_25_34').val();
-      const encuestadores_Mujeres_35_49 = $('[name=lb_ProporcionMujeres_35_49').val();
-      const encuestadores_Hombres_35_49 = $('[name=lb_ProporcionHombres_35_49').val();
-      const encuestadores_Mujeres_50_64 = $('[name=lb_ProporcionMujeres_50_64').val();
-      const encuestadores_Hombres_50_64 = $('[name=lb_ProporcionHombres_50_64').val();
-      const encuestadores_Mujeres_65 = $('[name=lb_ProporcionMujeres_65').val();
-      const encuestadores_Hombres_65 = $('[name=lb_ProporcionHombres_65').val();
+      const encuestadores_Mujeres_18_24 = proporcion_18_24_Mujeres
+      const encuestadores_Hombres_18_24 = proporcion_18_24_Hombres
+      const encuestadores_Mujeres_25_34 = proporcion_25_34_Mujeres
+      const encuestadores_Hombres_25_34 = proporcion_25_34_Hombres
+      const encuestadores_Mujeres_35_49 = proporcion_35_49_Mujeres
+      const encuestadores_Hombres_35_49 = proporcion_35_49_Hombres
+      const encuestadores_Mujeres_50_64 = proporcion_50_64_Mujeres
+      const encuestadores_Hombres_50_64 = proporcion_50_64_Hombres
+      const encuestadores_Mujeres_65 = proporcion_65_Mujeres
+      const encuestadores_Hombres_65 = proporcion_65_Hombres
+      
+      console.log(numEncuestadores)
+      console.log(encuestadores_Mujeres_18_24)
+      console.log(encuestadores_Hombres_18_24)
+      console.log(encuestadores_Mujeres_25_34)
+      console.log(encuestadores_Hombres_25_34)
+      console.log(encuestadores_Mujeres_35_49)
+      console.log(encuestadores_Hombres_35_49)
+      console.log(encuestadores_Mujeres_50_64)
+      console.log(encuestadores_Hombres_50_64)
+      console.log(encuestadores_Mujeres_65)
+      console.log(encuestadores_Hombres_65)
 
         $.ajax({
           url : '/python/cgi-enabled/calculo_numEncuestadores.py',
