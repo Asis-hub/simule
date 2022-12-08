@@ -26,7 +26,7 @@
     @method('PUT')
     <ul>
     <li>
-      <label for="title_datos">Lista Nominal</label>
+      <label for="title_datos">Lista nominal por rangos de edad</label>
 </li>
 
 <li>
@@ -192,6 +192,90 @@
       <output id="lb_ProporcionHombres_65" for="lb_ProporcionHombres_65"></output>
 
 </li>
+
+</form>
+
+<form id="formularioNumEncuestadores" action="/python/cgi-enabled/calculo_numEncuestadores.py" method="POST">
+    @method('PUT')
+
+<li>
+
+      <label for="lb_input_numEncuestadores">Numero de encuestadores:</label>
+
+      <input id="lb_input_numEncuestadores" name="lb_input_numEncuestadores" type="text">
+
+</li>
+
+<li>
+      <button type="button" class="sendEncuestadores" id="sendEncuestadores">
+        Calcular numero de encuestadores
+    </button>
+</li>
+
+<li>
+      <label for="encuestadores_datos">Numero de encuestadores:</label>
+</li>
+
+<li>
+      <label>Encuestadores mujeres 18-24:  </label> 
+      <output id="lb_encuestadoresMujeres_18_24" for="lb_encuestadoresMujeres_18_24"></output>
+
+
+</li>
+      <li>
+      <label>Encuestadores hombres 18-24:  </label> 
+      <output id="lb_encuestadoresHombres_18_24" for="lb_encuestadoresHombres_18_24"></output>
+
+</li>
+
+<li>
+      <label>Encuestadores mujeres 25-34:  </label> 
+      <output id="lb_encuestadoresMujeres_25_34"  for="lb_encuestadoresMujeres_25_34"></output>
+
+
+</li>
+      <li>
+      <label>Encuestadores hombres 25-34:  </label> 
+      <output id="lb_encuestadoresHombres_25_34" for="lb_encuestadoresHombres_25_34"></output>
+
+</li>
+
+<li>
+      <label>Encuestadores mujeres 35-49:  </label> 
+      <output id="lb_encuestadoresMujeres_35_49" for="lb_encuestadoresMujeres_35_49"></output>
+
+
+</li>
+      <li>
+      <label>Encuestadores hombres 35-49:  </label> 
+      <output id="lb_encuestadoresHombres_35_49" for="lb_encuestadoresHombres_35_49"></output>
+
+</li>
+
+<li>
+      <label>Encuestadores mujeres 50-64:  </label> 
+      <output id="lb_encuestadoresMujeres_50_64" for="lb_encuestadoresMujeres_50_64"></output>
+
+
+</li>
+      <li>
+      <label>Encuestadores hombres 50-64:  </label> 
+      <output id="lb_encuestadoresHombres_50_64" for="lb_encuestadoresHombres_50_64"></output>
+
+</li>
+
+<li>
+      <label>Encuestadores mujeres 65 o más:  </label> 
+      <output id="lb_encuestadoresMujeres_65" for="lb_encuestadoresMujeres_65"></output>
+
+
+</li>
+      <li>
+      <label>Encuestadores hombres 65 o más:  </label> 
+      <output id="lb_encuestadoresHombres_65" for="lb_encuestadoresHombres_65"></output>
+
+</li>
+
   </ul>
       
 </form>
@@ -232,6 +316,58 @@ $(document).ready(function(){
             $("#lb_ProporcionMujeres_65").html(data[19])
             $("#lb_ProporcionHombres_65").html(data[20])
             
+          }
+      });    
+});
+});
+</script>
+
+<script>
+$(document).ready(function(){
+  $('#sendEncuestadores').click(function(){
+
+      const numEncuestadores = $('[name=lb_input_numEncuestadores').val();
+      const encuestadores_Mujeres_18_24 = $('[name=lb_ProporcionMujeres_18_24').val();
+      const encuestadores_Hombres_18_24 = $('[name=lb_ProporcionHombres_18_24').val();
+      const encuestadores_Mujeres_25_34 = $('[name=lb_ProporcionMujeres_25_34').val();
+      const encuestadores_Hombres_25_34 = $('[name=lb_ProporcionHombres_25_34').val();
+      const encuestadores_Mujeres_35_49 = $('[name=lb_ProporcionMujeres_35_49').val();
+      const encuestadores_Hombres_35_49 = $('[name=lb_ProporcionHombres_35_49').val();
+      const encuestadores_Mujeres_50_64 = $('[name=lb_ProporcionMujeres_50_64').val();
+      const encuestadores_Hombres_50_64 = $('[name=lb_ProporcionHombres_50_64').val();
+      const encuestadores_Mujeres_65 = $('[name=lb_ProporcionMujeres_65').val();
+      const encuestadores_Hombres_65 = $('[name=lb_ProporcionHombres_65').val();
+
+        $.ajax({
+          url : '/python/cgi-enabled/calculo_numEncuestadores.py',
+          method : 'get',
+          data : {
+                  numEncuestadores_py : numEncuestadores,
+                  encuestadores_Mujeres_18_24_py : encuestadores_Mujeres_18_24,
+                  encuestadores_Hombres_18_24_py : encuestadores_Hombres_18_24,
+                  encuestadores_Mujeres_25_34_py : encuestadores_Mujeres_25_34,
+                  encuestadores_Hombres_25_34_py : encuestadores_Hombres_25_34,
+                  encuestadores_Mujeres_35_49_py : encuestadores_Mujeres_35_49,
+                  encuestadores_Hombres_35_49_py : encuestadores_Hombres_35_49,
+                  encuestadores_Mujeres_50_64_py : encuestadores_Mujeres_50_64,
+                  encuestadores_Hombres_50_64_py : encuestadores_Hombres_50_64,
+                  encuestadores_Mujeres_65_py : encuestadores_Mujeres_65,
+                  encuestadores_Hombres_65_py : encuestadores_Hombres_65
+                  },
+          dataType : 'json',
+          success : function(data)
+          {
+            $("#lb_encuestadoresMujeres_18_24").html(data[0])
+            $("#lb_encuestadoresHombres_18_24").html(data[1])
+            $("#lb_encuestadoresMujeres_25_34").html(data[2])
+            $("#lb_encuestadoresHombres_25_34").html(data[3])
+            $("#lb_encuestadoresMujeres_35_49").html(data[4])
+            $("#lb_encuestadoresHombres_35_49").html(data[5])
+            $("#lb_encuestadoresMujeres_50_64").html(data[6])
+            $("#lb_encuestadoresHombres_50_64").html(data[7])
+            $("#lb_encuestadoresMujeres_65").html(data[8])
+            $("#lb_encuestadoresHombres_65").html(data[9])
+            console.log(data)
           }
       });    
 });

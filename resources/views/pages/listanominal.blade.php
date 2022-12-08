@@ -26,7 +26,7 @@
     @method('PUT')
     <ul>
     <li>
-      <label for="title_datos">Lista Nominal</label>
+      <label for="title_datos">Lista Nominal por género</label>
 </li>
 
 <li>

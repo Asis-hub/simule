@@ -106,16 +106,16 @@ lista_hombres_65_mas + lista_mujeres_65_mas)
 #print("La proporción para hombres de 65 o más años sería: " + (str(round(float(lista_hombres_65_mas/listaTotal),3))))
 #print("La proporción para mujeres de 65 o más años sería: " + (str(round(float(lista_mujeres_65_mas/listaTotal),3))))
 
-proporcionHombres_18_24  = (str(round(float(lista_hombres_18_24/listaTotal),3)))
-proporcionMujeres_18_24  = (str(round(float(lista_mujeres_18_24/listaTotal),3)))
-proporcionHombres_25_34  = (str(round(float(lista_hombres25_34/listaTotal),3)))
-proporcionMujeres_25_34  = (str(round(float(lista_mujeres25_34/listaTotal),3)))
-proporcionHombres_35_49  = (str(round(float(lista_hombres_35_49/listaTotal),3)))
-proporcionMujeres_35_49  = (str(round(float(lista_mujeres_35_49/listaTotal),3)))
-proporcionHombres_50_64  = (str(round(float(lista_hombres_50_64/listaTotal),3)))
-proporcionMujeres_50_64  = (str(round(float(lista_mujeres_50_64/listaTotal),3)))
-proporcionHombres_65  = (str(round(float(lista_hombres_65_mas/listaTotal),3)))
-proporcionMujeres_65  = (str(round(float(lista_mujeres_65_mas/listaTotal),3)))
+proporcionHombres_18_24  = (round(float(lista_hombres_18_24/listaTotal),3))
+proporcionMujeres_18_24  = (round(float(lista_mujeres_18_24/listaTotal),3))
+proporcionHombres_25_34  = (round(float(lista_hombres25_34/listaTotal),3))
+proporcionMujeres_25_34  = (round(float(lista_mujeres25_34/listaTotal),3))
+proporcionHombres_35_49  = (round(float(lista_hombres_35_49/listaTotal),3))
+proporcionMujeres_35_49  = (round(float(lista_mujeres_35_49/listaTotal),3))
+proporcionHombres_50_64  = (round(float(lista_hombres_50_64/listaTotal),3))
+proporcionMujeres_50_64  = (round(float(lista_mujeres_50_64/listaTotal),3))
+proporcionHombres_65  = (round(float(lista_hombres_65_mas/listaTotal),3))
+proporcionMujeres_65  = (round(float(lista_mujeres_65_mas/listaTotal),3))
 
 #
 #print("Si fueran 600 encuestas por realizar, a los hombres de 18 a 24 años les tocaría: " + (str(int((round(float(lista_hombres_18_24/listaTotal),3))*600))))
@@ -128,6 +128,17 @@ proporcionMujeres_65  = (str(round(float(lista_mujeres_65_mas/listaTotal),3)))
 #print("Si fueran 600 encuestas por realizar, a las mujeres de 50 a 64 años les tocaría: " + (str(int((round(float(lista_mujeres_50_64/listaTotal),3))*600))))
 #print("Si fueran 600 encuestas por realizar, a los hombres de 65 o más años les tocaría: " + (str(int((round(float(lista_hombres_65_mas/listaTotal),3))*600))))
 #print("Si fueran 600 encuestas por realizar, a las mujeres de 65 o más años les tocaría: " + (str(int((round(float(lista_mujeres_65_mas/listaTotal),3))*600))))
+
+#encuestasRealizar_Hombres_18_24 = proporcionHombres_18_24 * numEncuestas;
+#encuestasRealizar_Mujeres_18_24 = proporcionMujeres_18_24 * numEncuestas;
+#encuestasRealizar_Hombres_25_34 = proporcionHombres_25_34 * numEncuestas;
+#encuestasRealizar_Mujeres_25_34 = proporcionMujeres_25_34 * numEncuestas;
+#encuestasRealizar_Hombres_35_49 = proporcionHombres_35_49 * numEncuestas;
+#encuestasRealizar_Mujeres_35_49 = proporcionMujeres_35_49 * numEncuestas;
+#encuestasRealizar_Hombres_50_64 = proporcionHombres_50_64 * numEncuestas;
+#encuestasRealizar_Mujeres_50_64 = proporcionMujeres_50_64 * numEncuestas;
+#encuestasRealizar_Hombres_65  = proporcionHombres_65 * numEncuestas;
+#encuestasRealizar_Mujeres_65  = proporcionMujeres_65 * numEncuestas;
 
 resultado = [listaTotal, lista_mujeres_18_24, lista_hombres_18_24, lista_mujeres25_34, lista_hombres25_34,
 lista_mujeres_35_49, lista_hombres_35_49, lista_mujeres_50_64, lista_hombres_50_64, lista_mujeres_65_mas,
